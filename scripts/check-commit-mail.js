@@ -1,6 +1,7 @@
-require("dotenv").config();
+import * as dotenv from "dotenv";
+dotenv.config();
 
-const ChildProcess = require("child_process");
+import * as ChildProcess from "child_process";
 
 const checkCommitMail = () => {
   console.log("Check COMMIT_MAIL");

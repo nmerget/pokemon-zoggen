@@ -10,6 +10,7 @@ import AlertDialog from "../../../base/alert-dialog";
 import { useState } from "react";
 import { MOVENAMES } from "../../../../app/data";
 import { Autocomplete } from "@mui/material";
+import PokemonImage from "../../../base/pokemon-image";
 
 const PokemonEdit = ({
   poke,
@@ -40,7 +41,7 @@ const PokemonEdit = ({
   };
 
   return (
-    <div className="shadow bg-neutral-50">
+    <div className="shadow bg-neutral-1000">
       <AlertDialog
         open={deleteOpen}
         handleClose={(okay: boolean) => {
@@ -54,12 +55,10 @@ const PokemonEdit = ({
       />
       <div className="flex flex-col p-2">
         <div className="flex flex-wrap gap-4">
-          <img
-            loading="lazy"
-            width="64"
-            height="64"
-            src={`/images/official-artwork/${poke.pokemon_species_id}.png`}
-            alt=""
+          <PokemonImage
+            size={56}
+            speciesId={poke.pokemon_species_id}
+            alt={poke.name}
           />
           <span className="whitespace-nowrap text-lg font-bold my-auto md:basis-1/5">
             {poke.name}
@@ -128,6 +127,7 @@ const PokemonEdit = ({
                     autoSelect
                     onChange={(event, selectedMove) => {
                       if (selectedMove) {
+                        // @ts-ignore
                         changePokeMove(selectedMove, indexMove);
                       }
                     }}
