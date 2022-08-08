@@ -121,7 +121,9 @@ const PokemonEdit = ({
                 <div className="contents">
                   <Autocomplete
                     className="w-full"
-                    value={move}
+                    value={pokeMovesGenOne.find(
+                      (pMoveOne) => pMoveOne.move_id === move.move_id
+                    )}
                     options={pokeMovesGenOne}
                     autoHighlight
                     autoSelect
