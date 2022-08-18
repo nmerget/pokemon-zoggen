@@ -163,7 +163,6 @@ const RunsPokemon = () => {
                         key={`pokemon-${index}`}
                         poke={poke}
                         index={index}
-                        run={localRun}
                         updateUserPokemon={updateUserPokemon}
                         onDeletePokemon={() => deleteUserPokemon(poke)}
                       />

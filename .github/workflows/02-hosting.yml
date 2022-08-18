@@ -22,7 +22,7 @@ jobs:
       - name: ⬇ Download build
         uses: ./.github/actions/download-tar-artifact
         with:
-          name: build
+          name: build-output
           path: build
 
       - uses: FirebaseExtended/action-hosting-deploy@v0

@@ -24,6 +24,13 @@ export type FbMove = {
   super_contest_effect_id?: string;
 };
 
+export type FbType = {
+  pokemon_id?: string;
+  type_id?: string;
+  slot?: string;
+  name?: string;
+};
+
 export type FbPokemon = {
   pokemon_species_id?: string;
   name?: string;
@@ -32,6 +39,7 @@ export type FbPokemon = {
   lvl?: number;
   visible?: boolean;
   moves?: FbMove[];
+  types?: FbType[];
 };
 
 export type FbRunsPlayers = {

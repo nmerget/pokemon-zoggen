@@ -1,6 +1,7 @@
 export type TypingBadgeType = {
   text?: string;
   type: string;
+  small?: boolean;
 };
 
 export const getType = (type: string): string => {

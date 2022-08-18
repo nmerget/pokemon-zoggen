@@ -1,7 +1,7 @@
 import { getType, TypingBadgeType } from "./data";
 import "./index.css";
 
-const TypingBadge = ({ type, text }: TypingBadgeType) => {
+const TypingBadge = ({ type, text, small }: TypingBadgeType) => {
   const typeString = getType(type);
 
   return (
@@ -10,7 +10,7 @@ const TypingBadge = ({ type, text }: TypingBadgeType) => {
     bg-${typeString}`}
     >
       <div className={`rounded-full py-0.5 px-2 bg-${typeString}`}>
-        <div className="text-shadow text-gray-50 ">
+        <div className={`text-shadow text-gray-50 ${small ? "text-xs" : ""}`}>
           {text ? text : type != "-1" ? typeString : "---"}
         </div>
       </div>
