@@ -12,8 +12,10 @@ jobs:
 
   build:
     uses: ./.github/workflows/01-build.yml
+    needs: [ init ]
 
-  preview:
+  deploy:
     uses: ./.github/workflows/02-hosting.yml
     with:
       channelId: live
+    needs: [ build ]
