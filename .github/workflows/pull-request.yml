@@ -12,13 +12,9 @@ jobs:
           touch .env
           echo "Trick to echo GitHub Actions Secret:  "
           echo ${{secrets.VITE_FIREBASE_PROJECT_ID}} | sed 's/./& /g' >> .env
-          echo $(cat .env)
-
-  test2:
-    runs-on: ubuntu-latest
-    steps:
       - name: Step2 - Echo out .env
-        run: cat .env
+        run: echo $(cat .env)
+
 
 #  init:
 #    uses: ./.github/workflows/00-init.yml
