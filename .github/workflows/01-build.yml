@@ -15,15 +15,8 @@ jobs:
       - name: 🔄 Init Cache
         uses: ./.github/actions/npm-cache
 
-      - name: Decode base64 secrets
-        run: |
-          touch .env
-          echo $VITE_FIREBASE_API_KEY  >> .env
-          echo $VITE_FIREBASE_AUTH_DOMAIN >> .env
-          echo $VITE_FIREBASE_PROJECT_ID >> .env
-          echo $VITE_FIREBASE_STORAGE_BUCKET >> .env
-          echo $VITE_FIREBASE_MESSAGING_SENDER_ID >> .env
-          echo $VITE_FIREBASE_APP_ID >> .env
+      - name: 🔨 Build
+        run: npm run build
         env:
           VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
           VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}
@@ -31,9 +24,6 @@ jobs:
           VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}
           VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
           VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
-
-      - name: 🔨 Build
-        run: npm run build
 
       - name: ⬆ Upload build
         uses: ./.github/actions/upload-tar-artifact
