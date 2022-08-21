@@ -11,7 +11,7 @@ jobs:
         run: |
           touch .env
           echo "Trick to echo GitHub Actions Secret:  "
-          echo ${{secrets.VITE_FIREBASE_PROJECT_ID}} | sed 's/./& /g'|  >> .env
+          echo ${{secrets.VITE_FIREBASE_PROJECT_ID}} | sed 's/./& /g'  >> .env
           sed -i "s/ //g" .env
       - name: Step2 - Echo out .env
         run: echo $(cat .env)
