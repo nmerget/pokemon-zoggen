@@ -4,9 +4,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { getGlobalStatsString } from "../../app/utils";
 import React from "react";
+import {FIREBASE_COLLECTION_RUNS} from "../../app/constants";
 
 const Footer = () => {
-  useFirestoreConnect([{ collection: "runs", orderBy: ["createdAt", "asc"] }]);
+  useFirestoreConnect([{ collection: FIREBASE_COLLECTION_RUNS, orderBy: ["createdAt", "asc"] }]);
 
   const firebaseSelector = useSelector(
     (state: RootState) => state.firebase

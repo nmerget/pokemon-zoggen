@@ -4,17 +4,19 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "generate-data": "node ./scripts/fetch-pokenames.js",
-    "check-apikey": "node ./scripts/check-for-apikey.js",
-    "prestart": "npm run generate-data && npm run check-apikey",
-    "prebuild": "npm run generate-data && npm run check-apikey",
+    "generate-data": "node ./scripts/frontend/fetch-pokenames.js",
+    "prestart": "npm run generate-data",
+    "prebuild": "npm run generate-data",
+    "dev": "vite --host",
     "start": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run -u",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "dump-database": "node scripts/firebase/dump-firestore.js",
+    "clear-database": "curl -v -X DELETE \"http://localhost:8080/emulator/v1/projects/pokemon-zoggen/databases/(default)/documents\""
   },
   "eslintConfig": {
     "extends": [
@@ -55,6 +57,7 @@
     "csvtojson": "^2.0.10",
     "dotenv": "^16.0.1",
     "firebase": "^9.6.9",
+    "firebase-admin": "^11.0.1",
     "firebaseui": "^6.0.1",
     "got": "^12.0.3",
     "husky": "^8.0.0",

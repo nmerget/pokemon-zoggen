@@ -16,6 +16,7 @@ import Button from "@mui/material/Button";
 import ListIcon from "@mui/icons-material/List";
 
 import EditIcon from "@mui/icons-material/Edit";
+import {FIREBASE_COLLECTION_RUNS} from "../../../app/constants";
 
 const RunsPokemon = () => {
   const [localPokemon, setLocalPokemon] = useState<FbPokemon[]>([]);
@@ -99,7 +100,7 @@ const RunsPokemon = () => {
 
   const updateRunDoc = (changePokemon: FbPokemon[]) => {
     if (localRun) {
-      updateDoc(firestore, "runs", {
+      updateDoc(firestore, FIREBASE_COLLECTION_RUNS, {
         ...localRun,
         players:
           localRun.players?.map((player) => {

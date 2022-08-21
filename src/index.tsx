@@ -33,7 +33,13 @@ const rrfConfig = {
 
 // Initialize firebase instance
 firebase.initializeApp(fbConfig);
-firebase.firestore();
+const db = firebase.firestore();
+const auth = firebase.auth();
+
+if (import.meta.env.DEV) {
+  db.useEmulator("localhost", 8080);
+  auth.useEmulator("http://localhost:9099");
+}
 
 const rrfProps = {
   firebase,
@@ -53,7 +59,7 @@ Sentry.init({
   dsn: "https://675a282618e7466583a138794b439f91@o1188887.ingest.sentry.io/6309083",
   integrations: [new BrowserTracing()],
   tracesSampleRate: 1.0,
-  enabled: import.meta.env.NODE_ENV !== "development",
+  enabled: import.meta.env.PROD,
   beforeSend: (event) => {
     if (window.location.hostname === "localhost") {
       return null;

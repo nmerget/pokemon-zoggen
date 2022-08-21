@@ -1,5 +1,4 @@
 import { configureStore, Reducer } from "@reduxjs/toolkit";
-import { pokemonApi } from "../services/pokemon";
 import { setupListeners } from "@reduxjs/toolkit/query";
 
 import localReducer from "../features/local/localSlice";
@@ -10,9 +9,6 @@ import { FirebaseScheme, FirestoreScheme } from "../services/types";
 export const store = configureStore({
   reducer: {
     local: localReducer,
-    // Add the generated reducer as a specific top-level slice
-    [pokemonApi.reducerPath]: pokemonApi.reducer,
-
     firebase: firebaseReducer,
     firestore: firestoreReducer as Reducer<FirestoreScheme>,
   },
@@ -23,7 +19,7 @@ export const store = configureStore({
       serializableCheck: {
         ignoredActions: [constants.actionTypes.LOGIN],
       },
-    }).concat(pokemonApi.middleware),
+    }),
 });
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors

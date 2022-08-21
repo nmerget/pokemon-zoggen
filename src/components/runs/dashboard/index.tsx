@@ -6,11 +6,13 @@ import RunDashboardCard from "./card";
 import { FbRun, FbUser } from "../../../services/types";
 import { Fab } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import { FIREBASE_COLLECTION_RUNS } from "../../../app/constants";
+import addNewRun from "../../../firebase/methods/add-new-run";
 
 const RunsDashboard = () => {
   const firestore = useFirestore();
   useFirestoreConnect([
-    { collection: "runs", orderBy: ["createdAt", "asc"] },
+    { collection: FIREBASE_COLLECTION_RUNS, orderBy: ["createdAt", "asc"] },
     { collection: "users" },
   ]);
 
@@ -26,25 +28,10 @@ const RunsDashboard = () => {
     (state: RootState) => state.firestore.ordered?.runs || []
   );
 
-  const addNewRun = () => {
-    const newRun: FbRun = {
-      name: "New Run",
-      lvlCap: 0,
-      pokAmount: 0,
-      createdAt: new Date().getTime(),
-      players:
-        users?.map((user: FbUser) => ({
-          id: user.id,
-          name: user.name,
-          wins: [],
-        })) || [],
-    };
-    firestore
-      .collection("runs")
-      .add(newRun)
-      .then(() => {
-        // TODO: Show Hint
-      });
+  const addRun = () => {
+    addNewRun(firestore, users).then(() => {
+      // TODO: Add hint
+    });
   };
 
   return (
@@ -58,7 +45,7 @@ const RunsDashboard = () => {
             size="small"
             sx={{ position: "fixed" }}
             onClick={() => {
-              addNewRun();
+              addRun();
             }}
             color="secondary"
             aria-label="add"

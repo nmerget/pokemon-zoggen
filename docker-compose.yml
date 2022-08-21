@@ -1,0 +1,34 @@
+services:
+  firebase:
+    build:
+      context: "."
+      target: "firebase"
+    volumes:
+      - .:/src
+    ports:
+      - 4400:4400
+      - 4500:4500
+      - 5000:5000
+      - 5001:5001
+      - 8001:8001
+      - 8080:8080
+      - 9000:9000
+      - 9099:9099
+    command: firebase emulators:start --import=/data --export-on-exit
+
+  frontend:
+    env_file:
+      - .env
+    build:
+      context: "."
+      target: "frontend"
+    depends_on:
+      - "firebase"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ".:/app"
+
+volumes:
+  frontend:
+  firebase:

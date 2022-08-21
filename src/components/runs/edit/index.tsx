@@ -14,6 +14,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { getPlayerName } from "../../../app/utils";
 import Paper from "@mui/material/Paper";
 import RunsPokemon from "../pokemon";
+import {FIREBASE_COLLECTION_RUNS} from "../../../app/constants";
 
 const getChangedPlayers = (
   players: FbRunsPlayers[],
@@ -39,7 +40,7 @@ const RunsEdit = () => {
 
   const firestore = useFirestore();
   useFirestoreConnect([
-    { collection: "runs", doc: params.runId, storeAs: "run" },
+    { collection: FIREBASE_COLLECTION_RUNS, doc: params.runId, storeAs: "run" },
     { collection: "users" },
   ]);
 
@@ -151,7 +152,7 @@ const RunsEdit = () => {
               ))}
 
               <Button
-                onClick={() => updateDoc(firestore, "runs", localRun)}
+                onClick={() => updateDoc(firestore, FIREBASE_COLLECTION_RUNS, localRun)}
                 className="mx-auto"
                 variant="contained"
               >
