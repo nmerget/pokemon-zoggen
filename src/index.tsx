@@ -16,12 +16,12 @@ import * as Sentry from "@sentry/react";
 import { BrowserTracing } from "@sentry/tracing";
 
 const fbConfig = {
-  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 // react-redux-firebase config
@@ -53,7 +53,7 @@ Sentry.init({
   dsn: "https://675a282618e7466583a138794b439f91@o1188887.ingest.sentry.io/6309083",
   integrations: [new BrowserTracing()],
   tracesSampleRate: 1.0,
-  enabled: process.env.NODE_ENV !== "development",
+  enabled: import.meta.env.NODE_ENV !== "development",
   beforeSend: (event) => {
     if (window.location.hostname === "localhost") {
       return null;

@@ -1,44 +1,67 @@
 import { FbMove } from "../../../../services/types";
 import { PokemonShowType } from "./data";
+import PokemonImage from "../../../base/pokemon-image";
+import TypingBadge from "../../../base/typing-badge";
+import { MOVES, POKEMON } from "../../../../app/data";
 
 const PokemonShow = ({ poke, index }: PokemonShowType) => {
+  const foundPoke = {
+    ...POKEMON.find((p) => p.pokemon_species_id === poke.pokemon_species_id),
+    ...poke,
+  };
   return (
     <div className="shadow bg-neutral-50">
       <div className="flex flex-col p-2">
         <div className="flex flex-wrap gap-4">
-          <img
-            loading="lazy"
-            width="64"
-            height="64"
-            src={
-              poke.visible
-                ? `/images/official-artwork/${poke.pokemon_species_id}.png`
-                : `/images/0.png`
-            }
-            alt=""
+          <PokemonImage
+            size={64}
+            speciesId={foundPoke.pokemon_species_id}
+            alt={foundPoke.name}
+            invisible={!foundPoke.visible}
           />
-          <span className="whitespace-nowrap text-lg font-bold my-auto md:basis-1/5">
-            {poke.visible ? poke.name : "???"}
-          </span>
+          <div className="flex flex-col">
+            <span className="whitespace-nowrap text-lg font-bold my-auto md:basis-1/5">
+              {foundPoke.visible ? foundPoke.name : "???"}
+            </span>
+            {foundPoke.visible && (
+              <div className="flex gap-1">
+                {foundPoke.types?.map((type) => (
+                  <TypingBadge
+                    key={type.slot}
+                    type={type.type_id || "-1"}
+                    text={type.name}
+                    small
+                  />
+                ))}
+              </div>
+            )}
+          </div>
 
           <span className="rounded-full ml-auto my-auto px-3 py-1.5 bg-green-100 text-green-600">
-            Lvl: {poke.visible ? poke.lvl : "???"}
+            Lvl: {foundPoke.visible ? foundPoke.lvl : "???"}
           </span>
         </div>
 
-        {poke.visible && (
+        {foundPoke.visible && (
           <div className="flex flex-col">
             <span className="whitespace-nowrap text-md font-bold m-2">
               Moves:
             </span>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-white">
-              {poke.moves?.map((move: FbMove, indexMove: number) => (
+            <div className="flex flex-wrap gap-2 px-4 bg-white mb-2">
+              {foundPoke.moves?.map((move: FbMove, indexMove: number) => (
                 <div
-                  key={`poke-${index}-move-${indexMove}`}
+                  key={`foundPoke-${index}-move-${indexMove}`}
                   className="flex space-x-4"
                 >
-                  Move {indexMove + 1}:{" "}
-                  {poke.visible && move.visible ? move.name : "???"}
+                  <TypingBadge
+                    type={
+                      foundPoke.visible && move.visible && move.move_id
+                        ? MOVES.find((m) => m.move_id === move.move_id)
+                            ?.type_id || "-1"
+                        : "-1"
+                    }
+                    text={foundPoke.visible && move.visible ? move.name : "???"}
+                  />
                 </div>
               ))}
             </div>

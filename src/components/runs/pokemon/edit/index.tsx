@@ -8,28 +8,33 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import Button from "@mui/material/Button";
 import AlertDialog from "../../../base/alert-dialog";
 import { useState } from "react";
-import { MOVENAMES } from "../../../../app/data";
+import { MOVES, POKEMON } from "../../../../app/data";
 import { Autocomplete } from "@mui/material";
+import PokemonImage from "../../../base/pokemon-image";
+import TypingBadge from "../../../base/typing-badge";
 
 const PokemonEdit = ({
   poke,
   index,
   updateUserPokemon,
-  run,
   onDeletePokemon,
 }: PokemonEditType) => {
+  const foundPoke = {
+    ...POKEMON.find((p) => p.pokemon_species_id === poke.pokemon_species_id),
+    ...poke,
+  };
   const [deleteOpen, setDeleteOpen] = useState<boolean>(false);
 
-  const pokeMovesGenOne = MOVENAMES.filter(
+  const pokeMovesGenOne = MOVES.filter(
     (move) => parseInt(move.move_id || "-1", 10) < 165
   );
 
   const changePokeMove = (changeMove: FbMove, indexMove: number) => {
-    if (poke.moves) {
+    if (foundPoke.moves) {
       updateUserPokemon(
-        poke,
+        foundPoke,
         "moves",
-        poke.moves.map((move, index) => {
+        foundPoke.moves.map((move, index) => {
           if (indexMove === index) {
             return changeMove;
           }
@@ -40,7 +45,7 @@ const PokemonEdit = ({
   };
 
   return (
-    <div className="shadow bg-neutral-50">
+    <div className="shadow bg-neutral-1000">
       <AlertDialog
         open={deleteOpen}
         handleClose={(okay: boolean) => {
@@ -54,25 +59,42 @@ const PokemonEdit = ({
       />
       <div className="flex flex-col p-2">
         <div className="flex flex-wrap gap-4">
-          <img
-            loading="lazy"
-            width="64"
-            height="64"
-            src={`/images/official-artwork/${poke.pokemon_species_id}.png`}
-            alt=""
+          <PokemonImage
+            size={56}
+            speciesId={foundPoke.pokemon_species_id}
+            alt={foundPoke.name}
           />
-          <span className="whitespace-nowrap text-lg font-bold my-auto md:basis-1/5">
-            {poke.name}
-          </span>
+
+          <div className="flex flex-col">
+            <span className="whitespace-nowrap text-lg font-bold my-auto md:basis-1/5">
+              {foundPoke.visible ? foundPoke.name : "???"}
+            </span>
+            {foundPoke.visible && (
+              <div className="flex gap-1">
+                {foundPoke.types?.map((type) => (
+                  <TypingBadge
+                    key={type.slot}
+                    type={type.type_id || "-1"}
+                    text={type.name}
+                    small
+                  />
+                ))}
+              </div>
+            )}
+          </div>
           <div className="flex basis-2/6 ml-auto md:basis-1/5">
             <TextField
               sx={{ margin: "auto" }}
               id="outlined-number"
               label="Lvl"
               type="number"
-              value={poke.lvl}
+              value={foundPoke.lvl}
               onChange={(event) =>
-                updateUserPokemon(poke, "lvl", parseInt(event.target.value, 10))
+                updateUserPokemon(
+                  foundPoke,
+                  "lvl",
+                  parseInt(event.target.value, 10)
+                )
               }
             />
           </div>
@@ -80,9 +102,13 @@ const PokemonEdit = ({
             <FormControlLabel
               control={
                 <Switch
-                  checked={poke.visible}
+                  checked={foundPoke.visible}
                   onChange={(event) =>
-                    updateUserPokemon(poke, "visible", event.target.checked)
+                    updateUserPokemon(
+                      foundPoke,
+                      "visible",
+                      event.target.checked
+                    )
                   }
                 />
               }
@@ -114,20 +140,23 @@ const PokemonEdit = ({
             </span>
           </div>
           <div className="grid md:grid-cols-2 gap-4 p-4 bg-white">
-            {poke.moves?.map((move: FbMove, indexMove: number) => (
+            {foundPoke.moves?.map((move: FbMove, indexMove: number) => (
               <div
-                key={`poke-${index}-move-${indexMove}`}
+                key={`foundPoke-${index}-move-${indexMove}`}
                 className="flex space-x-4"
               >
                 <div className="contents">
                   <Autocomplete
                     className="w-full"
-                    value={move}
+                    value={pokeMovesGenOne.find(
+                      (pMoveOne) => pMoveOne.move_id === move.move_id
+                    )}
                     options={pokeMovesGenOne}
                     autoHighlight
                     autoSelect
                     onChange={(event, selectedMove) => {
                       if (selectedMove) {
+                        // @ts-ignore
                         changePokeMove(selectedMove, indexMove);
                       }
                     }}

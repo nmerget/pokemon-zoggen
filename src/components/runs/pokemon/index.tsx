@@ -121,7 +121,7 @@ const RunsPokemon = () => {
     if (user) {
       return (
         <div key={`tab-content-${user.name}`}>
-          <div className="flex flex-col space-y-4">
+          <div className="flex flex-col gap-4">
             <div className="flex">
               <span className="whitespace-nowrap text-lg font-bold">
                 Pokemon {editMode ? "Bearbeiten" : "Liste"}:
@@ -138,37 +138,38 @@ const RunsPokemon = () => {
                 </div>
               )}
             </div>
-            {(user.id !== currentUser.id || !editMode) &&
-              localRun?.players &&
-              localRun?.players
-                .find((player) => player.id === user.id)
-                ?.pokemon?.map((poke, indexPoke) => (
-                  <PokemonShow
-                    key={`pokeshow-${indexPoke}`}
-                    poke={poke}
-                    index={indexPoke}
-                  />
-                ))}
-
-            {user.id === currentUser.id && editMode && (
-              <>
-                {(!localPokemon ||
-                  localPokemon.length < (localRun?.pokAmount || 10)) && (
-                  <PokemonAdd addUserPokemon={addUserPokemon} />
-                )}
-                {localPokemon &&
-                  localPokemon.map((poke: FbPokemon, index) => (
-                    <PokemonEdit
-                      key={`pokemon-${index}`}
+            <div className="flex flex-col gap-4">
+              {(user.id !== currentUser.id || !editMode) &&
+                localRun?.players &&
+                localRun?.players
+                  .find((player) => player.id === user.id)
+                  ?.pokemon?.map((poke, indexPoke) => (
+                    <PokemonShow
+                      key={`pokeshow-${indexPoke}`}
                       poke={poke}
-                      index={index}
-                      run={localRun}
-                      updateUserPokemon={updateUserPokemon}
-                      onDeletePokemon={() => deleteUserPokemon(poke)}
+                      index={indexPoke}
                     />
                   ))}
-              </>
-            )}
+
+              {user.id === currentUser.id && editMode && (
+                <>
+                  {(!localPokemon ||
+                    localPokemon.length < (localRun?.pokAmount || 10)) && (
+                    <PokemonAdd addUserPokemon={addUserPokemon} />
+                  )}
+                  {localPokemon &&
+                    localPokemon.map((poke: FbPokemon, index) => (
+                      <PokemonEdit
+                        key={`pokemon-${index}`}
+                        poke={poke}
+                        index={index}
+                        updateUserPokemon={updateUserPokemon}
+                        onDeletePokemon={() => deleteUserPokemon(poke)}
+                      />
+                    ))}
+                </>
+              )}
+            </div>
           </div>
         </div>
       );

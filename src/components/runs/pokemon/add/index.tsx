@@ -3,14 +3,15 @@ import TextField from "@mui/material/TextField/TextField";
 import Box from "@mui/material/Box";
 import { useState } from "react";
 import { FbPokemon } from "../../../../services/types";
-import { POKENAMES } from "../../../../app/data";
+import { POKEMON } from "../../../../app/data";
 import { PokemonAddType } from "./data";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
+import PokemonImage from "../../../base/pokemon-image";
 
 const PokemonAdd = ({ addUserPokemon }: PokemonAddType) => {
   const [autoValue, setAutoValue] = useState<FbPokemon>();
-  const pokeNamesGenOne = POKENAMES.filter(
+  const pokeNamesGenOne = POKEMON.filter(
     (poke) => parseInt(poke.pokemon_species_id || "-1", 10) < 152
   );
   return (
@@ -28,7 +29,8 @@ const PokemonAdd = ({ addUserPokemon }: PokemonAddType) => {
           autoSelect
           onChange={(_, pokemon) => {
             if (pokemon) {
-              setAutoValue(pokemon);
+              // @ts-ignore
+                setAutoValue(pokemon);
             }
           }}
           getOptionLabel={(option) => option?.name || ""}
@@ -43,12 +45,10 @@ const PokemonAdd = ({ addUserPokemon }: PokemonAddType) => {
               sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
               {...props}
             >
-              <img
-                loading="lazy"
-                width="32"
-                height="32"
-                src={`/images/official-artwork/${option.pokemon_species_id}.png`}
-                alt=""
+              <PokemonImage
+                size={56}
+                speciesId={option.pokemon_species_id}
+                alt={option.name}
               />
               {option.name}
             </Box>
