@@ -10,9 +10,7 @@ jobs:
       - name: Step 1 - Echo out a GitHub Actions Secret to the logs
         run: |
           touch .env
-          echo "Trick to echo GitHub Actions Secret:  "
-          echo ${{secrets.VITE_FIREBASE_PROJECT_ID}} | sed 's/./& /g'  >> .env
-          sed -i "s/ //g" .env
+          echo "VITE_FIREBASE_PROJECT_ID=${{secrets.VITE_FIREBASE_PROJECT_ID}}"  >> .env
       - name: Step2 - Echo out .env
         run: echo $(cat .env)
 
