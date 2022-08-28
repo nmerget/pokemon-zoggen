@@ -1,14 +1,27 @@
-import { RunsDashboardTableType } from "./data";
-import { getPlayerName } from "../../../../app/utils";
-import { TableContainer } from "@mui/material";
-import Table from "@mui/material/Table";
-import Paper from "@mui/material/Paper";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import TableBody from "@mui/material/TableBody";
+import { TableContainer } from '@mui/material';
+import Table from '@mui/material/Table';
+import Paper from '@mui/material/Paper';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import TableBody from '@mui/material/TableBody';
+import { useSelector } from 'react-redux';
+import { getPlayerName } from '../../../../app/utils';
+import { RunsDashboardTableType } from './data';
+import { RootState } from '../../../../app/store';
+import { FbRunsPlayers, FirestoreScheme } from '../../../../firebase/types';
 
-const RunDashboardTable = ({ players }: RunsDashboardTableType) => {
+function RunDashboardTable({ players }: RunsDashboardTableType) {
+  const firestoreSelector = useSelector(
+    (state: RootState) => state.firestore,
+  ) as FirestoreScheme;
+
+  const getPName = (player: FbRunsPlayers): string =>
+    getPlayerName(
+      firestoreSelector?.ordered?.users?.find((user) => user.id === player.id)
+        ?.name,
+    );
+
   return (
     <TableContainer component={Paper}>
       <Table aria-label="simple table">
@@ -17,9 +30,7 @@ const RunDashboardTable = ({ players }: RunsDashboardTableType) => {
             <TableCell />
 
             {players.map((player, index) => (
-              <TableCell key={`th-${index}`}>
-                {getPlayerName(player.name || "")}
-              </TableCell>
+              <TableCell key={`th-${index}`}>{getPName(player)}</TableCell>
             ))}
           </TableRow>
         </TableHead>
@@ -27,31 +38,31 @@ const RunDashboardTable = ({ players }: RunsDashboardTableType) => {
           {players.map((player, index) => (
             <TableRow
               key={`tr-${index}`}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {getPlayerName(player.name || "")}
+                {getPName(player)}
               </TableCell>
-              {players.map((oPlayer, index) => (
+              {players.map((oPlayer, i) => (
                 <TableCell
-                  key={`tr-${index}`}
+                  key={`tr-${i}`}
                   className={`text-center ${
                     oPlayer.id === player.id
-                      ? ""
+                      ? ''
                       : players
                           .find((p) => p.id === oPlayer.id)
-                          ?.wins?.includes(player.id || "")
-                      ? "bg-green-200"
-                      : "bg-red-200"
+                          ?.wins?.includes(player.id || '')
+                      ? 'bg-green-200'
+                      : 'bg-red-200'
                   }`}
                 >
                   {oPlayer.id === player.id
-                    ? "X"
+                    ? 'X'
                     : players
                         .find((p) => p.id === oPlayer.id)
-                        ?.wins?.includes(player.id || "")
-                    ? "Win"
-                    : ""}
+                        ?.wins?.includes(player.id || '')
+                    ? 'Win'
+                    : ''}
                 </TableCell>
               ))}
             </TableRow>
@@ -60,6 +71,6 @@ const RunDashboardTable = ({ players }: RunsDashboardTableType) => {
       </Table>
     </TableContainer>
   );
-};
+}
 
 export default RunDashboardTable;

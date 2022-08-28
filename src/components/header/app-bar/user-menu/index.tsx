@@ -1,29 +1,28 @@
-import Box from "@mui/material/Box";
-import Tooltip from "@mui/material/Tooltip/Tooltip";
-import IconButton from "@mui/material/IconButton";
-import Avatar from "@mui/material/Avatar";
-import Menu from "@mui/material/Menu/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import Typography from "@mui/material/Typography";
-import * as React from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../../app/store";
-import { UserMenuType } from "./data";
-import { useFirebase } from "react-redux-firebase";
-import { Suspense } from "react";
+import Box from '@mui/material/Box';
+import Tooltip from '@mui/material/Tooltip/Tooltip';
+import IconButton from '@mui/material/IconButton';
+import Avatar from '@mui/material/Avatar';
+import Menu from '@mui/material/Menu/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Typography from '@mui/material/Typography';
+import * as React from 'react';
+import { Suspense } from 'react';
+import { useSelector } from 'react-redux';
+import { useFirebase } from 'react-redux-firebase';
+import { RootState } from '../../../../app/store';
 
-const settings = ["Logout"];
+const settings = ['Logout'];
 
-const LoginButton = React.lazy(() => import("../../../base/buttons/login"));
+const LoginButton = React.lazy(() => import('../../../base/buttons/login'));
 
-const AppBarUserMenu = ({ contained }: UserMenuType) => {
+function AppBarUserMenu() {
   const firebase = useFirebase();
   const firebaseSelector = useSelector(
-    (state: RootState) => state.firebase
+    (state: RootState) => state.firebase,
   ) as any;
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
+    null,
   );
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -54,17 +53,17 @@ const AppBarUserMenu = ({ contained }: UserMenuType) => {
         </Tooltip>
       )}
       <Menu
-        sx={{ mt: "45px" }}
+        sx={{ mt: '45px' }}
         id="menu-appbar"
         anchorEl={anchorElUser}
         anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
+          vertical: 'top',
+          horizontal: 'right',
         }}
         keepMounted
         transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
+          vertical: 'top',
+          horizontal: 'right',
         }}
         open={Boolean(anchorElUser)}
         onClose={() => handleCloseUserMenu(undefined)}
@@ -77,6 +76,6 @@ const AppBarUserMenu = ({ contained }: UserMenuType) => {
       </Menu>
     </Box>
   );
-};
+}
 
 export default AppBarUserMenu;

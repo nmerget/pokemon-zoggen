@@ -1,3 +1,3 @@
 export type LoginButtonType = {
-    contained: boolean;
+  contained: boolean;
 };

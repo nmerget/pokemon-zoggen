@@ -1,3 +1,3 @@
 export type UserMenuType = {
-    contained: boolean;
+  contained: boolean;
 };

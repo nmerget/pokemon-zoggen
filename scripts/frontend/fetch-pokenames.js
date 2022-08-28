@@ -25,7 +25,7 @@ const addPokemon = async () => {
     "https://raw.githubusercontent.com/PokeAPI/pokeapi/master/data/v2/csv/type_names.csv"
   );
 
-  return `export const POKEMON: FbPokemon[] = ${JSON.stringify(
+  return `export const POKEMON: Pokemon[] = ${JSON.stringify(
     germanPokenames.map((poke) => ({
       ...poke,
       types: allPokemonTypes
@@ -46,9 +46,9 @@ const run = async () => {
   const allMoves = await getJSONFromCSV(
     "https://raw.githubusercontent.com/PokeAPI/pokeapi/master/data/v2/csv/moves.csv"
   );
-  let data = 'import { FbPokemon } from "../services/types";\n';
+  let data = 'import { Pokemon, PokemonMove } from "../pokemon/types";\n';
   data += await addPokemon();
-  data += `export const MOVES = ${JSON.stringify(
+  data += `export const MOVES: PokemonMove[] = ${JSON.stringify(
     germanMovenames.map((move) => ({
       ...move,
       ...allMoves.find((aMove) => aMove.id === move.move_id),

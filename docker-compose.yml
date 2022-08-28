@@ -14,7 +14,7 @@ services:
       - 8080:8080
       - 9000:9000
       - 9099:9099
-    command: firebase emulators:start --import=/data --export-on-exit
+    command: firebase emulators:start --export-on-exit=/data --import=/data
 
   frontend:
     env_file:

@@ -1,6 +1,6 @@
-import * as React from "react";
+import * as React from 'react';
 
-const Loading = () => {
+function Loading() {
   return (
     <div className="flex w-full h-full">
       <div className="m-auto flex flex-col">
@@ -16,6 +16,6 @@ const Loading = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Loading;

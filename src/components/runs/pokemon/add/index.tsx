@@ -1,19 +1,21 @@
-import { Autocomplete } from "@mui/material";
-import TextField from "@mui/material/TextField/TextField";
-import Box from "@mui/material/Box";
-import { useState } from "react";
-import { FbPokemon } from "../../../../services/types";
-import { POKEMON } from "../../../../app/data";
-import { PokemonAddType } from "./data";
-import Button from "@mui/material/Button";
-import AddIcon from "@mui/icons-material/Add";
-import PokemonImage from "../../../base/pokemon-image";
+import { Autocomplete } from '@mui/material';
+import TextField from '@mui/material/TextField/TextField';
+import Box from '@mui/material/Box';
+import { useState } from 'react';
+import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
+import { POKEMON } from '../../../../app/data';
+import { PokemonAddType } from './data';
+import PokemonImage from '../../../base/pokemon-image';
+import { Pokemon } from '../../../../pokemon/types';
 
-const PokemonAdd = ({ addUserPokemon }: PokemonAddType) => {
-  const [autoValue, setAutoValue] = useState<FbPokemon>();
-  const pokeNamesGenOne = POKEMON.filter(
-    (poke) => parseInt(poke.pokemon_species_id || "-1", 10) < 152
-  );
+function PokemonAdd({ addUserPokemon }: PokemonAddType) {
+  const [autoValue, setAutoValue] = useState<Pokemon>();
+  const pokeNamesGenOne = [
+    ...POKEMON.filter(
+      (poke) => parseInt(poke.pokemon_species_id || '-1', 10) < 152,
+    ),
+  ];
   return (
     <div className="flex flex-col">
       <span className="whitespace-nowrap text-lg font-bold mb-4">
@@ -21,7 +23,7 @@ const PokemonAdd = ({ addUserPokemon }: PokemonAddType) => {
       </span>
       <div className="flex flex-wrap gap-4">
         <Autocomplete
-          key={`add-input-${autoValue?.pokemon_species_id || "unknown"}`}
+          key={`add-input-${autoValue?.pokemon_species_id || 'unknown'}`}
           className="w-full"
           value={autoValue}
           options={pokeNamesGenOne}
@@ -29,11 +31,10 @@ const PokemonAdd = ({ addUserPokemon }: PokemonAddType) => {
           autoSelect
           onChange={(_, pokemon) => {
             if (pokemon) {
-              // @ts-ignore
-                setAutoValue(pokemon);
+              setAutoValue(pokemon);
             }
           }}
-          getOptionLabel={(option) => option?.name || ""}
+          getOptionLabel={(option) => option?.name || ''}
           renderInput={(params) => (
             <div>
               <TextField {...params} label="Pokemon" />
@@ -42,7 +43,7 @@ const PokemonAdd = ({ addUserPokemon }: PokemonAddType) => {
           renderOption={(props, option) => (
             <Box
               component="li"
-              sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
+              sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
               {...props}
             >
               <PokemonImage
@@ -72,6 +73,6 @@ const PokemonAdd = ({ addUserPokemon }: PokemonAddType) => {
       </div>
     </div>
   );
-};
+}
 
 export default PokemonAdd;

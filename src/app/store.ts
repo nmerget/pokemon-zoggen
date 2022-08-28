@@ -1,10 +1,10 @@
-import { configureStore, Reducer } from "@reduxjs/toolkit";
-import { setupListeners } from "@reduxjs/toolkit/query";
+import { configureStore, Reducer } from '@reduxjs/toolkit';
+import { setupListeners } from '@reduxjs/toolkit/query';
 
-import localReducer from "../features/local/localSlice";
-import { constants, firebaseReducer } from "react-redux-firebase";
-import { firestoreReducer } from "redux-firestore";
-import { FirebaseScheme, FirestoreScheme } from "../services/types";
+import { constants, firebaseReducer } from 'react-redux-firebase';
+import { firestoreReducer } from 'redux-firestore';
+import localReducer from '../features/local/localSlice';
+import { FirestoreScheme } from '../firebase/types';
 
 export const store = configureStore({
   reducer: {

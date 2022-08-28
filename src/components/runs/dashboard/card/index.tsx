@@ -1,13 +1,13 @@
-import RunDashboardTable from "../table";
-import { RunDashboardCardType } from "./data";
-import { Card, CardContent } from "@mui/material";
-import CardActionArea from "@mui/material/CardActionArea";
-import { useNavigate } from "react-router-dom";
+import { Card, CardContent } from '@mui/material';
+import CardActionArea from '@mui/material/CardActionArea';
+import { useNavigate } from 'react-router-dom';
+import { RunDashboardCardType } from './data';
+import RunDashboardTable from '../table';
 
-const RunDashboardCard = ({ run }: RunDashboardCardType) => {
+function RunDashboardCard({ run }: RunDashboardCardType) {
   const navigate = useNavigate();
   if (!run) {
-    return <></>;
+    return null;
   }
   return (
     <Card className="relative">
@@ -27,6 +27,6 @@ const RunDashboardCard = ({ run }: RunDashboardCardType) => {
       </CardActionArea>
     </Card>
   );
-};
+}
 
 export default RunDashboardCard;

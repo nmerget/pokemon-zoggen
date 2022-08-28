@@ -1,9 +1,8 @@
-import Typography from "@mui/material/Typography";
-import Toolbar from "@mui/material/Toolbar";
-import * as React from "react";
-import { APP_NAME } from "../../../../app/constants";
+import Typography from '@mui/material/Typography';
+import * as React from 'react';
+import { APP_NAME } from '../../../../app/constants';
 
-const AppBarLogoName = () => {
+function AppBarLogoName() {
   return (
     <>
       <Typography
@@ -11,7 +10,7 @@ const AppBarLogoName = () => {
         noWrap
         className="flex"
         component="div"
-        sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
+        sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
       >
         <img className="w-12 h-12 rounded-lg" alt="Logo" src="/logo512.webp" />
 
@@ -21,12 +20,12 @@ const AppBarLogoName = () => {
         variant="h6"
         noWrap
         component="div"
-        sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
+        sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
       >
         {APP_NAME}
       </Typography>
     </>
   );
-};
+}
 
 export default AppBarLogoName;

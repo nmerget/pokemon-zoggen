@@ -1,20 +1,30 @@
-import * as dotenv from "dotenv";
+import * as dotenv from 'dotenv';
 dotenv.config();
 
-import * as collections from "./collections.js";
-import admin from "firebase-admin";
+import * as collections from './collections.js';
+import admin from 'firebase-admin';
 
-import { writeFileSync } from "fs";
+import { writeFileSync, readFileSync } from 'fs';
 
 const dumpFirestore = async () => {
+  const prod = process.argv[2];
   const projectId = process.env.VITE_FIREBASE_PROJECT_ID;
-  process.env.FIRESTORE_EMULATOR_HOST = "localhost:8080";
-  console.log("Generating dump for project", projectId);
+  console.log('Generating dump for project', projectId);
   // Initialize firebase instance & firestore
-  admin.initializeApp({ projectId });
+  if (!prod) {
+    process.env.FIRESTORE_EMULATOR_HOST = 'localhost:8080';
+    admin.initializeApp({ projectId });
+  } else {
+    const serviceAccount = JSON.parse(
+      readFileSync('pokemon-zoggen-firebase-adminsdk.json').toString(),
+    );
+    admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount),
+    });
+  }
   const db = admin.firestore();
 
-  console.log("Using collection", collections.default.join(" & "));
+  console.log('Using collection', collections.default.join(' & '));
   const dump = {};
   for (const collection of collections.default) {
     const querySnapshot = await db.collection(collection).get();
@@ -23,8 +33,11 @@ const dumpFirestore = async () => {
       ...doc.data(),
     }));
   }
-  writeFileSync(`./dumps/dump-${new Date().getTime()}`, JSON.stringify(dump));
-  console.log("Generated dump:", dump);
+  writeFileSync(
+    `./dumps/dump-${new Date().getTime()}.json`,
+    JSON.stringify(dump),
+  );
+  console.log('Generated dump:', dump);
   process.exit(0);
 };
 
