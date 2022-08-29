@@ -1,4 +1,4 @@
-import { FirebaseScheme } from '../firebase/types';
+import { FbRun, FbUser } from '../firebase/types';
 
 export const getPlayerName = (name?: string): string => {
   if (!name) {
@@ -14,11 +14,14 @@ export const getPlayerName = (name?: string): string => {
   return name;
 };
 
-export const getGlobalStatsString = (scheme: FirebaseScheme): string => {
+export const getGlobalStatsString = (
+  runs: FbRun[],
+  users: FbUser[],
+): string => {
   const players: any[] = [];
   let possibleWins = 0;
-  if (scheme.runs) {
-    scheme.runs.forEach((run) => {
+  if (runs) {
+    runs.forEach((run) => {
       possibleWins += (run.players?.length || 0) - 1;
       run.players?.forEach((player) => {
         const id = player.id || '';
@@ -37,7 +40,7 @@ export const getGlobalStatsString = (scheme: FirebaseScheme): string => {
         .sort((a, b) => (a.wins.length > b.wins.length ? -1 : 1))
         .forEach((player, index) => {
           statString += `${getPlayerName(
-            scheme.users?.find((user) => user.id === player.id)?.name,
+            users?.find((user) => user.id === player.id)?.name,
           )}: ${player.wins.length}/${possibleWins} ${
             index !== players.length - 1 ? '-' : ''
           } `;

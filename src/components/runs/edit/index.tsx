@@ -15,8 +15,8 @@ import RunsPokemon from '../pokemon';
 import {
   FIREBASE_COLLECTION_RUN,
   FIREBASE_COLLECTION_RUNS,
-  FIREBASE_COLLECTION_USERS,
 } from '../../../app/constants';
+import { useAdmin, useUsers } from '../../../app/hooks';
 
 const getChangedPlayers = (
   players: FbRunsPlayers[],
@@ -46,16 +46,11 @@ function RunsEdit() {
       doc: params.runId,
       storeAs: FIREBASE_COLLECTION_RUN,
     },
-    { collection: FIREBASE_COLLECTION_USERS },
   ]);
 
-  const firebaseSelector = useSelector(
-    (state: RootState) => state.firebase,
-  ) as any;
+  const admin = useAdmin();
 
-  const users = useSelector(
-    (state: RootState) => state.firestore.ordered?.users || [],
-  );
+  const users = useUsers();
 
   const run = useSelector((state: RootState) =>
     state.firestore.ordered?.run?.at(0),
@@ -82,10 +77,7 @@ function RunsEdit() {
           <div className="md:w-1/2">
             <RunsPokemon />
           </div>
-          {users.find(
-            (user: FbUser) =>
-              firebaseSelector?.auth?.uid === user.id && user.admin,
-          ) && (
+          {admin && (
             <div className="flex flex-col md:w-1/2 space-y-4">
               <span className="whitespace-nowrap text-lg font-bold">
                 Einstellungen Run:

@@ -42,7 +42,7 @@ function ResponsiveAppBar() {
             <AppBarLogoName />
           </Box>
 
-          <AppBarUserMenu contained={false} />
+          <AppBarUserMenu />
         </Toolbar>
       </Container>
     </AppBar>

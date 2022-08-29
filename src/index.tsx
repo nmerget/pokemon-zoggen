@@ -15,6 +15,7 @@ import { BrowserTracing } from '@sentry/tracing';
 import Loading from './components/loading';
 import { store } from './app/store';
 import { FIREBASE_COLLECTION_USERS } from './app/constants';
+import Admin from './components/admin';
 
 const fbConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -92,7 +93,15 @@ ReactDOM.render(
                 }
               />
               <Route
-                path="runs"
+                path="admin"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <Admin />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="home"
                 element={
                   <Suspense fallback={<Loading />}>
                     <RunsDashboard />
@@ -100,7 +109,15 @@ ReactDOM.render(
                 }
               />
               <Route
-                path="runs/:runId"
+                path="runs/:runGroupId"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <RunsDashboard />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="runs/:runGroupId/:runId"
                 element={
                   <Suspense fallback={<Loading />}>
                     <RunsEdit />

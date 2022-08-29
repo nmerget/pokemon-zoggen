@@ -9,9 +9,10 @@ import * as React from 'react';
 import { Suspense } from 'react';
 import { useSelector } from 'react-redux';
 import { useFirebase } from 'react-redux-firebase';
+import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../../../app/store';
-
-const settings = ['Logout'];
+import { SETTING_ADMIN, SETTING_LOGOUT } from '../../../../app/constants';
+import { useAdmin } from '../../../../app/hooks';
 
 const LoginButton = React.lazy(() => import('../../../base/buttons/login'));
 
@@ -21,6 +22,10 @@ function AppBarUserMenu() {
     (state: RootState) => state.firebase,
   ) as any;
 
+  const admin = useAdmin();
+
+  const navigate = useNavigate();
+
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null,
   );
@@ -29,10 +34,20 @@ function AppBarUserMenu() {
     setAnchorElUser(event.currentTarget);
   };
   const handleCloseUserMenu = (setting?: string) => {
-    if (setting === settings[0]) {
+    if (setting === SETTING_LOGOUT) {
       firebase.logout();
+    } else if (setting === SETTING_ADMIN) {
+      navigate('/admin');
     }
     setAnchorElUser(null);
+  };
+
+  const getSettings = () => {
+    const defaultSettings = [SETTING_LOGOUT];
+    if (admin) {
+      return [SETTING_ADMIN, ...defaultSettings];
+    }
+    return defaultSettings;
   };
 
   return (
@@ -68,7 +83,7 @@ function AppBarUserMenu() {
         open={Boolean(anchorElUser)}
         onClose={() => handleCloseUserMenu(undefined)}
       >
-        {settings.map((setting) => (
+        {getSettings().map((setting) => (
           <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)}>
             <Typography textAlign="center">{setting}</Typography>
           </MenuItem>

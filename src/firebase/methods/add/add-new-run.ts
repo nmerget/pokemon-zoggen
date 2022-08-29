@@ -1,19 +1,20 @@
 import { ExtendedFirestoreInstance } from 'react-redux-firebase';
-import { DocumentReference } from '@firebase/firestore-types';
-import { FbRun, FbUser } from '../types';
-import { FIREBASE_COLLECTION_RUNS } from '../../app/constants';
+import { FbRun, FbUser } from '../../types';
+import { FIREBASE_COLLECTION_RUNS } from '../../../app/constants';
 
-const addNewRun = (
+const addNewRun = async (
   firestore: ExtendedFirestoreInstance,
   users: FbUser[],
-  version: string,
-): Promise<DocumentReference<FbRun>> => {
+  groupId: string,
+  version?: string,
+) => {
   const newRun: FbRun = {
     name: 'New Run',
     lvlCap: 0,
     pokAmount: 0,
     createdAt: new Date().getTime(),
     version: version || '1',
+    groupId,
     players:
       users?.map((user: FbUser) => ({
         id: user.id || '',
@@ -21,7 +22,13 @@ const addNewRun = (
         wins: [],
       })) || [],
   };
-  return firestore.collection(FIREBASE_COLLECTION_RUNS).add(newRun);
+  const doc = await firestore.collection(FIREBASE_COLLECTION_RUNS).add(newRun);
+  if (doc.id) {
+    await firestore
+      .collection(FIREBASE_COLLECTION_RUNS)
+      .doc(doc.id)
+      .update({ id: doc.id });
+  }
 };
 
 export default addNewRun;

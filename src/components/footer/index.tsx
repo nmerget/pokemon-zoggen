@@ -1,32 +1,27 @@
 import { Box } from '@mui/material';
-import { useFirestoreConnect } from 'react-redux-firebase';
 import { useSelector } from 'react-redux';
 import React from 'react';
 import { RootState } from '../../app/store';
 import { getGlobalStatsString } from '../../app/utils';
-import { FIREBASE_COLLECTION_RUNS } from '../../app/constants';
+import { useRuns, useUsers } from '../../app/hooks';
 
 function Footer() {
-  useFirestoreConnect([
-    { collection: FIREBASE_COLLECTION_RUNS, orderBy: ['createdAt', 'asc'] },
-  ]);
-
   const firebaseSelector = useSelector(
     (state: RootState) => state.firebase,
   ) as any;
-  const firestoreSelector = useSelector(
-    (state: RootState) => state.firestore,
-  ) as any;
+
+  const users = useUsers();
+  const runs = useRuns();
 
   return (
     <Box
       sx={{ backgroundColor: 'primary.main' }}
       className="flex-grow-0 flex-shrink-0 w-full h-16"
     >
-      {firebaseSelector?.profile?.isEmpty === false && (
+      {firebaseSelector?.profile?.isEmpty === false && users && runs && (
         <div className="max-w-screen-xl h-full flex mx-auto">
           <p className="text-sm font-medium text-white text-center m-auto">
-            {getGlobalStatsString(firestoreSelector?.ordered)}
+            {getGlobalStatsString(runs, users)}
           </p>
         </div>
       )}

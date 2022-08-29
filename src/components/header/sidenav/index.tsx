@@ -12,15 +12,18 @@ import {
 } from '@mui/material';
 import { toggleMenu } from '../../../features/local/localSlice';
 import { RootState } from '../../../app/store';
-import { DefaultMenuItems } from '../../../app/constants';
 import AppBarUserMenu from '../app-bar/user-menu';
+import { useMenuItems } from '../../../app/hooks';
 
-function SideNav() {
+const SideNav = () => {
   const dispatch = useDispatch();
 
   const firebaseSelector = useSelector(
     (state: RootState) => state.firebase,
   ) as any;
+
+  const menuItems = useMenuItems();
+
   return (
     <SwipeableDrawer
       anchor="left"
@@ -36,7 +39,8 @@ function SideNav() {
         <Divider />
         <List>
           {firebaseSelector?.profile?.isEmpty === false &&
-            DefaultMenuItems.map((item, index) => (
+            menuItems &&
+            menuItems.map((item, index) => (
               <ListItem key={`sidenav-menu-item-${index}`}>
                 <ListItemButton>
                   <NavLink
@@ -54,6 +58,6 @@ function SideNav() {
       </Box>
     </SwipeableDrawer>
   );
-}
+};
 
 export default SideNav;

@@ -31,6 +31,7 @@ export type FbRun = {
   players?: FbRunsPlayers[];
   createdAt?: number;
   version?: string;
+  groupId?: string;
 };
 
 export type FbUser = {
@@ -39,10 +40,25 @@ export type FbUser = {
   admin?: boolean;
 };
 
+export type FbRunGroup = {
+  id?: string;
+  runIds?: string[];
+  version?: string;
+  name?: string;
+  createdAt?: number;
+};
+
+export type FbCurrent = {
+  id?: string;
+  currentGroupId?: string;
+};
+
 export type FirebaseScheme = {
   run?: FbRun[];
   runs?: FbRun[];
   users?: FbUser[];
+  current?: FbCurrent[];
+  groups?: FbRunGroup[];
 };
 
 export type FirestoreScheme = {
