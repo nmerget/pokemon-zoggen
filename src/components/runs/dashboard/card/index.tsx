@@ -1,17 +1,19 @@
-import RunDashboardTable from "../table";
-import { RunDashboardCardType } from "./data";
-import { Card, CardContent } from "@mui/material";
-import CardActionArea from "@mui/material/CardActionArea";
-import { useNavigate } from "react-router-dom";
+import { Card, CardContent } from '@mui/material';
+import CardActionArea from '@mui/material/CardActionArea';
+import { useNavigate } from 'react-router-dom';
+import { RunDashboardCardType } from './data';
+import RunDashboardTable from '../table';
 
-const RunDashboardCard = ({ run }: RunDashboardCardType) => {
+function RunDashboardCard({ run }: RunDashboardCardType) {
   const navigate = useNavigate();
   if (!run) {
-    return <></>;
+    return null;
   }
   return (
     <Card className="relative">
-      <CardActionArea onClick={() => navigate(`/runs/${run.id}`)}>
+      <CardActionArea
+        onClick={() => navigate(`/runs/${run.groupId}/${run.id}`)}
+      >
         <CardContent className="flex flex-col">
           <div className="absolute right-4 top-4 font-medium text-xs flex flex-end gap-2">
             <span className="rounded-full px-3 py-1.5 bg-blue-100 text-blue-600">
@@ -27,6 +29,6 @@ const RunDashboardCard = ({ run }: RunDashboardCardType) => {
       </CardActionArea>
     </Card>
   );
-};
+}
 
 export default RunDashboardCard;

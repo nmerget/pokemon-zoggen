@@ -1,24 +1,24 @@
-import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
-import AppBarLogoName from "./logo-name";
-import AppBarUserMenu from "./user-menu";
-import { toggleMenu } from "../../../features/local/localSlice";
-import { useDispatch } from "react-redux";
-import AppBarDesktopNav from "./desktop-nav";
+import * as React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import Container from '@mui/material/Container';
+import { useDispatch } from 'react-redux';
+import AppBarLogoName from './logo-name';
+import AppBarUserMenu from './user-menu';
+import { toggleMenu } from '../../../features/local/localSlice';
+import AppBarDesktopNav from './desktop-nav';
 
-const ResponsiveAppBar = () => {
+function ResponsiveAppBar() {
   const dispatch = useDispatch();
 
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -36,16 +36,16 @@ const ResponsiveAppBar = () => {
           <AppBarDesktopNav />
 
           <Box
-            sx={{ display: { xs: "none", md: "flex" } }}
+            sx={{ display: { xs: 'none', md: 'flex' } }}
             className="invisible"
           >
             <AppBarLogoName />
           </Box>
 
-          <AppBarUserMenu contained={false} />
+          <AppBarUserMenu />
         </Toolbar>
       </Container>
     </AppBar>
   );
-};
+}
 export default ResponsiveAppBar;

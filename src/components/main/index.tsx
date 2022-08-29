@@ -1,22 +1,22 @@
-import React, { useEffect } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "../../app/store";
-import { DefaultMenuItems } from "../../app/constants";
-import { isLoaded } from "react-redux-firebase";
+import React, { useEffect } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { isLoaded } from 'react-redux-firebase';
+import { RootState } from '../../app/store';
+import { DefaultMenuItems } from '../../app/constants';
 
-const Main = () => {
+function Main() {
   const navigate = useNavigate();
   const location = useLocation();
   const firebaseSelector = useSelector(
-    (state: RootState) => state.firebase
+    (state: RootState) => state.firebase,
   ) as any;
 
   useEffect(() => {
     if (isLoaded(firebaseSelector.auth)) {
       if (firebaseSelector?.auth?.isEmpty) {
-        navigate("/login");
-      } else if (location.pathname === "/") {
+        navigate('/login');
+      } else if (location.pathname === '/') {
         navigate(DefaultMenuItems[0].link);
       }
     }
@@ -27,6 +27,6 @@ const Main = () => {
       <Outlet />
     </main>
   );
-};
+}
 
 export default Main;

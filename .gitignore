@@ -24,4 +24,15 @@ yarn-debug.log*
 yarn-error.log*
 
 .idea
+
+# firebase
 .firebase
+/firebase-debug.log
+/database-debug.log
+/firestore-debug.log
+/ui-debug.log
+/pubsub-debug.log
+/data
+/dumps
+
+pokemon-zoggen-firebase-adminsdk*.json

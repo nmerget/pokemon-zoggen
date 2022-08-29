@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { RootState } from "../../app/store";
+import { createSlice } from '@reduxjs/toolkit';
+import { RootState } from '../../app/store';
 
 export interface LocalState {
   menuOpen: boolean;
@@ -10,7 +10,7 @@ const initialState: LocalState = {
 };
 
 export const localSlice = createSlice({
-  name: "local",
+  name: 'local',
   initialState,
   reducers: {
     toggleMenu: (state) => {

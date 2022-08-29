@@ -1,10 +1,10 @@
-import React from "react";
-import { useSelector } from "react-redux";
-import { selectMenuOpen } from "../../features/local/localSlice";
-import SideNav from "./sidenav";
-import ResponsiveAppBar from "./app-bar";
+import React from 'react';
+import { useSelector } from 'react-redux';
+import { selectMenuOpen } from '../../features/local/localSlice';
+import SideNav from './sidenav';
+import ResponsiveAppBar from './app-bar';
 
-const Header = () => {
+function Header() {
   const menuOpen = useSelector(selectMenuOpen);
 
   return (
@@ -13,6 +13,6 @@ const Header = () => {
       {menuOpen && <SideNav />}
     </>
   );
-};
+}
 
 export default Header;

@@ -1,0 +1,43 @@
+{
+  "root": true,
+  "extends": [
+    "eslint:recommended",
+    "airbnb",
+    "plugin:import/typescript",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": { "project": ["./tsconfig.json"] },
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-empty-function": "off",
+    "import/no-extraneous-dependencies": "off",
+    "import/extensions": "off",
+    "implicit-arrow-linebreak": "off",
+    "import/no-unresolved": "off",
+    "function-paren-newline": "off",
+    "operator-linebreak": "off",
+    "indent": "off",
+    "max-classes-per-file": "off",
+    "no-param-reassign": "off",
+    "no-nested-ternary": "off",
+    "import/no-cycle": "off",
+    "object-curly-newline": "off",
+    "lines-between-class-members": "off",
+    "react/function-component-definition": "off",
+    "react/jsx-filename-extension": "off",
+    "react/no-array-index-key": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "react/jsx-wrap-multilines": "off",
+    "react/jsx-curly-newline": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-props-no-spreading": "off"
+  },
+  "ignorePatterns": [
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/data/*.ts",
+    "public/data/**/*.json"
+  ]
+}

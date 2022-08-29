@@ -1,19 +1,21 @@
-import React, { Suspense } from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import { Provider } from "react-redux";
+import React, { Suspense } from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import { Provider } from 'react-redux';
 
-import firebase from "firebase/compat/app";
-import "firebase/compat/auth";
-import "firebase/compat/firestore";
-import { ReactReduxFirebaseProvider } from "react-redux-firebase";
-import { createFirestoreInstance } from "redux-firestore";
-import { store } from "./app/store";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Loading from "./components/loading";
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
+import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
+import { createFirestoreInstance } from 'redux-firestore';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import * as Sentry from "@sentry/react";
-import { BrowserTracing } from "@sentry/tracing";
+import * as Sentry from '@sentry/react';
+import { BrowserTracing } from '@sentry/tracing';
+import Loading from './components/loading';
+import { store } from './app/store';
+import { FIREBASE_COLLECTION_USERS } from './app/constants';
+import Admin from './components/admin';
 
 const fbConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -26,14 +28,20 @@ const fbConfig = {
 
 // react-redux-firebase config
 const rrfConfig = {
-  userProfile: "users",
+  userProfile: FIREBASE_COLLECTION_USERS,
   useFirestoreForProfile: true, // Firestore for Profile instead of Realtime DB
   enableClaims: true, // Get custom claims along with the profile
 };
 
 // Initialize firebase instance
 firebase.initializeApp(fbConfig);
-firebase.firestore();
+const db = firebase.firestore();
+const auth = firebase.auth();
+
+if (import.meta.env.DEV) {
+  db.useEmulator('localhost', 8080);
+  auth.useEmulator('http://localhost:9099');
+}
 
 const rrfProps = {
   firebase,
@@ -42,20 +50,20 @@ const rrfProps = {
   createFirestoreInstance, // <- needed if using firestore
 };
 
-const App = React.lazy(() => import("./App"));
+const App = React.lazy(() => import('./App'));
 const LoginSection = React.lazy(
-  () => import("./components/main/login-section")
+  () => import('./components/main/login-section'),
 );
-const RunsDashboard = React.lazy(() => import("./components/runs/dashboard"));
-const RunsEdit = React.lazy(() => import("./components/runs/edit"));
+const RunsDashboard = React.lazy(() => import('./components/runs/dashboard'));
+const RunsEdit = React.lazy(() => import('./components/runs/edit'));
 
 Sentry.init({
-  dsn: "https://675a282618e7466583a138794b439f91@o1188887.ingest.sentry.io/6309083",
+  dsn: 'https://675a282618e7466583a138794b439f91@o1188887.ingest.sentry.io/6309083',
   integrations: [new BrowserTracing()],
   tracesSampleRate: 1.0,
-  enabled: import.meta.env.NODE_ENV !== "development",
+  enabled: import.meta.env.PROD,
   beforeSend: (event) => {
-    if (window.location.hostname === "localhost") {
+    if (window.location.hostname === 'localhost') {
       return null;
     }
     return event;
@@ -85,7 +93,15 @@ ReactDOM.render(
                 }
               />
               <Route
-                path="runs"
+                path="admin"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <Admin />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="home"
                 element={
                   <Suspense fallback={<Loading />}>
                     <RunsDashboard />
@@ -93,7 +109,15 @@ ReactDOM.render(
                 }
               />
               <Route
-                path="runs/:runId"
+                path="runs/:runGroupId"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <RunsDashboard />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="runs/:runGroupId/:runId"
                 element={
                   <Suspense fallback={<Loading />}>
                     <RunsEdit />
@@ -106,5 +130,5 @@ ReactDOM.render(
       </ReactReduxFirebaseProvider>
     </Provider>
   </React.StrictMode>,
-  document.getElementById("root")
+  document.getElementById('root'),
 );

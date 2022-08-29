@@ -1,10 +1,12 @@
-import { FbMove } from "../../../../services/types";
-import { PokemonShowType } from "./data";
-import PokemonImage from "../../../base/pokemon-image";
-import TypingBadge from "../../../base/typing-badge";
-import { MOVES, POKEMON } from "../../../../app/data";
+import { FbMove } from '../../../../firebase/types';
+import { PokemonShowType } from './data';
+import PokemonImage from '../../../base/pokemon-image';
+import TypingBadge from '../../../base/typing-badge';
+import POKEMON from '../../../../data/pokemon';
+import { PokemonType } from '../../../../pokemon/types';
+import MOVES from '../../../../data/moves';
 
-const PokemonShow = ({ poke, index }: PokemonShowType) => {
+function PokemonShow({ poke, index }: PokemonShowType) {
   const foundPoke = {
     ...POKEMON.find((p) => p.pokemon_species_id === poke.pokemon_species_id),
     ...poke,
@@ -21,14 +23,14 @@ const PokemonShow = ({ poke, index }: PokemonShowType) => {
           />
           <div className="flex flex-col">
             <span className="whitespace-nowrap text-lg font-bold my-auto md:basis-1/5">
-              {foundPoke.visible ? foundPoke.name : "???"}
+              {foundPoke.visible ? foundPoke.name : '???'}
             </span>
             {foundPoke.visible && (
               <div className="flex gap-1">
-                {foundPoke.types?.map((type) => (
+                {foundPoke.types?.map((type: PokemonType) => (
                   <TypingBadge
                     key={type.slot}
-                    type={type.type_id || "-1"}
+                    type={type.type_id || '-1'}
                     text={type.name}
                     small
                   />
@@ -38,7 +40,7 @@ const PokemonShow = ({ poke, index }: PokemonShowType) => {
           </div>
 
           <span className="rounded-full ml-auto my-auto px-3 py-1.5 bg-green-100 text-green-600">
-            Lvl: {foundPoke.visible ? foundPoke.lvl : "???"}
+            Lvl: {foundPoke.visible ? foundPoke.lvl : '???'}
           </span>
         </div>
 
@@ -57,10 +59,14 @@ const PokemonShow = ({ poke, index }: PokemonShowType) => {
                     type={
                       foundPoke.visible && move.visible && move.move_id
                         ? MOVES.find((m) => m.move_id === move.move_id)
-                            ?.type_id || "-1"
-                        : "-1"
+                            ?.type_id || '-1'
+                        : '-1'
                     }
-                    text={foundPoke.visible && move.visible ? move.name : "???"}
+                    text={
+                      foundPoke.visible && move.visible
+                        ? MOVES.find((m) => m.move_id === move.move_id)?.name
+                        : '???'
+                    }
                   />
                 </div>
               ))}
@@ -70,6 +76,6 @@ const PokemonShow = ({ poke, index }: PokemonShowType) => {
       </div>
     </div>
   );
-};
+}
 
 export default PokemonShow;

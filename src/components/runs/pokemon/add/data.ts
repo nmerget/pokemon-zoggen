@@ -1,5 +1,6 @@
-import { FbPokemon, FbRun } from "../../../../services/types";
+import { Pokemon } from '../../../../pokemon/types';
 
 export type PokemonAddType = {
-  addUserPokemon: (changedPokemon: FbPokemon) => void;
+  version: string;
+  addUserPokemon: (changedPokemon: Pokemon) => void;
 };

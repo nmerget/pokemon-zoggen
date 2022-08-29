@@ -1,17 +1,18 @@
-import { Dialog } from "@mui/material";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import { AlertDialogType } from "./data";
-import DialogContentText from "@mui/material/DialogContentText";
+import { Dialog } from '@mui/material';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
+import DialogContentText from '@mui/material/DialogContentText';
+import { AlertDialogType } from './data';
 
-const AlertDialog = ({
+function AlertDialog({
   title,
   message,
   open,
   handleClose,
-}: AlertDialogType) => {
+  content,
+}: AlertDialogType) {
   return (
     <Dialog
       open={open}
@@ -21,9 +22,12 @@ const AlertDialog = ({
     >
       <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          {message}
-        </DialogContentText>
+        {message && (
+          <DialogContentText id="alert-dialog-description">
+            {message}
+          </DialogContentText>
+        )}
+        {!message && content}
       </DialogContent>
       <DialogActions>
         <Button variant="outlined" onClick={() => handleClose(false)}>
@@ -40,6 +44,6 @@ const AlertDialog = ({
       </DialogActions>
     </Dialog>
   );
-};
+}
 
 export default AlertDialog;

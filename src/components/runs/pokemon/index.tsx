@@ -1,23 +1,26 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../../../app/store";
-import { FbPokemon, FbRun } from "../../../services/types";
-import { SyntheticEvent, useEffect, useState } from "react";
-import { updateDoc } from "../../../firebase/utils";
-import { useFirestore } from "react-redux-firebase";
-import PokemonEdit from "./edit";
-import PokemonAdd from "./add";
-import { Tabs } from "@mui/material";
-import Tab from "@mui/material/Tab";
-import Box from "@mui/material/Box";
-import PokemonShow from "./show";
-import { getPlayerName } from "../../../app/utils";
-import Button from "@mui/material/Button";
+import { useSelector } from 'react-redux';
+import { SyntheticEvent, useEffect, useState } from 'react';
+import { useFirestore } from 'react-redux-firebase';
+import { Tabs } from '@mui/material';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
-import ListIcon from "@mui/icons-material/List";
+import ListIcon from '@mui/icons-material/List';
 
-import EditIcon from "@mui/icons-material/Edit";
+import EditIcon from '@mui/icons-material/Edit';
+import { getPlayerName } from '../../../app/utils';
+import PokemonShow from './show';
+import PokemonAdd from './add';
+import PokemonEdit from './edit';
+import { updateDoc } from '../../../firebase/utils';
+import { FbPokemon, FbPokemonClass, FbRun } from '../../../firebase/types';
+import { RootState } from '../../../app/store';
+import { FIREBASE_COLLECTION_RUNS } from '../../../app/constants';
+import { Pokemon, PokemonKey } from '../../../pokemon/types';
+import VERSIONS from '../../../data/versions';
 
-const RunsPokemon = () => {
+function RunsPokemon() {
   const [localPokemon, setLocalPokemon] = useState<FbPokemon[]>([]);
 
   const [localRun, setLocalRun] = useState<FbRun>();
@@ -26,6 +29,9 @@ const RunsPokemon = () => {
 
   const [editMode, setEditMode] = useState<boolean>(false);
 
+  const [possibleMovesByVersion, setPossibleMovesByVersion] =
+    useState<Pokemon[]>();
+
   const onChangeTabIndex = (event: SyntheticEvent, newValue: number) => {
     setTabIndex(newValue);
   };
@@ -33,22 +39,19 @@ const RunsPokemon = () => {
   const run = useSelector((state: RootState) => state.firestore.ordered?.run);
   const firestore = useFirestore();
   const firebaseSelector = useSelector(
-    (state: RootState) => state.firebase
+    (state: RootState) => state.firebase,
   ) as any;
   const users = useSelector(
-    (state: RootState) => state.firestore.ordered?.users || []
+    (state: RootState) => state.firestore.ordered?.users || [],
   );
 
   const currentUser = users.find(
-    (user) => firebaseSelector?.auth?.uid === user.id
+    (user) => firebaseSelector?.auth?.uid === user.id,
   );
 
-  const getCurrentPokemon = () => {
-    return (
-      localRun?.players?.find((player) => player.id === currentUser?.id)
-        ?.pokemon || []
-    );
-  };
+  const getCurrentPokemon = () =>
+    localRun?.players?.find((player) => player.id === currentUser?.id)
+      ?.pokemon || [];
 
   useEffect(() => {
     if (run && run.length > 0) {
@@ -64,9 +67,42 @@ const RunsPokemon = () => {
     }
   }, [localRun, currentUser]);
 
-  const updateUserPokemon = (poke: FbPokemon, key: string, value: any) => {
-    const changePokemon = localPokemon.map((localPok) => {
-      if (localPok === poke) {
+  useEffect(() => {
+    if (editMode && localRun && !possibleMovesByVersion) {
+      const fetchData = async () => {
+        const foundVersion = VERSIONS.find(
+          (v) => v.version === localRun.version || '1',
+        );
+        if (foundVersion?.possibleMovesFileName) {
+          const res = await fetch(foundVersion.possibleMovesFileName);
+          const data = await res.json();
+          setPossibleMovesByVersion(data);
+        }
+      };
+
+      // eslint-disable-next-line no-console
+      fetchData().catch(console.error);
+    }
+  }, [editMode, possibleMovesByVersion, localRun]);
+
+  const updateRunDoc = (changePokemon: FbPokemon[]) => {
+    if (localRun) {
+      updateDoc(firestore, FIREBASE_COLLECTION_RUNS, {
+        ...localRun,
+        players:
+          localRun.players?.map((player) => {
+            if (player.id === currentUser?.id) {
+              return { ...player, pokemon: changePokemon };
+            }
+            return player;
+          }) || [],
+      });
+    }
+  };
+
+  const updateUserPokemon = (index: number, key: string, value: any) => {
+    const changePokemon = localPokemon.map((localPok, pokeIndex) => {
+      if (pokeIndex === index) {
         return {
           ...localPok,
           [key]: value,
@@ -78,11 +114,20 @@ const RunsPokemon = () => {
     updateRunDoc(changePokemon);
   };
 
-  const addUserPokemon = (selectedPokemon: FbPokemon) => {
+  const addUserPokemon = (selectedPokemon: Pokemon) => {
+    // Props type as an array, to be exported
+    const validPokemon: any = {};
+    const validKeys = Object.keys(new FbPokemonClass());
+    Object.keys(selectedPokemon).forEach((key) => {
+      if (validKeys.includes(key)) {
+        validPokemon[key] = selectedPokemon[key as PokemonKey];
+      }
+    });
+
     const changePokemon = [
       ...localPokemon,
       {
-        ...selectedPokemon,
+        ...validPokemon,
         lvl: localRun?.lvlCap || 100,
         moves: [{}, {}, {}, {}],
       },
@@ -92,24 +137,11 @@ const RunsPokemon = () => {
   };
 
   const deleteUserPokemon = (poke: FbPokemon) => {
-    const changePokemon = localPokemon.filter((pokemon) => pokemon !== poke);
+    const changePokemon = localPokemon.filter(
+      (pokemon) => pokemon.pokemon_species_id !== poke.pokemon_species_id,
+    );
     setLocalPokemon(changePokemon);
     updateRunDoc(changePokemon);
-  };
-
-  const updateRunDoc = (changePokemon: FbPokemon[]) => {
-    if (localRun) {
-      updateDoc(firestore, "runs", {
-        ...localRun,
-        players:
-          localRun.players?.map((player) => {
-            if (player.id === currentUser?.id) {
-              return { ...player, pokemon: changePokemon };
-            }
-            return player;
-          }) || [],
-      });
-    }
   };
 
   if (!currentUser) {
@@ -124,7 +156,7 @@ const RunsPokemon = () => {
           <div className="flex flex-col gap-4">
             <div className="flex">
               <span className="whitespace-nowrap text-lg font-bold">
-                Pokemon {editMode ? "Bearbeiten" : "Liste"}:
+                Pokemon {editMode ? 'Bearbeiten' : 'Liste'}:
               </span>
               {user.id === currentUser.id && (
                 <div className="ml-auto">
@@ -133,7 +165,7 @@ const RunsPokemon = () => {
                     onClick={() => setEditMode(!editMode)}
                     startIcon={editMode ? <ListIcon /> : <EditIcon />}
                   >
-                    {editMode ? "Anzeigen" : "Bearbeiten"}
+                    {editMode ? 'Anzeigen' : 'Bearbeiten'}
                   </Button>
                 </div>
               )}
@@ -155,16 +187,20 @@ const RunsPokemon = () => {
                 <>
                   {(!localPokemon ||
                     localPokemon.length < (localRun?.pokAmount || 10)) && (
-                    <PokemonAdd addUserPokemon={addUserPokemon} />
+                    <PokemonAdd
+                      version={localRun?.version || '1'}
+                      addUserPokemon={addUserPokemon}
+                    />
                   )}
                   {localPokemon &&
                     localPokemon.map((poke: FbPokemon, index) => (
                       <PokemonEdit
-                        key={`pokemon-${index}`}
+                        key={`pokemon-${index}-${poke.pokemon_species_id}`}
                         poke={poke}
                         index={index}
                         updateUserPokemon={updateUserPokemon}
                         onDeletePokemon={() => deleteUserPokemon(poke)}
+                        possibleMovesByVersion={possibleMovesByVersion}
                       />
                     ))}
                 </>
@@ -202,6 +238,6 @@ const RunsPokemon = () => {
       {getPokemonByTab()}
     </div>
   );
-};
+}
 
 export default RunsPokemon;

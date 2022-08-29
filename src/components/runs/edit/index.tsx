@@ -1,63 +1,66 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../app/store";
-import { useFirestore, useFirestoreConnect } from "react-redux-firebase";
-import { Card } from "@mui/material";
-import Button from "@mui/material/Button";
-import CardContent from "@mui/material/CardContent";
-import TextField from "@mui/material/TextField";
-import React, { useEffect, useState } from "react";
-import { FbRun, FbRunsPlayers, FbUser } from "../../../services/types";
-import { updateDoc } from "../../../firebase/utils";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import { getPlayerName } from "../../../app/utils";
-import Paper from "@mui/material/Paper";
-import RunsPokemon from "../pokemon";
+import { useNavigate, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useFirestore, useFirestoreConnect } from 'react-redux-firebase';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import React, { useEffect, useState } from 'react';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Paper from '@mui/material/Paper';
+import { FbRun, FbRunsPlayers, FbUser } from '../../../firebase/types';
+import { updateDoc } from '../../../firebase/utils';
+import { getPlayerName } from '../../../app/utils';
+import { RootState } from '../../../app/store';
+import RunsPokemon from '../pokemon';
+import {
+  FIREBASE_COLLECTION_RUN,
+  FIREBASE_COLLECTION_RUNS,
+} from '../../../app/constants';
+import { useAdmin, useUsers } from '../../../app/hooks';
 
 const getChangedPlayers = (
   players: FbRunsPlayers[],
   currentUser: FbUser,
-  checkedUser: FbUser
-): FbRunsPlayers[] => {
-  return players.map((player) => {
-    if (player.id === currentUser.id || "") {
+  checkedUser: FbUser,
+): FbRunsPlayers[] =>
+  players.map((player) => {
+    if (player.id === currentUser.id || '') {
       return {
         ...player,
-        wins: player?.wins?.includes(checkedUser.id || "")
-          ? player.wins.filter((win) => win !== checkedUser.id || "")
-          : [...(player.wins || []), checkedUser.id || ""],
+        wins: player?.wins?.includes(checkedUser.id || '')
+          ? player.wins.filter((win) => win !== checkedUser.id || '')
+          : [...(player.wins || []), checkedUser.id || ''],
       };
     }
     return player;
   });
-};
 
-const RunsEdit = () => {
+function RunsEdit() {
   const params = useParams();
   const navigate = useNavigate();
 
   const firestore = useFirestore();
   useFirestoreConnect([
-    { collection: "runs", doc: params.runId, storeAs: "run" },
-    { collection: "users" },
+    {
+      collection: FIREBASE_COLLECTION_RUNS,
+      doc: params.runId,
+      storeAs: FIREBASE_COLLECTION_RUN,
+    },
   ]);
 
-  const firebaseSelector = useSelector(
-    (state: RootState) => state.firebase
-  ) as any;
+  const admin = useAdmin();
 
-  const users = useSelector(
-    (state: RootState) => state.firestore.ordered?.users || []
+  const users = useUsers();
+
+  const run = useSelector((state: RootState) =>
+    state.firestore.ordered?.run?.at(0),
   );
-
-  const run = useSelector((state: RootState) => state.firestore.ordered?.run);
 
   const [localRun, setLocalRun] = useState<FbRun>();
 
   useEffect(() => {
-    if (run && run.length > 0) {
-      setLocalRun(run[0]);
+    if (run) {
+      setLocalRun(run);
     }
   }, [run]);
 
@@ -74,10 +77,7 @@ const RunsEdit = () => {
           <div className="md:w-1/2">
             <RunsPokemon />
           </div>
-          {users.find(
-            (user: FbUser) =>
-              firebaseSelector?.auth?.uid === user.id && user.admin
-          ) && (
+          {admin && (
             <div className="flex flex-col md:w-1/2 space-y-4">
               <span className="whitespace-nowrap text-lg font-bold">
                 Einstellungen Run:
@@ -122,15 +122,15 @@ const RunsEdit = () => {
                   </span>
                   {users
                     .filter((innerUser: FbUser) => innerUser.id !== user.id)
-                    .map((innerUser: FbUser, index) => (
+                    .map((innerUser: FbUser, i) => (
                       <FormControlLabel
-                        key={`checkbox-${innerUser.id}-${index}`}
+                        key={`checkbox-${innerUser.id}-${i}`}
                         control={
                           <Checkbox
                             checked={
                               localRun?.players
                                 ?.find((player) => player?.id === user?.id)
-                                ?.wins?.includes(innerUser?.id || "") || false
+                                ?.wins?.includes(innerUser?.id || '') || false
                             }
                             onChange={() => {
                               setLocalRun({
@@ -138,7 +138,7 @@ const RunsEdit = () => {
                                 players: getChangedPlayers(
                                   localRun.players || [],
                                   user,
-                                  innerUser
+                                  innerUser,
                                 ),
                               });
                             }}
@@ -151,7 +151,9 @@ const RunsEdit = () => {
               ))}
 
               <Button
-                onClick={() => updateDoc(firestore, "runs", localRun)}
+                onClick={() =>
+                  updateDoc(firestore, FIREBASE_COLLECTION_RUNS, localRun)
+                }
                 className="mx-auto"
                 variant="contained"
               >
@@ -163,6 +165,6 @@ const RunsEdit = () => {
       )}
     </Paper>
   );
-};
+}
 
 export default RunsEdit;

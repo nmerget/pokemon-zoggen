@@ -1,16 +1,16 @@
-import React, { Suspense, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../app/store";
-import { useNavigate } from "react-router-dom";
-import { DefaultMenuItems } from "../../../app/constants";
-import Loading from "../../loading";
+import React, { Suspense, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { RootState } from '../../../app/store';
+import { DefaultMenuItems } from '../../../app/constants';
+import Loading from '../../loading';
 
-const LoginButton = React.lazy(() => import("../../base/buttons/login"));
+const LoginButton = React.lazy(() => import('../../base/buttons/login'));
 
-const LoginSection = () => {
+function LoginSection() {
   const navigate = useNavigate();
   const firebaseSelector = useSelector(
-    (state: RootState) => state.firebase
+    (state: RootState) => state.firebase,
   ) as any;
 
   useEffect(() => {
@@ -27,13 +27,13 @@ const LoginSection = () => {
         </p>
 
         <div className="mt-8 sm:items-center sm:justify-center sm:flex">
-          <Suspense fallback={<Loading/>}>
-            <LoginButton contained={true} />
+          <Suspense fallback={<Loading />}>
+            <LoginButton contained />
           </Suspense>
         </div>
       </div>
     </aside>
   );
-};
+}
 
 export default LoginSection;
