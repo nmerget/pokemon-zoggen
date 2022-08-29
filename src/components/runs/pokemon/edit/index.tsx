@@ -1,6 +1,6 @@
 import { FbPokemon } from '../../../../firebase/types';
 import { PokemonEditType } from './data';
-import { POKEMON } from '../../../../app/data';
+import POKEMON from '../../../../data/pokemon';
 import { Pokemon } from '../../../../pokemon/types';
 import EditGeneral from './edit-general';
 import EditMoves from './edit-moves';
@@ -10,6 +10,7 @@ function PokemonEdit({
   index,
   updateUserPokemon,
   onDeletePokemon,
+  possibleMovesByVersion,
 }: PokemonEditType) {
   const foundPoke: Pokemon & FbPokemon = {
     ...POKEMON.find((p) => p.pokemon_species_id === poke.pokemon_species_id),
@@ -26,11 +27,14 @@ function PokemonEdit({
           poke={foundPoke}
         />
 
-        <EditMoves
-          index={index}
-          updateUserPokemon={updateUserPokemon}
-          poke={foundPoke}
-        />
+        {possibleMovesByVersion && (
+          <EditMoves
+            index={index}
+            updateUserPokemon={updateUserPokemon}
+            possibleMovesByVersion={possibleMovesByVersion}
+            poke={foundPoke}
+          />
+        )}
       </div>
     </div>
   );

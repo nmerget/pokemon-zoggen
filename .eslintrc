@@ -34,5 +34,10 @@
     "react/react-in-jsx-scope": "off",
     "react/jsx-props-no-spreading": "off"
   },
-  "ignorePatterns": ["src/**/*.test.ts", "src/**/*.test.tsx", "src/app/data.ts"]
+  "ignorePatterns": [
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/data/*.ts",
+    "public/data/**/*.json"
+  ]
 }

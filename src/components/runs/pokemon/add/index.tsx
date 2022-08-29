@@ -4,16 +4,19 @@ import Box from '@mui/material/Box';
 import { useState } from 'react';
 import Button from '@mui/material/Button';
 import AddIcon from '@mui/icons-material/Add';
-import { POKEMON } from '../../../../app/data';
+import POKEMON from '../../../../data/pokemon';
 import { PokemonAddType } from './data';
 import PokemonImage from '../../../base/pokemon-image';
 import { Pokemon } from '../../../../pokemon/types';
+import VERSIONS from '../../../../data/versions';
 
-function PokemonAdd({ addUserPokemon }: PokemonAddType) {
+function PokemonAdd({ addUserPokemon, version }: PokemonAddType) {
   const [autoValue, setAutoValue] = useState<Pokemon>();
-  const pokeNamesGenOne = [
-    ...POKEMON.filter(
-      (poke) => parseInt(poke.pokemon_species_id || '-1', 10) < 152,
+  const pokeNamesVersion = [
+    ...POKEMON.filter((poke) =>
+      VERSIONS.find((v) => v.version === version)?.pokemonIds?.includes(
+        poke?.pokemon_species_id || '',
+      ),
     ),
   ];
   return (
@@ -26,7 +29,7 @@ function PokemonAdd({ addUserPokemon }: PokemonAddType) {
           key={`add-input-${autoValue?.pokemon_species_id || 'unknown'}`}
           className="w-full"
           value={autoValue}
-          options={pokeNamesGenOne}
+          options={pokeNamesVersion}
           autoHighlight
           autoSelect
           onChange={(_, pokemon) => {

@@ -1,3 +1,10 @@
+export type PokemonPossibleMoveType = {
+  move_id?: string;
+  pokemon_move_method_id?: string;
+  level?: string;
+  order?: string;
+};
+
 export type PokemonMove = {
   id?: string;
   name?: string;
@@ -17,8 +24,8 @@ export type PokemonMove = {
   contest_type_id?: string;
   contest_effect_id?: string;
   super_contest_effect_id?: string;
+  possibleMoves?: PokemonPossibleMoveType[];
 };
-export type PokemonMoveKey = keyof PokemonMove;
 
 export type PokemonType = {
   pokemon_id?: string;
@@ -28,10 +35,19 @@ export type PokemonType = {
 };
 
 export type Pokemon = {
+  pokemon_id?: string;
   pokemon_species_id?: string;
   name?: string;
   local_language_id?: string;
   genus?: string;
   types?: PokemonType[];
+  possibleMoves?: PokemonPossibleMoveType[];
 };
 export type PokemonKey = keyof Pokemon;
+
+export type PokemonVersionType = {
+  version: string;
+  name: string;
+  pokemonIds?: string[];
+  possibleMovesFileName?: string;
+};

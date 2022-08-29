@@ -30,6 +30,7 @@ export type FbRun = {
   pokAmount?: number;
   players?: FbRunsPlayers[];
   createdAt?: number;
+  version?: string;
 };
 
 export type FbUser = {

@@ -12,9 +12,11 @@ import {
   FIREBASE_COLLECTION_USERS,
 } from '../../../app/constants';
 import addNewRun from '../../../firebase/methods/add-new-run';
+import AddRun from './add-run';
 
-function RunsDashboard() {
+const RunsDashboard = () => {
   const firestore = useFirestore();
+
   useFirestoreConnect([
     {
       collection: FIREBASE_COLLECTION_RUNS,
@@ -35,8 +37,8 @@ function RunsDashboard() {
     (state: RootState) => state.firestore.ordered?.runs || [],
   );
 
-  const addRun = () => {
-    addNewRun(firestore, users).then(() => {
+  const addRun = (version: string) => {
+    addNewRun(firestore, users, version).then(() => {
       // TODO: Add hint
     });
   };
@@ -47,26 +49,13 @@ function RunsDashboard() {
         {users.find(
           (user: FbUser) =>
             firebaseSelector?.auth?.uid === user.id && user.admin,
-        ) && (
-          <Fab
-            size="small"
-            sx={{ position: 'fixed' }}
-            onClick={() => {
-              addRun();
-            }}
-            color="secondary"
-            aria-label="add"
-            className="bottom-3 right-3"
-          >
-            <AddIcon />
-          </Fab>
-        )}
+        ) && <AddRun onAddRun={addRun} />}
         {runs.map((run: FbRun, index: number) => (
           <RunDashboardCard key={`run-${index}`} run={run} />
         ))}
       </div>
     </div>
   );
-}
+};
 
 export default RunsDashboard;

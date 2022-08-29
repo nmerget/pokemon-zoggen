@@ -6,12 +6,14 @@ import { FIREBASE_COLLECTION_RUNS } from '../../app/constants';
 const addNewRun = (
   firestore: ExtendedFirestoreInstance,
   users: FbUser[],
+  version: string,
 ): Promise<DocumentReference<FbRun>> => {
   const newRun: FbRun = {
     name: 'New Run',
     lvlCap: 0,
     pokAmount: 0,
     createdAt: new Date().getTime(),
+    version: version || '1',
     players:
       users?.map((user: FbUser) => ({
         id: user.id || '',

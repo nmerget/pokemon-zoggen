@@ -6,7 +6,13 @@ import Button from '@mui/material/Button';
 import DialogContentText from '@mui/material/DialogContentText';
 import { AlertDialogType } from './data';
 
-function AlertDialog({ title, message, open, handleClose }: AlertDialogType) {
+function AlertDialog({
+  title,
+  message,
+  open,
+  handleClose,
+  content,
+}: AlertDialogType) {
   return (
     <Dialog
       open={open}
@@ -16,9 +22,12 @@ function AlertDialog({ title, message, open, handleClose }: AlertDialogType) {
     >
       <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          {message}
-        </DialogContentText>
+        {message && (
+          <DialogContentText id="alert-dialog-description">
+            {message}
+          </DialogContentText>
+        )}
+        {!message && content}
       </DialogContent>
       <DialogActions>
         <Button variant="outlined" onClick={() => handleClose(false)}>

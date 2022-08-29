@@ -2,8 +2,9 @@ import { FbMove } from '../../../../firebase/types';
 import { PokemonShowType } from './data';
 import PokemonImage from '../../../base/pokemon-image';
 import TypingBadge from '../../../base/typing-badge';
-import { MOVES, POKEMON } from '../../../../app/data';
+import POKEMON from '../../../../data/pokemon';
 import { PokemonType } from '../../../../pokemon/types';
+import MOVES from '../../../../data/moves';
 
 function PokemonShow({ poke, index }: PokemonShowType) {
   const foundPoke = {

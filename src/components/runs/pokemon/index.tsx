@@ -18,6 +18,7 @@ import { FbPokemon, FbPokemonClass, FbRun } from '../../../firebase/types';
 import { RootState } from '../../../app/store';
 import { FIREBASE_COLLECTION_RUNS } from '../../../app/constants';
 import { Pokemon, PokemonKey } from '../../../pokemon/types';
+import VERSIONS from '../../../data/versions';
 
 function RunsPokemon() {
   const [localPokemon, setLocalPokemon] = useState<FbPokemon[]>([]);
@@ -27,6 +28,9 @@ function RunsPokemon() {
   const [tabIndex, setTabIndex] = useState(0);
 
   const [editMode, setEditMode] = useState<boolean>(false);
+
+  const [possibleMovesByVersion, setPossibleMovesByVersion] =
+    useState<Pokemon[]>();
 
   const onChangeTabIndex = (event: SyntheticEvent, newValue: number) => {
     setTabIndex(newValue);
@@ -62,6 +66,24 @@ function RunsPokemon() {
       setEditMode(true);
     }
   }, [localRun, currentUser]);
+
+  useEffect(() => {
+    if (editMode && localRun && !possibleMovesByVersion) {
+      const fetchData = async () => {
+        const foundVersion = VERSIONS.find(
+          (v) => v.version === localRun.version || '1',
+        );
+        if (foundVersion?.possibleMovesFileName) {
+          const res = await fetch(foundVersion.possibleMovesFileName);
+          const data = await res.json();
+          setPossibleMovesByVersion(data);
+        }
+      };
+
+      // eslint-disable-next-line no-console
+      fetchData().catch(console.error);
+    }
+  }, [editMode, possibleMovesByVersion, localRun]);
 
   const updateRunDoc = (changePokemon: FbPokemon[]) => {
     if (localRun) {
@@ -165,7 +187,10 @@ function RunsPokemon() {
                 <>
                   {(!localPokemon ||
                     localPokemon.length < (localRun?.pokAmount || 10)) && (
-                    <PokemonAdd addUserPokemon={addUserPokemon} />
+                    <PokemonAdd
+                      version={localRun?.version || '1'}
+                      addUserPokemon={addUserPokemon}
+                    />
                   )}
                   {localPokemon &&
                     localPokemon.map((poke: FbPokemon, index) => (
@@ -175,6 +200,7 @@ function RunsPokemon() {
                         index={index}
                         updateUserPokemon={updateUserPokemon}
                         onDeletePokemon={() => deleteUserPokemon(poke)}
+                        possibleMovesByVersion={possibleMovesByVersion}
                       />
                     ))}
                 </>
