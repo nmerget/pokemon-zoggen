@@ -26,6 +26,7 @@ jobs:
 
   test:
     uses: ./.github/workflows/00-test.yml
+    secrets: inherit
 
   build:
     uses: ./.github/workflows/01-build.yml
