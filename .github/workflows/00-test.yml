@@ -20,7 +20,7 @@ jobs:
       - name: 🧪 Cypress run
         uses: cypress-io/github-action@v4
         with:
-          start: npm run start && docker stats --no-stream
+          start: npm run start
           wait-on: 'http://localhost:3000'
           wait-on-timeout: 360
           browser: chrome
