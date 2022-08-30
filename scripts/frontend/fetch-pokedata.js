@@ -98,9 +98,9 @@ const addPokemonPossibleMovesByGen = async (allVersionGroups) => {
       foundPokemon.possibleMoves.push(move);
     });
 
-    const fileName = `/public/data/moves/gens/${version.identifier}.json`;
-    if (!FS.existsSync(`.${fileName}`)) {
-      FS.writeFileSync(`.${fileName}`, JSON.stringify(pokemon));
+    const fileName = `/data/moves/gens/${version.identifier}.json`;
+    if (!FS.existsSync(`./public${fileName}`)) {
+      FS.writeFileSync(`./public${fileName}`, JSON.stringify(pokemon));
     }
 
     versions.push({
