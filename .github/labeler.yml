@@ -1,0 +1,13 @@
+---
+# Add 'repo' label to any root file changes
+repo:
+  - '*'
+
+# Add 'cicd' label to any file changes inside .github dir
+cicd:
+  - .github/*
+  - .github/**/*
+
+# Add 'frontend' label to any file changes inside .src
+frontend:
+  - src/**/*
