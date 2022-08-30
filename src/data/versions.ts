@@ -157,7 +157,7 @@ const VERSIONS: PokemonVersionType[] = [
       '150',
       '151',
     ],
-    possibleMovesFileName: '/public/data/moves/gens/red-blue.json',
+    possibleMovesFileName: '/data/moves/gens/red-blue.json',
   },
   {
     version: '10',
@@ -672,7 +672,7 @@ const VERSIONS: PokemonVersionType[] = [
       '10014',
       '10015',
     ],
-    possibleMovesFileName: '/public/data/moves/gens/heartgold-soulsilver.json',
+    possibleMovesFileName: '/data/moves/gens/heartgold-soulsilver.json',
   },
 ];
 export default VERSIONS;
