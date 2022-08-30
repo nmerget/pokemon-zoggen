@@ -13,6 +13,7 @@ on:
 
 jobs:
   hosting:
+    if: ${{ github.actor != 'dependabot[bot]' }}
     name: Hosting
     runs-on: ubuntu-latest
     steps:
