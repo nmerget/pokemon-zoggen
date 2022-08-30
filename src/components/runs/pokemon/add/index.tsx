@@ -26,7 +26,8 @@ function PokemonAdd({ addUserPokemon, version }: PokemonAddType) {
       </span>
       <div className="flex flex-wrap gap-4">
         <Autocomplete
-          key={`add-input-${autoValue?.pokemon_species_id || 'unknown'}`}
+          id="input-add-pokemon"
+          key="input-add-pokemon"
           className="w-full"
           value={autoValue}
           options={pokeNamesVersion}
@@ -45,6 +46,7 @@ function PokemonAdd({ addUserPokemon, version }: PokemonAddType) {
           )}
           renderOption={(props, option) => (
             <Box
+              id={`add-pokemon-${option.pokemon_species_id}`}
               component="li"
               sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
               {...props}
@@ -60,6 +62,7 @@ function PokemonAdd({ addUserPokemon, version }: PokemonAddType) {
         />
         <div className="m-auto">
           <Button
+            id="add-pokemon-button"
             variant="outlined"
             startIcon={<AddIcon />}
             disabled={!autoValue}

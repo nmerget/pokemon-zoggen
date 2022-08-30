@@ -59,7 +59,11 @@ function AppBarUserMenu() {
       )}
       {firebaseSelector?.profile?.isEmpty === false && (
         <Tooltip title="Open settings">
-          <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+          <IconButton
+            id="avatar-button"
+            onClick={handleOpenUserMenu}
+            sx={{ p: 0 }}
+          >
             <Avatar
               alt={firebaseSelector?.auth?.displayName}
               src={firebaseSelector?.auth?.photoURL}
@@ -84,7 +88,11 @@ function AppBarUserMenu() {
         onClose={() => handleCloseUserMenu(undefined)}
       >
         {getSettings().map((setting) => (
-          <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)}>
+          <MenuItem
+            id={`menu-item-${setting.toLowerCase()}`}
+            key={setting}
+            onClick={() => handleCloseUserMenu(setting)}
+          >
             <Typography textAlign="center">{setting}</Typography>
           </MenuItem>
         ))}

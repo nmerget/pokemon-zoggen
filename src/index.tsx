@@ -35,10 +35,18 @@ const rrfConfig = {
 
 // Initialize firebase instance
 firebase.initializeApp(fbConfig);
+
+const firestoreSettings: any = {};
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+if (window.Cypress) {
+  firestoreSettings.experimentalForceLongPolling = true;
+}
 const db = firebase.firestore();
 const auth = firebase.auth();
 
 if (import.meta.env.DEV) {
+  db.settings(firestoreSettings);
   db.useEmulator('localhost', 8080);
   auth.useEmulator('http://localhost:9099');
 }

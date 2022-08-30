@@ -67,7 +67,11 @@ function RunsEdit() {
   return (
     <Paper className="flex flex-col p-4">
       <div className="w-fit mb-4">
-        <Button onClick={() => navigate(-1)} variant="outlined">
+        <Button
+          id="back-button-run-edit"
+          onClick={() => navigate(-1)}
+          variant="outlined"
+        >
           Zurück
         </Button>
       </div>

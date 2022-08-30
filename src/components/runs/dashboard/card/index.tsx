@@ -12,6 +12,7 @@ function RunDashboardCard({ run }: RunDashboardCardType) {
   return (
     <Card className="relative">
       <CardActionArea
+        id={`card-action-${run.name?.toLowerCase().replace(' ', '-')}`}
         onClick={() => navigate(`/runs/${run.groupId}/${run.id}`)}
       >
         <CardContent className="flex flex-col">

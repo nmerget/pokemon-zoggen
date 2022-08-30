@@ -1,0 +1,35 @@
+---
+name: Test Workflow
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🧪 Cypress run
+        uses: cypress-io/github-action@v4
+        with:
+          start: npm run start
+          wait-on: 'http://localhost:3000'
+          wait-on-timeout: 120
+          browser: chrome
+
+      - name: 📷 Upload Screenshots
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: e2e/cypress/screenshots
+
+      - name: 🎥 Upload Videos
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: cypress-videos
+          path: e2e/cypress/videos

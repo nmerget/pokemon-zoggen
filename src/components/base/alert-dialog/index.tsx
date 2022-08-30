@@ -30,10 +30,15 @@ function AlertDialog({
         {!message && content}
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" onClick={() => handleClose(false)}>
+        <Button
+          id="dialog-cancel"
+          variant="outlined"
+          onClick={() => handleClose(false)}
+        >
           Abbrechen
         </Button>
         <Button
+          id="dialog-continue"
           variant="contained"
           color="error"
           onClick={() => handleClose(true)}

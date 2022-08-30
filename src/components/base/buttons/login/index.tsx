@@ -16,6 +16,7 @@ function LoginButton({ contained }: LoginButtonType) {
       <LoginDialog open={popupOpen} handleClose={() => setPopupOpen(false)} />
       {(!firebaseSelector.profile || firebaseSelector.profile.isEmpty) && (
         <Button
+          id="login-button"
           color={contained ? 'primary' : 'inherit'}
           variant={contained ? 'contained' : 'text'}
           onClick={() => setPopupOpen(true)}

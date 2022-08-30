@@ -22,7 +22,10 @@ function PokemonShow({ poke, index }: PokemonShowType) {
             invisible={!foundPoke.visible}
           />
           <div className="flex flex-col">
-            <span className="whitespace-nowrap text-lg font-bold my-auto md:basis-1/5">
+            <span
+              id={`pokemon-name-${index}`}
+              className="whitespace-nowrap text-lg font-bold my-auto md:basis-1/5"
+            >
               {foundPoke.visible ? foundPoke.name : '???'}
             </span>
             {foundPoke.visible && (
