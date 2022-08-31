@@ -15,9 +15,14 @@ const seedFirestore = async () => {
   } else {
     console.log('seeding with file:', dumpFile);
   }
+
   const projectId = process.env.VITE_FIREBASE_PROJECT_ID;
-  process.env.FIRESTORE_EMULATOR_HOST = 'localhost:8080';
-  process.env.FIREBASE_AUTH_EMULATOR_HOST = 'localhost:9099';
+
+  const dbHost = process.argv[3];
+  const authHost = process.argv[4];
+
+  process.env.FIRESTORE_EMULATOR_HOST = `${dbHost || 'localhost'}:8080`;
+  process.env.FIREBASE_AUTH_EMULATOR_HOST = `${authHost || 'localhost'}:9099`;
   console.log('Generating dump for project', projectId);
   // Initialize firebase instance & firestore
   admin.initializeApp({ projectId });
@@ -26,21 +31,28 @@ const seedFirestore = async () => {
   let seedJson = JSON.parse(readFileSync(dumpFile).toString());
 
   console.log('Using collection', collections.default.join(' & '));
+  const seedJsonKeys = Object.keys(seedJson);
   for (const collection of collections.default) {
-    for (const doc of seedJson[collection]) {
-      await db.collection(collection).doc(doc.id).set(doc);
-    }
+    if (seedJsonKeys.includes(collection)) {
+      for (const doc of seedJson[collection]) {
+        await db.collection(collection).doc(doc.id).set(doc);
+      }
 
-    if (collection === 'users') {
-      await admin.auth().importUsers(
-        seedJson[collection].map((user) => ({
-          uid: user.id,
-          displayName: user.name,
-          providerData: [
-            { uid: user.id, displayName: user.name, providerId: 'google.com' },
-          ],
-        })),
-      );
+      if (collection === 'users') {
+        await admin.auth().importUsers(
+          seedJson[collection].map((user) => ({
+            uid: user.id,
+            displayName: user.name,
+            providerData: [
+              {
+                uid: user.id,
+                displayName: user.name,
+                providerId: 'google.com',
+              },
+            ],
+          })),
+        );
+      }
     }
   }
 

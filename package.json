@@ -12,6 +12,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "cypress:open": "cypress open",
+    "cypress:ci": "npx -y wait-on -t 10000 http://firebase:8001 && cypress run --browser chrome",
+    "cypress:ci:docker": "docker-compose -f docker-compose.yml -f docker-compose.cypress.yml up --abort-on-container-exit --exit-code-from cypress",
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:run": "vitest run -u",

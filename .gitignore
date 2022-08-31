@@ -36,3 +36,6 @@ yarn-error.log*
 /dumps
 
 pokemon-zoggen-firebase-adminsdk*.json
+/cypress/results/
+/cypress/screenshots/
+/cypress/videos/

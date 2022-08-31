@@ -37,18 +37,26 @@ const rrfConfig = {
 firebase.initializeApp(fbConfig);
 
 const firestoreSettings: any = {};
+let cypress = false;
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 if (window.Cypress) {
   firestoreSettings.experimentalForceLongPolling = true;
+  cypress = true;
 }
 const db = firebase.firestore();
 const auth = firebase.auth();
 
 if (import.meta.env.DEV) {
   db.settings(firestoreSettings);
-  db.useEmulator('localhost', 8080);
-  auth.useEmulator('http://localhost:9099');
+  const dbHost = cypress
+    ? 'firebase'
+    : import.meta.env.VITE_FIREBASE_EMULATOR_HOST || 'localhost';
+  const authHost = cypress
+    ? 'firebase'
+    : import.meta.env.VITE_FIREBASE_AUTH_EMULATOR_HOST || 'localhost';
+  db.useEmulator(dbHost, 8080);
+  auth.useEmulator(`http://${authHost}:9099`);
 }
 
 const rrfProps = {

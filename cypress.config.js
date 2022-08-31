@@ -11,7 +11,7 @@ export default defineConfig({
   viewportHeight: 1200,
   videoCompression: false,
   e2e: {
-    setupNodeEvents(on) {
+    setupNodeEvents(on, config) {
       on('after:spec', (spec, results) => {
         if (results && results.video) {
           const failures = results.tests.some((test) =>
@@ -23,7 +23,18 @@ export default defineConfig({
         }
         return false;
       });
+      on('task', {
+        log(message) {
+          // eslint-disable-next-line no-console
+          console.log(message);
+          return null;
+        },
+      });
     },
     baseUrl: 'http://localhost:3000',
+    env: {
+      EMULATOR_HOST: 'localhost',
+      AUTH_EMULATOR_HOST: 'localhost',
+    },
   },
 });
