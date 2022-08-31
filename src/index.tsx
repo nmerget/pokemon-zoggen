@@ -10,8 +10,9 @@ import { ReactReduxFirebaseProvider } from 'react-redux-firebase';
 import { createFirestoreInstance } from 'redux-firestore';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import * as Sentry from '@sentry/react';
 import { BrowserTracing } from '@sentry/tracing';
+import * as Sentry from '@sentry/react';
+import { Integration } from '@sentry/types/dist/integration';
 import Loading from './components/loading';
 import { store } from './app/store';
 import { FIREBASE_COLLECTION_USERS } from './app/constants';
@@ -58,8 +59,8 @@ const RunsDashboard = React.lazy(() => import('./components/runs/dashboard'));
 const RunsEdit = React.lazy(() => import('./components/runs/edit'));
 
 Sentry.init({
-  dsn: 'https://675a282618e7466583a138794b439f91@o1188887.ingest.sentry.io/6309083',
-  integrations: [new BrowserTracing()],
+  dsn: import.meta.env.VITE_SENTRY_DNS,
+  integrations: [new BrowserTracing() as unknown as Integration],
   tracesSampleRate: 1.0,
   enabled: import.meta.env.PROD,
   beforeSend: (event) => {
