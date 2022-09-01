@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "@emotion/react": "^11.8.2",
-    "@emotion/styled": "^11.8.1",
+    "@emotion/styled": "^11.10.4",
     "@mui/icons-material": "^5.10.3",
     "@mui/material": "^5.10.3",
     "@reduxjs/toolkit": "^1.8.0",
