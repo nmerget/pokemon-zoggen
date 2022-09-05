@@ -1,0 +1,5 @@
+services:
+  firebase:
+    extends:
+      file: docker-compose.yml
+      service: firebase

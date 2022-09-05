@@ -26,8 +26,16 @@ jobs:
           name: build-output
           path: build
 
+      - name: ⭐🇹 Start containers
+        run: docker-compose -f "docker-compose.firebase.yml" up -d
+
       - name: 🧪 Cypress run
-        run: docker-compose -f docker-compose.ci.yml up --abort-on-container-exit --exit-code-from cypress
+        uses: cypress-io/github-action@v4
+        with:
+          start: npx http-server -p 3000 build
+          wait-on: 'http://localhost:3000, http://localhost:8001'
+          wait-on-timeout: 360
+          browser: chrome
 
       - name: 📷 Upload Screenshots
         uses: actions/upload-artifact@v2
@@ -42,3 +50,7 @@ jobs:
         with:
           name: cypress-videos
           path: cypress/videos
+
+      - name: 🛑 Stop containers
+        if: always()
+        run: docker-compose -f "docker-compose.firebase.yml" down
