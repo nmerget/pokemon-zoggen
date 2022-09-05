@@ -12,7 +12,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { BrowserTracing } from '@sentry/tracing';
 import * as Sentry from '@sentry/react';
-import { Integration } from '@sentry/types/dist/integration';
 import Loading from './components/loading';
 import { store } from './app/store';
 import { FIREBASE_COLLECTION_USERS } from './app/constants';
