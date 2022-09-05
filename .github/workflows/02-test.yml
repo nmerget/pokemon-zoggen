@@ -28,8 +28,7 @@ jobs:
 
       - name: 🧪 Cypress run
         run: |
-          sudo chown -R 1001:1001 "/root"
-          sudo chown -R 1001:1001 "/root/.npm"
+          echo "cache=./npm-cache" > .npmrc
           npm run cypress:ci:docker
 
       - name: 📷 Upload Screenshots
