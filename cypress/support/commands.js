@@ -1,8 +1,4 @@
 Cypress.Commands.add('clearDatabase', () => {
-  if (Cypress.env('CI')) {
-    cy.log('EMULATOR_HOST', Cypress.env('EMULATOR_HOST'));
-    cy.exec(`curl ${Cypress.env('EMULATOR_HOST')}:8080`);
-  }
   try {
     cy.exec(
       `curl -v -X DELETE "http://${Cypress.env(

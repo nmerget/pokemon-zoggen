@@ -35,9 +35,7 @@ export default defineConfig({
       on('before:browser:launch', (browser = {}, launchOptions) => {
         if (browser.name === 'chrome') {
           launchOptions.args.push(
-            `--proxy-bypass-list=<-loopback>,${
-              process.env.CYPRESS_CI === 'true' ? 'firebase' : 'localhost'
-            }:8080`,
+            '--proxy-bypass-list=<-loopback>,localhost:8080',
           );
         }
         return launchOptions;
