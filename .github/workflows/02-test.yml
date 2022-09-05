@@ -27,7 +27,9 @@ jobs:
           path: build
 
       - name: 🧪 Cypress run
-        run: npm run cypress:ci:docker
+        run: |
+          sudo chown -R 1001:121 "/root/.npm"
+          npm run cypress:ci:docker
 
       - name: 📷 Upload Screenshots
         uses: actions/upload-artifact@v2
