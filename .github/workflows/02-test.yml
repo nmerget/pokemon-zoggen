@@ -12,6 +12,9 @@ jobs:
       - name: ⬇ Checkout repo
         uses: actions/checkout@v3
 
+      - name: 🔄 Init Cache
+        uses: ./.github/actions/npm-cache
+
       - name: 🌱 Setup environment
         run: |
           touch .env
