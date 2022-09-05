@@ -39,10 +39,7 @@ firebase.initializeApp(fbConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();
 
-if (
-  window.location.hostname !== 'localhost' &&
-  window.location.hostname !== 'frontend'
-) {
+if (window.location.hostname !== 'localhost') {
   Sentry.init({
     dsn: import.meta.env.VITE_SENTRY_DNS,
     integrations: [new BrowserTracing()],
@@ -51,8 +48,7 @@ if (
     beforeSend: (event) => event,
   });
 } else {
-  const host =
-    window.location.hostname === 'localhost' ? 'localhost' : 'firebase';
+  const host = 'localhost';
   db.useEmulator(host, 8080);
   auth.useEmulator(`http://${host}:9099`);
 }

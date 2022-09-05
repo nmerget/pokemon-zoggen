@@ -19,11 +19,8 @@ const seedFirestore = async () => {
 
   const projectId = process.env.VITE_FIREBASE_PROJECT_ID || 'pokemon-zoggen';
 
-  const dbHost = process.argv[3];
-  const authHost = process.argv[4];
-
-  process.env.FIRESTORE_EMULATOR_HOST = `${dbHost || 'localhost'}:8080`;
-  process.env.FIREBASE_AUTH_EMULATOR_HOST = `${authHost || 'localhost'}:9099`;
+  process.env.FIRESTORE_EMULATOR_HOST = 'localhost:8080';
+  process.env.FIREBASE_AUTH_EMULATOR_HOST = 'localhost:9099';
   console.log('Generating dump for project', projectId);
   // Initialize firebase instance & firestore
   admin.initializeApp({ projectId });

@@ -13,8 +13,7 @@ const dumpFirestore = async () => {
   console.log('Generating dump for project', projectId);
   // Initialize firebase instance & firestore
   if (!prod) {
-    const dbHost = process.argv[3];
-    process.env.FIRESTORE_EMULATOR_HOST = `${dbHost || 'localhost'}:8080`;
+    process.env.FIRESTORE_EMULATOR_HOST = 'localhost:8080';
     admin.initializeApp({ projectId });
   } else {
     const serviceAccount = JSON.parse(

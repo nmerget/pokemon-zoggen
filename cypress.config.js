@@ -42,9 +42,5 @@ export default defineConfig({
       });
     },
     baseUrl: 'http://localhost:3000',
-    env: {
-      EMULATOR_HOST: 'localhost',
-      AUTH_EMULATOR_HOST: 'localhost',
-    },
   },
 });
