@@ -10,6 +10,7 @@ export default defineConfig({
   viewportWidth: 1920,
   viewportHeight: 1200,
   videoCompression: false,
+  defaultCommandTimeout: 10000,
   e2e: {
     setupNodeEvents(on, config) {
       on('after:spec', (spec, results) => {
@@ -29,6 +30,17 @@ export default defineConfig({
           console.log(message);
           return null;
         },
+      });
+      // eslint-disable-next-line default-param-last
+      on('before:browser:launch', (browser = {}, launchOptions) => {
+        if (browser.name === 'chrome') {
+          launchOptions.args.push(
+            `--proxy-bypass-list=<-loopback>,${
+              process.env.CYPRESS_CI === 'true' ? 'firebase' : 'localhost'
+            }:8080`,
+          );
+        }
+        return launchOptions;
       });
     },
     baseUrl: 'http://localhost:3000',

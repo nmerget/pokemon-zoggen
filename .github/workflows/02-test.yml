@@ -17,19 +17,25 @@ jobs:
           touch .env
           echo "VITE_FIREBASE_PROJECT_ID=${{secrets.VITE_FIREBASE_PROJECT_ID}}" >> .env
 
+      - name: ⬇ Download build
+        uses: ./.github/actions/download-tar-artifact
+        with:
+          name: build-output
+          path: build
+
       - name: 🧪 Cypress run
-        run: docker-compose -f docker-compose.yml -f docker-compose.cypress.yml up --abort-on-container-exit --exit-code-from cypress
+        run: npm run cypress:ci:docker
 
       - name: 📷 Upload Screenshots
         uses: actions/upload-artifact@v2
         if: failure()
         with:
           name: cypress-screenshots
-          path: e2e/cypress/screenshots
+          path: cypress/screenshots
 
       - name: 🎥 Upload Videos
         uses: actions/upload-artifact@v2
         if: always()
         with:
           name: cypress-videos
-          path: e2e/cypress/videos
+          path: cypress/videos

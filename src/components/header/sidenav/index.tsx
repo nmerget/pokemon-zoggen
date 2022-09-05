@@ -13,15 +13,12 @@ import {
 import { toggleMenu } from '../../../features/local/localSlice';
 import { RootState } from '../../../app/store';
 import AppBarUserMenu from '../app-bar/user-menu';
-import { useMenuItems } from '../../../app/hooks';
+import { useMenuItems, useValidUser } from '../../../app/hooks';
 
 const SideNav = () => {
   const dispatch = useDispatch();
 
-  const firebaseSelector = useSelector(
-    (state: RootState) => state.firebase,
-  ) as any;
-
+  const validUser = useValidUser();
   const menuItems = useMenuItems();
 
   return (
@@ -38,7 +35,7 @@ const SideNav = () => {
         </div>
         <Divider />
         <List>
-          {firebaseSelector?.profile?.isEmpty === false &&
+          {validUser &&
             menuItems &&
             menuItems.map((item, index) => (
               <ListItem key={`sidenav-menu-item-${index}`}>

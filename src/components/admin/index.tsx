@@ -86,7 +86,7 @@ const Admin = () => {
                     ))}
                 </div>
                 <div className="my-auto">
-                  {users?.length > 0 && (
+                  {users?.length > 0 ? (
                     <Button
                       id={`add-run-button-${index}`}
                       onClick={() => {
@@ -101,6 +101,8 @@ const Admin = () => {
                     >
                       Run hinzufügen
                     </Button>
+                  ) : (
+                    <span>Keine Nutzer gefunden.</span>
                   )}
                 </div>
               </div>

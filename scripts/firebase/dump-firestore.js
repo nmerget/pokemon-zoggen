@@ -1,4 +1,5 @@
 import * as dotenv from 'dotenv';
+
 dotenv.config();
 
 import * as collections from './collections.js';
@@ -13,7 +14,8 @@ const dumpFirestore = async () => {
   // Initialize firebase instance & firestore
   if (!prod) {
     const dbHost = process.argv[3];
-    process.env.FIRESTORE_EMULATOR_HOST = `${dbHost || 'localhost'}:8080`;admin.initializeApp({ projectId });
+    process.env.FIRESTORE_EMULATOR_HOST = `${dbHost || 'localhost'}:8080`;
+    admin.initializeApp({ projectId });
   } else {
     const serviceAccount = JSON.parse(
       readFileSync('pokemon-zoggen-firebase-adminsdk.json').toString(),

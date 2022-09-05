@@ -1,4 +1,5 @@
 import * as dotenv from 'dotenv';
+
 dotenv.config();
 
 import * as collections from './collections.js';
@@ -16,7 +17,7 @@ const seedFirestore = async () => {
     console.log('seeding with file:', dumpFile);
   }
 
-  const projectId = process.env.VITE_FIREBASE_PROJECT_ID;
+  const projectId = process.env.VITE_FIREBASE_PROJECT_ID || 'pokemon-zoggen';
 
   const dbHost = process.argv[3];
   const authHost = process.argv[4];

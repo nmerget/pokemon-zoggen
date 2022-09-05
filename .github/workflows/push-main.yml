@@ -7,18 +7,20 @@ jobs:
   init:
     uses: ./.github/workflows/00-init.yml
 
-  test:
-    uses: ./.github/workflows/00-test.yml
-    secrets: inherit
 
   build:
     uses: ./.github/workflows/01-build.yml
-    needs: [init]
+    needs: [ init ]
+    secrets: inherit
+
+  test:
+    uses: ./.github/workflows/02-test.yml
+    needs: [ build ]
     secrets: inherit
 
   deploy:
-    uses: ./.github/workflows/02-hosting.yml
+    uses: ./.github/workflows/03-hosting.yml
     with:
       channelId: live
-    needs: [test, build]
+    needs: [ test ]
     secrets: inherit

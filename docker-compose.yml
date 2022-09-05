@@ -23,7 +23,7 @@ services:
       context: "."
       target: "frontend"
     depends_on:
-      - "firebase"
+      - firebase
     ports:
       - "3000:3000"
     volumes:

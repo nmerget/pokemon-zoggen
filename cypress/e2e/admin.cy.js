@@ -4,8 +4,9 @@ context('Admin', () => {
     cy.seedDefault();
   });
 
-  it('Login', () => {
-    cy.login();
+  it('Init', () => {
+    cy.visit('/');
+    cy.window().its('Cypress').should('be.an', 'object');
   });
 
   it('Check for Admin', () => {

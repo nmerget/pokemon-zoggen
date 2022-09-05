@@ -28,23 +28,6 @@ Cypress.Commands.add('seedDefault', (customDump) => {
   }
 });
 
-Cypress.Commands.add('login', (userson) => {
-  try {
-    cy.exec(
-      `node ./scripts/firebase/admin-token ${
-        userson
-          ? 'bO8xJ8muIS0FrcYRcnN1OSUMysjf'
-          : '0LkyfKRyXQlwMJzme0cxYE8Zvni8'
-      }  ${Cypress.env('EMULATOR_HOST')} ${Cypress.env('AUTH_EMULATOR_HOST')}`,
-    );
-    cy.visit('/');
-    cy.get('#login-button').should('not.exist');
-  } catch (e) {
-    cy.task('log', e);
-    process.exit(2);
-  }
-});
-
 Cypress.Commands.add('gotoRunEdit', () => {
   cy.contains('a', 'New Group Cypress').should('be.visible').click();
   cy.location('pathname', { timeout: 10000 }).should('contain', '/runs');

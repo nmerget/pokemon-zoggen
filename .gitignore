@@ -34,6 +34,7 @@ yarn-error.log*
 /pubsub-debug.log
 /data
 /dumps
+/firebase-export*
 
 pokemon-zoggen-firebase-adminsdk*.json
 /cypress/results/

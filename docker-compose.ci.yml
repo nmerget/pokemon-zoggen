@@ -1,0 +1,32 @@
+services:
+  firebase:
+    extends:
+      file: docker-compose.yml
+      service: firebase
+
+  frontend:
+    image: node:16-alpine
+    command: npx http-server -p 3000 build
+    depends_on:
+      - firebase
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./build:/build
+
+  cypress:
+    image: cypress/included:10.6.0
+    entrypoint: npm run cypress:ci
+    env_file:
+      - .env
+    environment:
+      - CYPRESS_CI=true
+      - CYPRESS_baseUrl=http://frontend:3000
+      - CYPRESS_EMULATOR_HOST=firebase
+      - CYPRESS_AUTH_EMULATOR_HOST=firebase
+    depends_on:
+      - frontend
+      - firebase
+    working_dir: /e2e
+    volumes:
+      - ./:/e2e

@@ -4,8 +4,8 @@ context('Runs', () => {
     cy.seedDefault('/runs-dump.json');
   });
 
-  it('Login', () => {
-    cy.login();
+  it('Init', () => {
+    cy.visit('/');
   });
 
   it('Add Pokemon', () => {
