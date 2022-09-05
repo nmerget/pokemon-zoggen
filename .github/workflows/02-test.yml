@@ -27,9 +27,7 @@ jobs:
           path: build
 
       - name: 🧪 Cypress run
-        run: |
-          echo "cache=./npm-cache" > .npmrc
-          npm run cypress:ci:docker
+        run: docker-compose -f docker-compose.ci.yml up --abort-on-container-exit --exit-code-from cypress
 
       - name: 📷 Upload Screenshots
         uses: actions/upload-artifact@v2
