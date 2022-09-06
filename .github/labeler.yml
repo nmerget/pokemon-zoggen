@@ -12,6 +12,6 @@ cicd:
 frontend:
   - src/**/*
   -
-# Add 'frontend' label to any file changes inside .src
+# Add 'cypress' label to any file changes inside .src
 cypress:
-  - cypress/**/*
+  - /e2e/**/*

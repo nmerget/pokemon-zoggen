@@ -13,3 +13,9 @@ updates:
       interval: 'daily'
     pull-request-branch-name:
       separator: '-'
+  - package-ecosystem: 'npm'
+    directory: '/e2e'
+    schedule:
+      interval: 'daily'
+    pull-request-branch-name:
+      separator: '-'

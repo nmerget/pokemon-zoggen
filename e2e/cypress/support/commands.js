@@ -12,7 +12,7 @@ Cypress.Commands.add('clearDatabase', () => {
 Cypress.Commands.add('seedDefault', (customDump) => {
   try {
     cy.exec(
-      `node ./scripts/firebase/seed-firestore ./cypress/fixtures${
+      `node ./../scripts/firebase/seed-firestore ./cypress/fixtures${
         customDump || '/default-dump.json'
       }`,
     );

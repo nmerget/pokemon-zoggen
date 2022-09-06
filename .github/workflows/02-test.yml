@@ -26,14 +26,15 @@ jobs:
           name: build-output
           path: build
 
-      - name: ⭐🇹 Start containers
+      - name: ⭐🇹🔥 Start firebase
         run: docker-compose -f "docker-compose.firebase.yml" up -d
 
       - name: 🧪 Cypress run
         uses: cypress-io/github-action@v4
         with:
+          working-directory: e2e
           start: npx http-server -p 3000 build
-          wait-on: 'http://localhost:3000, http://localhost:8001'
+          wait-on: 'http://localhost:3000, http://localhost:8080'
           wait-on-timeout: 360
           browser: chrome
 
@@ -51,6 +52,6 @@ jobs:
           name: cypress-videos
           path: cypress/videos
 
-      - name: 🛑 Stop containers
+      - name: 🛑🔥 Stop firebase
         if: always()
         run: docker-compose -f "docker-compose.firebase.yml" down
