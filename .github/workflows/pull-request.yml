@@ -21,11 +21,19 @@ jobs:
   labeler:
     uses: ./.github/workflows/99-labeler.yml
 
+  scan-secrets:
+    uses: ./.github/workflows/00-scan-secrets.yml
+
   init:
     uses: ./.github/workflows/00-init.yml
 
   build:
     uses: ./.github/workflows/01-build.yml
+    needs: [ init ]
+    secrets: inherit
+
+  validate:
+    uses: ./.github/workflows/01-validate.yml
     needs: [ init ]
     secrets: inherit
 
