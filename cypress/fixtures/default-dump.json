@@ -1,0 +1,20 @@
+{
+  "runs": [],
+  "current": [
+    {
+      "id": "GBCHAmZKsBqtpQi5iCFf"
+    }
+  ],
+  "users": [
+    {
+      "id": "0LkyfKRyXQlwMJzme0cxYE8Zvni8",
+      "name": "Admin Adminson",
+      "admin": true
+    },
+    {
+      "id": "bO8xJ8muIS0FrcYRcnN1OSUMysjf",
+      "name": "User Userson",
+      "admin": false
+    }
+  ]
+}

@@ -1,4 +1,3 @@
-
 name: Push to main
 on:
   push:
@@ -8,14 +7,20 @@ jobs:
   init:
     uses: ./.github/workflows/00-init.yml
 
+
   build:
     uses: ./.github/workflows/01-build.yml
     needs: [ init ]
     secrets: inherit
 
+  test:
+    uses: ./.github/workflows/02-test.yml
+    needs: [ build ]
+    secrets: inherit
+
   deploy:
-    uses: ./.github/workflows/02-hosting.yml
+    uses: ./.github/workflows/03-hosting.yml
     with:
       channelId: live
-    needs: [ build ]
+    needs: [ test ]
     secrets: inherit

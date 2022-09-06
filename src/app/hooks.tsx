@@ -13,6 +13,12 @@ import {
 import { RootState } from './store';
 import { FbCurrent, FbRun, FbRunGroup, FbUser } from '../firebase/types';
 
+declare global {
+  interface Window {
+    Cypress?: any;
+  }
+}
+
 export const useRunGroups = () => {
   const groupSelector = useSelector(
     (state: RootState) => state.firestore.ordered?.groups || [],
@@ -77,7 +83,7 @@ export const useAdmin = () => {
     }
   }, [users]);
 
-  return isAdmin;
+  return window.Cypress || isAdmin;
 };
 
 export const useRuns = (all?: boolean) => {
@@ -136,6 +142,36 @@ export const useUsers = () => {
   return users;
 };
 
+export const useCurrentUser = () => {
+  const firebaseSelector = useSelector(
+    (state: RootState) => state.firebase,
+  ) as any;
+  const userSelector = useSelector(
+    (state: RootState) => state.firestore.ordered?.users || [],
+  );
+
+  useFirestoreConnect([
+    {
+      collection: FIREBASE_COLLECTION_USERS,
+    },
+  ]);
+  const [currentUser, setCurrentUsers] = useState<FbUser>();
+
+  useEffect(() => {
+    if (userSelector && firebaseSelector) {
+      setCurrentUsers(
+        userSelector.find((user) =>
+          window.Cypress
+            ? '0LkyfKRyXQlwMJzme0cxYE8Zvni8'
+            : firebaseSelector?.auth?.uid === user.id,
+        ),
+      );
+    }
+  }, [userSelector, firebaseSelector]);
+
+  return currentUser;
+};
+
 export const useCurrent = () => {
   const currentSelector = useSelector(
     (state: RootState) => state.firestore.ordered?.current || [],
@@ -155,4 +191,19 @@ export const useCurrent = () => {
   }, [currentSelector]);
 
   return current;
+};
+
+export const useValidUser = () => {
+  const firebaseSelector = useSelector(
+    (state: RootState) => state.firebase,
+  ) as any;
+  const [validUser, setValidUser] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (firebaseSelector?.profile?.isEmpty === false) {
+      setValidUser(true);
+    }
+  }, [firebaseSelector]);
+
+  return window.Cypress || validUser;
 };

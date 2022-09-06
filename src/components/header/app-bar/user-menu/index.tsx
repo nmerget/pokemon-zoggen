@@ -12,7 +12,7 @@ import { useFirebase } from 'react-redux-firebase';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../../../app/store';
 import { SETTING_ADMIN, SETTING_LOGOUT } from '../../../../app/constants';
-import { useAdmin } from '../../../../app/hooks';
+import { useAdmin, useValidUser } from '../../../../app/hooks';
 
 const LoginButton = React.lazy(() => import('../../../base/buttons/login'));
 
@@ -21,6 +21,8 @@ function AppBarUserMenu() {
   const firebaseSelector = useSelector(
     (state: RootState) => state.firebase,
   ) as any;
+
+  const validUser = useValidUser();
 
   const admin = useAdmin();
 
@@ -52,14 +54,18 @@ function AppBarUserMenu() {
 
   return (
     <Box sx={{ flexGrow: 0 }}>
-      {firebaseSelector?.profile?.isEmpty && (
+      {!validUser && (
         <Suspense fallback={<div>...</div>}>
           <LoginButton contained={false} />
         </Suspense>
       )}
-      {firebaseSelector?.profile?.isEmpty === false && (
+      {validUser && (
         <Tooltip title="Open settings">
-          <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+          <IconButton
+            id="avatar-button"
+            onClick={handleOpenUserMenu}
+            sx={{ p: 0 }}
+          >
             <Avatar
               alt={firebaseSelector?.auth?.displayName}
               src={firebaseSelector?.auth?.photoURL}
@@ -84,7 +90,11 @@ function AppBarUserMenu() {
         onClose={() => handleCloseUserMenu(undefined)}
       >
         {getSettings().map((setting) => (
-          <MenuItem key={setting} onClick={() => handleCloseUserMenu(setting)}>
+          <MenuItem
+            id={`menu-item-${setting.toLowerCase()}`}
+            key={setting}
+            onClick={() => handleCloseUserMenu(setting)}
+          >
             <Typography textAlign="center">{setting}</Typography>
           </MenuItem>
         ))}

@@ -86,8 +86,9 @@ const Admin = () => {
                     ))}
                 </div>
                 <div className="my-auto">
-                  {users?.length > 0 && (
+                  {users?.length > 0 ? (
                     <Button
+                      id={`add-run-button-${index}`}
                       onClick={() => {
                         addNewRun(
                           firestore,
@@ -100,6 +101,8 @@ const Admin = () => {
                     >
                       Run hinzufügen
                     </Button>
+                  ) : (
+                    <span>Keine Nutzer gefunden.</span>
                   )}
                 </div>
               </div>
@@ -118,16 +121,20 @@ const Admin = () => {
         title="Version auswählen"
         content={
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Age</InputLabel>
+            <InputLabel id="label-version">Version</InputLabel>
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
+              labelId="label-version"
+              id="select-version"
               value={version}
               label="Age"
               onChange={handleChange}
             >
               {VERSIONS.map((v: PokemonVersionType) => (
-                <MenuItem key={v.version} value={v.version}>
+                <MenuItem
+                  id={`menu-item-version-${v.version}`}
+                  key={v.version}
+                  value={v.version}
+                >
                   {v.name}
                 </MenuItem>
               ))}
@@ -138,6 +145,7 @@ const Admin = () => {
       <div className="w-full flex">
         <div className="mx-auto">
           <Button
+            id="add-group"
             onClick={() => {
               setOpen(true);
             }}

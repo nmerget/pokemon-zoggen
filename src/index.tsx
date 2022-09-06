@@ -12,7 +12,6 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { BrowserTracing } from '@sentry/tracing';
 import * as Sentry from '@sentry/react';
-import { Integration } from '@sentry/types/dist/integration';
 import Loading from './components/loading';
 import { store } from './app/store';
 import { FIREBASE_COLLECTION_USERS } from './app/constants';
@@ -36,12 +35,22 @@ const rrfConfig = {
 
 // Initialize firebase instance
 firebase.initializeApp(fbConfig);
+
 const db = firebase.firestore();
 const auth = firebase.auth();
 
-if (import.meta.env.DEV) {
-  db.useEmulator('localhost', 8080);
-  auth.useEmulator('http://localhost:9099');
+if (window.location.hostname !== 'localhost') {
+  Sentry.init({
+    dsn: import.meta.env.VITE_SENTRY_DNS,
+    integrations: [new BrowserTracing()],
+    tracesSampleRate: 1.0,
+    enabled: true,
+    beforeSend: (event) => event,
+  });
+} else {
+  const host = 'localhost';
+  db.useEmulator(host, 8080);
+  auth.useEmulator(`http://${host}:9099`);
 }
 
 const rrfProps = {
@@ -57,19 +66,6 @@ const LoginSection = React.lazy(
 );
 const RunsDashboard = React.lazy(() => import('./components/runs/dashboard'));
 const RunsEdit = React.lazy(() => import('./components/runs/edit'));
-
-Sentry.init({
-  dsn: import.meta.env.VITE_SENTRY_DNS,
-  integrations: [new BrowserTracing() as unknown as Integration],
-  tracesSampleRate: 1.0,
-  enabled: import.meta.env.PROD,
-  beforeSend: (event) => {
-    if (window.location.hostname === 'localhost') {
-      return null;
-    }
-    return event;
-  },
-});
 
 ReactDOM.render(
   <React.StrictMode>

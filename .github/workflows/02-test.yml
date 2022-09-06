@@ -1,0 +1,56 @@
+---
+name: Test Workflow
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇ Checkout repo
+        uses: actions/checkout@v3
+
+      - name: 🔄 Init Cache
+        uses: ./.github/actions/npm-cache
+
+      - name: 🌱 Setup environment
+        run: |
+          touch .env
+          echo "VITE_FIREBASE_PROJECT_ID=${{secrets.VITE_FIREBASE_PROJECT_ID}}" >> .env
+
+      - name: ⬇ Download build
+        uses: ./.github/actions/download-tar-artifact
+        with:
+          name: build-output
+          path: build
+
+      - name: ⭐🇹🔥 Start firebase
+        run: docker-compose -f "docker-compose.firebase.yml" up -d
+
+      - name: 🧪 Cypress run
+        uses: cypress-io/github-action@v4
+        with:
+          start: npx http-server -p 3000 build
+          wait-on: 'http://localhost:3000, http://localhost:8001'
+          wait-on-timeout: 360
+          browser: chrome
+
+      - name: 📷 Upload Screenshots
+        uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+
+      - name: 🎥 Upload Videos
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: cypress-videos
+          path: cypress/videos
+
+      - name: 🛑🔥 Stop firebase
+        if: always()
+        run: docker-compose -f "docker-compose.firebase.yml" down

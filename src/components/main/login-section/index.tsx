@@ -4,20 +4,19 @@ import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../../app/store';
 import { DefaultMenuItems } from '../../../app/constants';
 import Loading from '../../loading';
+import { useValidUser } from '../../../app/hooks';
 
 const LoginButton = React.lazy(() => import('../../base/buttons/login'));
 
 function LoginSection() {
   const navigate = useNavigate();
-  const firebaseSelector = useSelector(
-    (state: RootState) => state.firebase,
-  ) as any;
+  const validUser = useValidUser();
 
   useEffect(() => {
-    if (firebaseSelector?.profile?.isEmpty === false) {
+    if (validUser) {
       navigate(DefaultMenuItems[0].link);
     }
-  }, [navigate, firebaseSelector, DefaultMenuItems]);
+  }, [navigate, validUser, DefaultMenuItems]);
 
   return (
     <aside className="p-12 sm:p-16 lg:p-24 h-full flex">

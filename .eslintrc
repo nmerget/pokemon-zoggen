@@ -7,7 +7,6 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "parser": "@typescript-eslint/parser",
-  "parserOptions": { "project": ["./tsconfig.json"] },
   "plugins": ["@typescript-eslint"],
   "rules": {
     "linebreak-style": "off",
@@ -16,6 +15,7 @@
     "import/no-extraneous-dependencies": "off",
     "import/extensions": "off",
     "implicit-arrow-linebreak": "off",
+    "no-confusing-arrow": "off",
     "import/no-unresolved": "off",
     "function-paren-newline": "off",
     "operator-linebreak": "off",
@@ -39,6 +39,8 @@
     "src/**/*.test.ts",
     "src/**/*.test.tsx",
     "src/data/*.ts",
-    "public/data/**/*.json"
+    "public/data/**/*.json",
+    "cypress",
+    "scripts"
   ]
 }

@@ -1,1 +1,1 @@
-export default ["runs", "users"];
+export default ['runs', 'users', 'current', 'run-groups'];

@@ -19,6 +19,7 @@ import { RootState } from '../../../app/store';
 import { FIREBASE_COLLECTION_RUNS } from '../../../app/constants';
 import { Pokemon, PokemonKey } from '../../../pokemon/types';
 import VERSIONS from '../../../data/versions';
+import { useCurrentUser, useUsers } from '../../../app/hooks';
 
 function RunsPokemon() {
   const [localPokemon, setLocalPokemon] = useState<FbPokemon[]>([]);
@@ -38,16 +39,9 @@ function RunsPokemon() {
 
   const run = useSelector((state: RootState) => state.firestore.ordered?.run);
   const firestore = useFirestore();
-  const firebaseSelector = useSelector(
-    (state: RootState) => state.firebase,
-  ) as any;
-  const users = useSelector(
-    (state: RootState) => state.firestore.ordered?.users || [],
-  );
+  const users = useUsers();
 
-  const currentUser = users.find(
-    (user) => firebaseSelector?.auth?.uid === user.id,
-  );
+  const currentUser = useCurrentUser();
 
   const getCurrentPokemon = () =>
     localRun?.players?.find((player) => player.id === currentUser?.id)

@@ -4,24 +4,34 @@ import * as React from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { RootState } from '../../../../app/store';
-import { useMenuItems } from '../../../../app/hooks';
+import { useMenuItems, useValidUser } from '../../../../app/hooks';
 
 const AppBarDesktopNav = () => {
-  const firebaseSelector = useSelector(
-    (state: RootState) => state.firebase,
-  ) as any;
+  const validUser = useValidUser();
 
   const menuItems = useMenuItems();
 
   return (
-    <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-      {firebaseSelector?.profile?.isEmpty === false && (
+    <Box
+      sx={{
+        flexGrow: 1,
+        display: {
+          xs: 'none',
+          md: 'flex',
+        },
+      }}
+    >
+      {validUser && (
         <div className="flex mx-auto">
           {menuItems &&
             menuItems.map((item, index) => (
               <Button
                 key={`main-menu-item-${index}`}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{
+                  my: 2,
+                  color: 'white',
+                  display: 'block',
+                }}
               >
                 <NavLink
                   className={({ isActive }) =>
