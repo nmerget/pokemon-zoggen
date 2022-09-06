@@ -26,7 +26,7 @@ jobs:
           name: build-output
           path: build
 
-      - name: ⭐🇹 Start containers
+      - name: ⭐🇹🔥 Start firebase
         run: docker-compose -f "docker-compose.firebase.yml" up -d
 
       - name: 🧪 Cypress run
@@ -51,6 +51,6 @@ jobs:
           name: cypress-videos
           path: cypress/videos
 
-      - name: 🛑 Stop containers
+      - name: 🛑🔥 Stop firebase
         if: always()
         run: docker-compose -f "docker-compose.firebase.yml" down
