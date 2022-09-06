@@ -36,6 +36,7 @@ jobs:
 
       - if: ${{ steps.cache-firebase-image.outputs.cache-hit == 'true' }}
         name: 📥 Load firebase image
+        continue-on-error: true
         run: |
           if [[ -f firebase-image.tar ]];
           then
