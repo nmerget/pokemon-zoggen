@@ -68,7 +68,7 @@ jobs:
         continue-on-error: true
         run: |
           docker images
-          docker save pokemon-zoggen-firebase | gzip > firebase-image.tar.gz
+          docker save pokemon-zoggen_firebase | gzip > firebase-image.tar.gz
 
       - name: 🛑🔥 Stop firebase
         if: always()
