@@ -30,16 +30,16 @@ jobs:
         id: cache-firebase-image
         uses: actions/cache@v3
         with:
-          path: firebase-image.tar.gz
+          path: firebase-image.tar
           key: firebase-image
 
 
       - if: ${{ steps.cache-firebase-image.outputs.cache-hit == 'true' }}
         name: 📥 Load firebase image
         run: |
-          if [[ -f firebase-image.tar.gz ]];
+          if [[ -f firebase-image.tar ]];
           then
-            docker load --input ./firebase-image.tar.gz
+            docker load < firebase-image.tar
           fi
 
       - name: ⭐🇹🔥 Start firebase
@@ -72,7 +72,7 @@ jobs:
         continue-on-error: true
         run: |
           docker images
-          docker save pokemon-zoggen_firebase | gzip > firebase-image.tar.gz
+          docker save pokemon-zoggen_firebase > firebase-image.tar
 
       - name: 🛑🔥 Stop firebase
         if: always()
