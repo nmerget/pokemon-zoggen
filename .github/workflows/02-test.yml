@@ -39,8 +39,7 @@ jobs:
         run: |
           if [[ -f firebase-image.tar.gz ]];
           then
-            ls
-            docker load < firebase-image.tar.gz
+            docker load --input ./firebase-image.tar.gz
           fi
 
       - name: ⭐🇹🔥 Start firebase
