@@ -36,7 +36,11 @@ jobs:
 
       - if: ${{ steps.cache-firebase-image.outputs.cache-hit == 'true' }}
         name: 📥 Load firebase image
-        run: docker load < firebase-image.tar.gz
+        run: |
+          if [[ -f firebase-image.tar.gz ]];
+          then
+            docker load < firebase-image.tar.gz
+          fi
 
       - name: ⭐🇹🔥 Start firebase
         run: docker-compose -f "docker-compose.firebase.yml" up -d
