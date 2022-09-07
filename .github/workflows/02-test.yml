@@ -18,7 +18,9 @@ jobs:
       - name: 🌱 Setup environment
         run: |
           touch .env
-          echo "VITE_FIREBASE_PROJECT_ID=${{secrets.VITE_FIREBASE_PROJECT_ID}}" >> .env
+          echo "VITE_FIREBASE_PROJECT_ID=pokemon-zoggen" >> .env
+          echo "VITE_FIREBASE_API_KEY=test" >> .env
+          echo "VITE_FIREBASE_APP_ID=test" >> .env
 
       - name: ⬇ Download build
         uses: ./.github/actions/download-tar-artifact
