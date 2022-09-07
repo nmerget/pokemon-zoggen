@@ -17,6 +17,8 @@ import { store } from './app/store';
 import { FIREBASE_COLLECTION_USERS } from './app/constants';
 import Admin from './components/admin';
 
+import { Capacitor } from '@capacitor/core';
+
 const fbConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -39,14 +41,16 @@ firebase.initializeApp(fbConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();
 
-if (window.location.hostname !== 'localhost') {
-  Sentry.init({
-    dsn: import.meta.env.VITE_SENTRY_DNS,
-    integrations: [new BrowserTracing()],
-    tracesSampleRate: 1.0,
-    enabled: true,
-    beforeSend: (event) => event,
-  });
+if (window.location.hostname !== 'localhost' || Capacitor.isNativePlatform()) {
+  if (import.meta.env.VITE_SENTRY_DNS) {
+    Sentry.init({
+      dsn: import.meta.env.VITE_SENTRY_DNS,
+      integrations: [new BrowserTracing()],
+      tracesSampleRate: 1.0,
+      enabled: true,
+      beforeSend: (event) => event,
+    });
+  }
 } else {
   const host = 'localhost';
   db.useEmulator(host, 8080);
