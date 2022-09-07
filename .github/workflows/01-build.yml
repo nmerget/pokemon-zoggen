@@ -16,6 +16,7 @@ jobs:
         uses: ./.github/actions/npm-cache
 
       - name: 🌱 Setup environment
+        if: ${{ github.actor != 'dependabot[bot]' }}
         run: |
           touch .env
           echo "VITE_FIREBASE_API_KEY=${{secrets.VITE_FIREBASE_API_KEY}}" >> .env
@@ -25,6 +26,14 @@ jobs:
           echo "VITE_FIREBASE_MESSAGING_SENDER_ID=${{secrets.VITE_FIREBASE_MESSAGING_SENDER_ID}}" >> .env
           echo "VITE_FIREBASE_APP_ID=${{secrets.VITE_FIREBASE_APP_ID}}" >> .env
           echo "VITE_SENTRY_DNS=${{secrets.VITE_SENTRY_DNS}}" >> .env
+
+      - name: 🌱🤖 Setup environment for dependabot
+        if: ${{ github.actor == 'dependabot[bot]' }}
+        run: |
+          touch .env
+          echo "VITE_FIREBASE_PROJECT_ID=pokemon-zoggen" >> .env
+          echo "VITE_FIREBASE_API_KEY=test" >> .env
+          echo "VITE_FIREBASE_APP_ID=test" >> .env
 
       - name: 🔨 Build
         run: npm run build
