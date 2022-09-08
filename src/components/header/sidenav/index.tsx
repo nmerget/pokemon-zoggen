@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import {
   Box,
@@ -11,7 +11,6 @@ import {
   SwipeableDrawer,
 } from '@mui/material';
 import { toggleMenu } from '../../../features/local/localSlice';
-import { RootState } from '../../../app/store';
 import AppBarUserMenu from '../app-bar/user-menu';
 import { useMenuItems, useValidUser } from '../../../app/hooks';
 

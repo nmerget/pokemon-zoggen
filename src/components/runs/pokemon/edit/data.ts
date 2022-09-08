@@ -6,5 +6,5 @@ export type PokemonEditType = {
   index: number;
   updateUserPokemon: (index: number, key: string, value: any) => void;
   onDeletePokemon?: () => void;
-  possibleMovesByVersion?: Pokemon[]
+  possibleMovesByVersion?: Pokemon[];
 };

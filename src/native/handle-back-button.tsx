@@ -1,8 +1,8 @@
 import { App, BackButtonListenerEvent } from '@capacitor/app';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { selectMenuOpen, closeMenu } from '../features/local/localSlice';
+import { closeMenu, selectMenuOpen } from '../features/local/localSlice';
 import AlertDialog from '../components/base/alert-dialog';
 
 const HandleBackButtonDialog = () => {

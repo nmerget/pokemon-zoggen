@@ -29,21 +29,21 @@ jobs:
 
   build:
     uses: ./.github/workflows/01-build.yml
-    needs: [ init ]
+    needs: [init]
     secrets: inherit
 
   validate:
     uses: ./.github/workflows/01-validate.yml
-    needs: [ init ]
+    needs: [init]
     secrets: inherit
 
   test:
     uses: ./.github/workflows/02-test.yml
-    needs: [ build ]
+    needs: [build]
     secrets: inherit
 
   preview:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
     uses: ./.github/workflows/03-hosting.yml
-    needs: [ test ]
+    needs: [test]
     secrets: inherit

@@ -1,7 +1,5 @@
 import { Box } from '@mui/material';
-import { useSelector } from 'react-redux';
 import React from 'react';
-import { RootState } from '../../app/store';
 import { getGlobalStatsString } from '../../app/utils';
 import { useRuns, useUsers, useValidUser } from '../../app/hooks';
 
