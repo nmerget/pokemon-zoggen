@@ -16,10 +16,13 @@ export const localSlice = createSlice({
     toggleMenu: (state) => {
       state.menuOpen = !state.menuOpen;
     },
+    closeMenu: (state) => {
+      state.menuOpen = false;
+    },
   },
 });
 
-export const { toggleMenu } = localSlice.actions;
+export const { toggleMenu, closeMenu } = localSlice.actions;
 
 export const selectMenuOpen = (state: RootState) => state.local.menuOpen;
 

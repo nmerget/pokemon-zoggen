@@ -12,12 +12,11 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import { BrowserTracing } from '@sentry/tracing';
 import * as Sentry from '@sentry/react';
+import { Capacitor } from '@capacitor/core';
 import Loading from './components/loading';
 import { store } from './app/store';
 import { FIREBASE_COLLECTION_USERS } from './app/constants';
 import Admin from './components/admin';
-
-import { Capacitor } from '@capacitor/core';
 
 const fbConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,

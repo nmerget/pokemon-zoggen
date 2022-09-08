@@ -40,3 +40,4 @@ pokemon-zoggen-firebase-adminsdk*.json
 /cypress/results/
 /cypress/screenshots/
 /cypress/videos/
+/android/app/google-services.json
