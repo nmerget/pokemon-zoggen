@@ -7,6 +7,29 @@ import admin from 'firebase-admin';
 
 import { writeFileSync, readFileSync } from 'fs';
 
+const fillSubCollectionDataRecursive = async (
+  db,
+  data,
+  prevCollection,
+  subCollection,
+) => {
+  for (const document of data) {
+    const snap = db.collection(prevCollection.name).doc(document.id);
+
+    const querySnapshot = await snap.collection(subCollection.name).get();
+    const subData = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    if (subCollection.sub?.length > 0) {
+      for (const sub of subCollection.sub) {
+        await fillSubCollectionDataRecursive(snap, subData, subCollection, sub);
+      }
+    }
+    document[subCollection.name] = subData;
+  }
+};
+
 const dumpFirestore = async () => {
   const prod = process.argv[2];
   const projectId = process.env.VITE_FIREBASE_PROJECT_ID;
@@ -24,21 +47,30 @@ const dumpFirestore = async () => {
     });
   }
   const db = admin.firestore();
-
-  console.log('Using collection', collections.default.join(' & '));
+  console.log(
+    'Using collection',
+    collections.default.map((coll) => coll.name).join(' & '),
+  );
   const dump = {};
   for (const collection of collections.default) {
-    const querySnapshot = await db.collection(collection).get();
-    dump[collection] = querySnapshot.docs.map((doc) => ({
+    const querySnapshot = await db.collection(collection.name).get();
+    const data = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
+
+    if (collection.sub?.length > 0) {
+      for (const sub of collection.sub) {
+        await fillSubCollectionDataRecursive(db, data, collection, sub);
+      }
+    }
+    dump[collection.name] = data;
   }
   writeFileSync(
     `./dumps/dump-${new Date().getTime()}.json`,
     JSON.stringify(dump),
   );
-  console.log('Generated dump:', dump);
+  console.log('Generated dump:', dump.length);
   process.exit(0);
 };
 

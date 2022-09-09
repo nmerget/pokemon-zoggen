@@ -6,12 +6,20 @@ import { MenuItem } from './types';
 import {
   DefaultMenuItems,
   FIREBASE_COLLECTION_CURRENT,
+  FIREBASE_COLLECTION_RUN,
   FIREBASE_COLLECTION_RUN_GROUPS,
+  FIREBASE_COLLECTION_RUN_POKEMON,
   FIREBASE_COLLECTION_RUNS,
   FIREBASE_COLLECTION_USERS,
 } from './constants';
 import { RootState } from './store';
-import { FbCurrent, FbRun, FbRunGroup, FbUser } from '../firebase/types';
+import {
+  FbCurrent,
+  FbPokemon,
+  FbRun,
+  FbRunGroup,
+  FbUser,
+} from '../firebase/types';
 
 declare global {
   interface Window {
@@ -119,6 +127,74 @@ export const useRuns = (all?: boolean) => {
   }, [runSelector]);
 
   return runs;
+};
+
+export const useCurrentRun = () => {
+  const params = useParams();
+
+  const runSelector = useSelector(
+    (state: RootState) => state.firestore.ordered?.run || [],
+  );
+
+  useFirestoreConnect([
+    {
+      collection: FIREBASE_COLLECTION_RUNS,
+      doc: params.runId,
+      storeAs: FIREBASE_COLLECTION_RUN,
+    },
+  ]);
+  const [run, setRun] = useState<FbRun>();
+
+  useEffect(() => {
+    if (runSelector) {
+      setRun(runSelector.at(0));
+    }
+  }, [runSelector]);
+
+  return run;
+};
+
+export const useUserRunPokemon = (
+  userId?: string,
+  runGroupId?: string,
+  runId?: string,
+) => {
+  const userRunPokemonSelector = useSelector(
+    (state: RootState) => state.firestore.ordered?.runPokemon || [],
+  );
+  useFirestoreConnect(
+    userId && runGroupId && runId
+      ? [
+          {
+            collection: FIREBASE_COLLECTION_USERS,
+            doc: userId,
+            subcollections: [
+              {
+                collection: FIREBASE_COLLECTION_RUN_GROUPS,
+                doc: runGroupId,
+                subcollections: [
+                  {
+                    collection: FIREBASE_COLLECTION_RUNS,
+                    doc: runId,
+                  },
+                ],
+              },
+            ],
+            storeAs: FIREBASE_COLLECTION_RUN_POKEMON,
+          },
+        ]
+      : [],
+  );
+
+  const [pokemon, setPokemon] = useState<FbPokemon[]>([]);
+
+  useEffect(() => {
+    if (userRunPokemonSelector && userRunPokemonSelector.length > 0) {
+      setPokemon(userRunPokemonSelector?.at(0)?.pokemon || []);
+    }
+  }, [userRunPokemonSelector]);
+
+  return pokemon;
 };
 
 export const useUsers = () => {

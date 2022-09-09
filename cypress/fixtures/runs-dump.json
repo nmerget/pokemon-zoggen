@@ -6,19 +6,17 @@
       "players": [
         {
           "wins": [],
-          "name": "Admin Adminson",
           "id": "0LkyfKRyXQlwMJzme0cxYE8Zvni8"
         },
         {
           "wins": [],
-          "name": "User Userson",
           "id": "bO8xJ8muIS0FrcYRcnN1OSUMysjf"
         }
       ],
       "groupId": "0MexwtfJItDAM0bYxKfz",
       "name": "New Run",
-      "pokAmount": 0,
-      "lvlCap": 0,
+      "pokAmount": 3,
+      "lvlCap": 15,
       "version": "1"
     }
   ],
@@ -26,16 +24,41 @@
     {
       "id": "0LkyfKRyXQlwMJzme0cxYE8Zvni8",
       "name": "Admin Adminson",
-      "admin": true
+      "admin": true,
+      "run-groups": [
+        {
+          "id": "0MexwtfJItDAM0bYxKfz",
+          "runs": [
+            {
+              "id": "0meutudY4YzKjM8GsCuf",
+              "pokemon": []
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "bO8xJ8muIS0FrcYRcnN1OSUMysjf",
       "name": "User Userson",
-      "admin": false
+      "admin": false,
+      "run-groups": [
+        {
+          "id": "0MexwtfJItDAM0bYxKfz",
+          "runs": [
+            {
+              "id": "0meutudY4YzKjM8GsCuf",
+              "pokemon": []
+            }
+          ]
+        }
+      ]
     }
   ],
   "current": [
-    { "id": "GBCHAmZKsBqtpQi5iCFf", "currentGroupId": "0MexwtfJItDAM0bYxKfz" }
+    {
+      "id": "GBCHAmZKsBqtpQi5iCFf",
+      "currentGroupId": "0MexwtfJItDAM0bYxKfz"
+    }
   ],
   "run-groups": [
     {

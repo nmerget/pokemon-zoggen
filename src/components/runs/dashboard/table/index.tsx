@@ -10,17 +10,13 @@ import { getPlayerName } from '../../../../app/utils';
 import { RunsDashboardTableType } from './data';
 import { RootState } from '../../../../app/store';
 import { FbRunsPlayers, FirestoreScheme } from '../../../../firebase/types';
+import { useUsers } from '../../../../app/hooks';
 
 function RunDashboardTable({ players }: RunsDashboardTableType) {
-  const firestoreSelector = useSelector(
-    (state: RootState) => state.firestore,
-  ) as FirestoreScheme;
+  const users = useUsers();
 
   const getPName = (player: FbRunsPlayers): string =>
-    getPlayerName(
-      firestoreSelector?.ordered?.users?.find((user) => user.id === player.id)
-        ?.name,
-    );
+    getPlayerName(users?.find((user) => user.id === player.id)?.name);
 
   return (
     <TableContainer component={Paper}>

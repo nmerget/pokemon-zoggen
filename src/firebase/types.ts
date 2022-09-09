@@ -32,6 +32,7 @@ export type FbRun = {
   createdAt?: number;
   version?: string;
   groupId?: string;
+  pokemon?: FbPokemon[];
 };
 
 export type FbUser = {
@@ -54,11 +55,13 @@ export type FbCurrent = {
 };
 
 export type FirebaseScheme = {
-  run?: FbRun[];
   runs?: FbRun[];
   users?: FbUser[];
   current?: FbCurrent[];
   groups?: FbRunGroup[];
+  // storeAs (only for frontend no real db)
+  run?: FbRun[];
+  runPokemon?: FbRun[];
 };
 
 export type FirestoreScheme = {

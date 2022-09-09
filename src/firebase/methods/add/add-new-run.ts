@@ -1,6 +1,10 @@
 import { ExtendedFirestoreInstance } from 'react-redux-firebase';
 import { FbRun, FbUser } from '../../types';
-import { FIREBASE_COLLECTION_RUNS } from '../../../app/constants';
+import {
+  FIREBASE_COLLECTION_RUN_GROUPS,
+  FIREBASE_COLLECTION_RUNS,
+  FIREBASE_COLLECTION_USERS,
+} from '../../../app/constants';
 
 const addNewRun = async (
   firestore: ExtendedFirestoreInstance,
@@ -18,7 +22,6 @@ const addNewRun = async (
     players:
       users?.map((user: FbUser) => ({
         id: user.id || '',
-        name: user.name || '',
         wins: [],
       })) || [],
   };
@@ -28,6 +31,22 @@ const addNewRun = async (
       .collection(FIREBASE_COLLECTION_RUNS)
       .doc(doc.id)
       .update({ id: doc.id });
+    // TODO: move this to fb functions
+    // eslint-disable-next-line no-restricted-syntax
+    for (const user of users) {
+      const runGroupQuery = firestore
+        .collection(FIREBASE_COLLECTION_USERS)
+        .doc(user.id)
+        .collection(FIREBASE_COLLECTION_RUN_GROUPS)
+        .doc(groupId);
+      // eslint-disable-next-line no-await-in-loop
+      await runGroupQuery.set({ id: groupId });
+      // eslint-disable-next-line no-await-in-loop
+      await runGroupQuery.collection(FIREBASE_COLLECTION_RUNS).doc(doc.id).set({
+        id: doc.id,
+        pokemon: [],
+      });
+    }
   }
 };
 
