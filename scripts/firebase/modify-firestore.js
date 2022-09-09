@@ -33,12 +33,14 @@ const modifyFirestore = async () => {
 
   for (const user of users.docs) {
     for (const group of runGroupsSnap.docs) {
+      const runGroupQuery = db
+        .collection('users')
+        .doc(user.id)
+        .collection('run-groups')
+        .doc(group.data().id);
+      await runGroupQuery.set({ id: group.data().id });
       for (const run of runsSnap.docs) {
-        await db
-          .collection('users')
-          .doc(user.id)
-          .collection('run-groups')
-          .doc(group.data().id)
+        await runGroupQuery
           .collection('runs')
           .doc(run.data().id)
           .set({

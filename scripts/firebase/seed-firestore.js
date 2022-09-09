@@ -7,6 +7,26 @@ import admin from 'firebase-admin';
 
 import { readFileSync } from 'fs';
 
+const seedSubCollectionRecursive = async (
+  prevQuery,
+  prevDoc,
+  subCollection,
+) => {
+  const jsonKeys = Object.keys(prevDoc);
+  if (jsonKeys.includes(subCollection.name)) {
+    for (const doc of prevDoc[subCollection.name]) {
+      const snapQuery = prevQuery.collection(subCollection.name).doc(doc.id);
+      if (subCollection.sub?.length > 0) {
+        for (const sub of subCollection.sub) {
+          await seedSubCollectionRecursive(snapQuery, doc, sub);
+          delete doc[sub.name];
+        }
+      }
+      await snapQuery.set(doc);
+    }
+  }
+};
+
 const seedFirestore = async () => {
   console.log('--- start seedFirestore');
   const dumpFile = process.argv[2];
@@ -28,29 +48,27 @@ const seedFirestore = async () => {
 
   let seedJson = JSON.parse(readFileSync(dumpFile).toString());
 
-  console.log('Using collection', collections.default.join(' & '));
-  const seedJsonKeys = Object.keys(seedJson);
+  console.log(
+    'Using collection',
+    collections.default.map((coll) => coll.name).join(' & '),
+  );
   for (const collection of collections.default) {
-    if (seedJsonKeys.includes(collection)) {
-      for (const doc of seedJson[collection]) {
-        await db.collection(collection).doc(doc.id).set(doc);
-      }
+    await seedSubCollectionRecursive(db, seedJson, collection);
 
-      if (collection === 'users') {
-        await admin.auth().importUsers(
-          seedJson[collection].map((user) => ({
-            uid: user.id,
-            displayName: user.name,
-            providerData: [
-              {
-                uid: user.id,
-                displayName: user.name,
-                providerId: 'google.com',
-              },
-            ],
-          })),
-        );
-      }
+    if (collection.name === 'users') {
+      await admin.auth().importUsers(
+        seedJson[collection.name].map((user) => ({
+          uid: user.id,
+          displayName: user.name,
+          providerData: [
+            {
+              uid: user.id,
+              displayName: user.name,
+              providerId: 'google.com',
+            },
+          ],
+        })),
+      );
     }
   }
 

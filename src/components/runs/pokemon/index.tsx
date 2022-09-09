@@ -157,6 +157,7 @@ function RunsPokemon() {
               {selectedUser.id === currentUser.id && (
                 <div className="ml-auto">
                   <Button
+                    id="button-edit-mode"
                     variant="outlined"
                     onClick={() => setEditMode(!editMode)}
                     startIcon={editMode ? <ListIcon /> : <EditIcon />}

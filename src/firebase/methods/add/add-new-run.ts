@@ -34,18 +34,18 @@ const addNewRun = async (
     // TODO: move this to fb functions
     // eslint-disable-next-line no-restricted-syntax
     for (const user of users) {
-      // eslint-disable-next-line no-await-in-loop
-      await firestore
+      const runGroupQuery = firestore
         .collection(FIREBASE_COLLECTION_USERS)
         .doc(user.id)
         .collection(FIREBASE_COLLECTION_RUN_GROUPS)
-        .doc(groupId)
-        .collection(FIREBASE_COLLECTION_RUNS)
-        .doc(doc.id)
-        .set({
-          id: doc.id,
-          pokemon: [],
-        });
+        .doc(groupId);
+      // eslint-disable-next-line no-await-in-loop
+      await runGroupQuery.set({ id: groupId });
+      // eslint-disable-next-line no-await-in-loop
+      await runGroupQuery.collection(FIREBASE_COLLECTION_RUNS).doc(doc.id).set({
+        id: doc.id,
+        pokemon: [],
+      });
     }
   }
 };
