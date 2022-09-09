@@ -1,6 +1,5 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { useFirestore, useFirestoreConnect } from 'react-redux-firebase';
+import { useNavigate } from 'react-router-dom';
+import { useFirestore } from 'react-redux-firebase';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import React, { useEffect, useState } from 'react';
@@ -10,13 +9,9 @@ import Paper from '@mui/material/Paper';
 import { FbRun, FbRunsPlayers, FbUser } from '../../../firebase/types';
 import { updateDoc } from '../../../firebase/utils';
 import { getPlayerName } from '../../../app/utils';
-import { RootState } from '../../../app/store';
 import RunsPokemon from '../pokemon';
-import {
-  FIREBASE_COLLECTION_RUN,
-  FIREBASE_COLLECTION_RUNS,
-} from '../../../app/constants';
-import { useAdmin, useUsers } from '../../../app/hooks';
+import { FIREBASE_COLLECTION_RUNS } from '../../../app/constants';
+import { useAdmin, useCurrentRun, useUsers } from '../../../app/hooks';
 
 const getChangedPlayers = (
   players: FbRunsPlayers[],
@@ -36,33 +31,23 @@ const getChangedPlayers = (
   });
 
 function RunsEdit() {
-  const params = useParams();
   const navigate = useNavigate();
 
   const firestore = useFirestore();
-  useFirestoreConnect([
-    {
-      collection: FIREBASE_COLLECTION_RUNS,
-      doc: params.runId,
-      storeAs: FIREBASE_COLLECTION_RUN,
-    },
-  ]);
+
+  const currentRun = useCurrentRun();
 
   const admin = useAdmin();
 
   const users = useUsers();
 
-  const run = useSelector((state: RootState) =>
-    state.firestore.ordered?.run?.at(0),
-  );
-
   const [localRun, setLocalRun] = useState<FbRun>();
 
   useEffect(() => {
-    if (run) {
-      setLocalRun(run);
+    if (currentRun) {
+      setLocalRun(currentRun);
     }
-  }, [run]);
+  }, [currentRun]);
 
   return (
     <Paper className="flex flex-col p-4">
@@ -91,7 +76,10 @@ function RunsEdit() {
                 variant="outlined"
                 value={localRun.name}
                 onChange={(event) => {
-                  setLocalRun({ ...localRun, name: event.target.value });
+                  setLocalRun({
+                    ...localRun,
+                    name: event.target.value,
+                  });
                 }}
               />
               <TextField
@@ -102,7 +90,7 @@ function RunsEdit() {
                 onChange={(event) => {
                   setLocalRun({
                     ...localRun,
-                    lvlCap: parseInt(event.target.value, 10),
+                    lvlCap: event.target.value ? Number(event.target.value) : 0,
                   });
                 }}
               />
@@ -114,7 +102,9 @@ function RunsEdit() {
                 onChange={(event) => {
                   setLocalRun({
                     ...localRun,
-                    pokAmount: parseInt(event.target.value, 10),
+                    pokAmount: event.target.value
+                      ? Number(event.target.value)
+                      : 0,
                   });
                 }}
               />

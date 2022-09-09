@@ -1,4 +1,5 @@
 import * as dotenv from 'dotenv';
+
 dotenv.config();
 
 import admin from 'firebase-admin';
@@ -10,7 +11,7 @@ const modifyFirestore = async () => {
   console.log('--- start modify firestore');
   const prod = process.argv[2];
   const projectId = process.env.VITE_FIREBASE_PROJECT_ID;
-  console.log('Generating dump for project', projectId);
+  console.log('Modify DB for project', projectId);
   // Initialize firebase instance & firestore
   if (!prod) {
     const dbHost = process.argv[3];
@@ -27,19 +28,42 @@ const modifyFirestore = async () => {
   const db = admin.firestore();
 
   const runsSnap = await db.collection('runs').get();
+  const runGroupsSnap = await db.collection('run-groups').get();
+  const users = await db.collection('users').get();
 
-  const group = await db.collection('run-groups').add({
-    runIds: runsSnap.docs.map((doc) => doc.id),
-    version: '1',
-    name: 'RB 2022',
-    createdAt: new Date().getTime(),
-  });
-
-  for (const run of runsSnap.docs) {
-    await db.collection('runs').doc(run.id).update({ groupId: group.id });
+  for (const user of users.docs) {
+    for (const group of runGroupsSnap.docs) {
+      for (const run of runsSnap.docs) {
+        await db
+          .collection('users')
+          .doc(user.id)
+          .collection('run-groups')
+          .doc(group.data().id)
+          .collection('runs')
+          .doc(run.data().id)
+          .set({
+            id: run.data().id,
+            pokemon:
+              run?.data()?.players?.find((player) => player.id === user.id)
+                ?.pokemon || [],
+          });
+      }
+    }
   }
 
-  await db.collection('current').add({ currentGroupId: group.id });
+  for (const run of runsSnap.docs) {
+    await db
+      .collection('runs')
+      .doc(run.id)
+      .update({
+        ...run.data(),
+        players: run.data().players.map((player) => ({
+          ...player,
+          name: '',
+          pokemon: [],
+        })),
+      });
+  }
 
   console.log('database modified');
   process.exit(0);
