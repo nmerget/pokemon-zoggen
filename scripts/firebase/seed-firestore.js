@@ -30,6 +30,8 @@ const seedSubCollectionRecursive = async (
 const seedFirestore = async () => {
   console.log('--- start seedFirestore');
   const dumpFile = process.argv[2];
+
+  const prod = process.argv[3];
   if (!dumpFile) {
     console.error('No dump file provided');
     process.exit(1);
@@ -39,11 +41,19 @@ const seedFirestore = async () => {
 
   const projectId = process.env.VITE_FIREBASE_PROJECT_ID || 'pokemon-zoggen';
 
-  process.env.FIRESTORE_EMULATOR_HOST = 'localhost:8080';
-  process.env.FIREBASE_AUTH_EMULATOR_HOST = 'localhost:9099';
-  console.log('Seeding for project', projectId);
-  // Initialize firebase instance & firestore
-  admin.initializeApp({ projectId });
+  if (!prod) {
+    process.env.FIRESTORE_EMULATOR_HOST = 'localhost:8080';
+    process.env.FIREBASE_AUTH_EMULATOR_HOST = 'localhost:9099';
+    admin.initializeApp({ projectId });
+  } else {
+    const serviceAccount = JSON.parse(
+      readFileSync('pokemon-zoggen-firebase-adminsdk.json').toString(),
+    );
+    admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount),
+    });
+  }
+
   const db = admin.firestore();
 
   let seedJson = JSON.parse(readFileSync(dumpFile).toString());
@@ -55,7 +65,7 @@ const seedFirestore = async () => {
   for (const collection of collections.default) {
     await seedSubCollectionRecursive(db, seedJson, collection);
 
-    if (collection.name === 'users') {
+    if (!prod && collection.name === 'users') {
       await admin.auth().importUsers(
         seedJson[collection.name].map((user) => ({
           uid: user.id,
