@@ -9,12 +9,12 @@ jobs:
 
   build:
     uses: ./.github/workflows/01-build.yml
-    needs: [ init ]
+    needs: [init]
     secrets: inherit
 
   deploy:
     uses: ./.github/workflows/03-hosting.yml
     with:
       channelId: live
-    needs: [ build ]
+    needs: [build]
     secrets: inherit

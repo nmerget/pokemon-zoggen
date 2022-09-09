@@ -1,9 +1,7 @@
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import * as React from 'react';
-import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { RootState } from '../../../../app/store';
 import { useMenuItems, useValidUser } from '../../../../app/hooks';
 
 const AppBarDesktopNav = () => {

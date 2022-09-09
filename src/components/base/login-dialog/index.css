@@ -1,0 +1,12 @@
+.google-login {
+  background: url('/images/btn_google_signin_light_normal_web.png') no-repeat;
+}
+.google-login:focus {
+  background: url('/images/btn_google_signin_light_focus_web.png') no-repeat;
+}
+.google-login:disabled {
+  background: url('/images/btn_google_signin_light_disabled_web.png') no-repeat;
+}
+.google-login:active {
+  background: url('/images/btn_google_signin_light_pressed_web.png') no-repeat;
+}

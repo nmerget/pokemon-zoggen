@@ -1,7 +1,5 @@
 import React, { Suspense, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { RootState } from '../../../app/store';
 import { DefaultMenuItems } from '../../../app/constants';
 import Loading from '../../loading';
 import { useValidUser } from '../../../app/hooks';

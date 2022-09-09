@@ -6,8 +6,8 @@ on:
     inputs:
       channelId:
         description:
-          "The ID of the channel to deploy to. If you leave this blank,
-          a preview channel and its ID will be auto-generated per branch or PR."
+          'The ID of the channel to deploy to. If you leave this blank,
+          a preview channel and its ID will be auto-generated per branch or PR.'
         required: false
         type: string
 
@@ -28,7 +28,7 @@ jobs:
 
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: "${{ secrets.GITHUB_TOKEN }}"
-          firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_POKEMON_ZOGGEN }}"
+          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_POKEMON_ZOGGEN }}'
           projectId: pokemon-zoggen
           channelId: ${{ inputs.channelId }}

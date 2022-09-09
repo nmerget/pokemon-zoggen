@@ -35,7 +35,6 @@ jobs:
           path: firebase-image.tar
           key: firebase-image
 
-
       - if: ${{ steps.cache-firebase-image.outputs.cache-hit == 'true' }}
         name: 📥 Load firebase image
         continue-on-error: true
