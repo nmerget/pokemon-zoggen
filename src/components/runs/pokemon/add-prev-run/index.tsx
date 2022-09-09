@@ -19,7 +19,7 @@ const PokemonAddPrevRun = ({ changePokemon }: PokemonAddPrevRunType) => {
 
   const [showProgress, setShowProgress] = useState<boolean>(false);
 
-  if (!currentRun || !runs || runs.length < 1) {
+  if (!currentRun || !runs || runs.length <= 1) {
     return null;
   }
 
