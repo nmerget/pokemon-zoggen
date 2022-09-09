@@ -26,6 +26,7 @@ import {
   useUserRunPokemon,
   useUsers,
 } from '../../../app/hooks';
+import PokemonAddPrevRun from './add-prev-run';
 
 function RunsPokemon() {
   const [tabIndex, setTabIndex] = useState(0);
@@ -180,8 +181,10 @@ function RunsPokemon() {
 
               {selectedUser.id === currentUser.id && editMode && (
                 <>
-                  {(!pokemon ||
-                    pokemon.length < (currentRun?.pokAmount || 6)) && (
+                  {pokemon && pokemon.length === 0 && (
+                    <PokemonAddPrevRun changePokemon={updatePokemon} />
+                  )}
+                  {pokemon && pokemon.length < (currentRun?.pokAmount || 6) && (
                     <PokemonAdd
                       version={currentRun?.version || '1'}
                       addUserPokemon={addUserPokemon}

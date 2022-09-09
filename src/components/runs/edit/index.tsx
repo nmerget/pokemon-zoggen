@@ -90,7 +90,9 @@ function RunsEdit() {
                 onChange={(event) => {
                   setLocalRun({
                     ...localRun,
-                    lvlCap: event.target.value ? Number(event.target.value) : 0,
+                    lvlCap: event.target.value
+                      ? Number(event.target.value)
+                      : undefined,
                   });
                 }}
               />
@@ -104,7 +106,7 @@ function RunsEdit() {
                     ...localRun,
                     pokAmount: event.target.value
                       ? Number(event.target.value)
-                      : 0,
+                      : undefined,
                   });
                 }}
               />
@@ -150,6 +152,11 @@ function RunsEdit() {
                 }
                 className="mx-auto"
                 variant="contained"
+                disabled={
+                  !localRun.name ||
+                  localRun.lvlCap === undefined ||
+                  localRun.pokAmount === undefined
+                }
               >
                 Speichern
               </Button>
