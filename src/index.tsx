@@ -67,6 +67,7 @@ const App = React.lazy(() => import('./App'));
 const LoginSection = React.lazy(
   () => import('./components/main/login-section'),
 );
+const Home = React.lazy(() => import('./components/main/home'));
 const RunsDashboard = React.lazy(() => import('./components/runs/dashboard'));
 const RunsEdit = React.lazy(() => import('./components/runs/edit'));
 
@@ -104,7 +105,7 @@ ReactDOM.render(
                 path="home"
                 element={
                   <Suspense fallback={<Loading />}>
-                    <RunsDashboard />
+                    <Home />
                   </Suspense>
                 }
               />
