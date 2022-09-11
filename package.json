@@ -90,6 +90,7 @@
     "vitest": "0.23.1"
   },
   "dependencies": {
+    "@auroratide/pokemon-types": "^0.1.0",
     "@capacitor-firebase/authentication": "^1.0.0",
     "@capacitor/android": "^4.1.0",
     "@capacitor/app": "^4.0.1",
