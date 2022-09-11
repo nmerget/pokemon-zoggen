@@ -52,7 +52,7 @@ function PokemonShow({ poke, index }: PokemonShowType) {
             <span className="whitespace-nowrap text-md font-bold m-2">
               Moves:
             </span>
-            <div className="flex flex-wrap gap-2 px-4 mb-2">
+            <div className="flex flex-wrap gap-2 px-2 mb-2">
               {foundPoke.moves?.map((move: FbMove, indexMove: number) => (
                 <div
                   key={`foundPoke-${index}-move-${indexMove}`}
