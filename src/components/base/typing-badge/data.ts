@@ -1,10 +1,10 @@
 export type TypingBadgeType = {
   text?: string;
-  type: string;
+  type?: string;
   small?: boolean;
 };
 
-export const getType = (type: string): string => {
+export const getType = (type?: string): string => {
   if (type === '1') {
     return 'normal';
   }

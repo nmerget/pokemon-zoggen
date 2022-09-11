@@ -3,4 +3,5 @@ export type PokemonImageType = {
   speciesId?: string;
   invisible?: boolean;
   alt?: string;
+  icon?: boolean;
 };

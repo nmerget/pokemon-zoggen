@@ -26,7 +26,7 @@ function Main() {
   }, [navigate, validUser, firebaseSelector, DefaultMenuItems]);
 
   return (
-    <main className="flex-auto overflow-auto h-full flex flex-col bg-gray-100 p-2 md:p-4 xl:p-16 lg:p-8">
+    <main className="flex-auto overflow-auto h-full flex flex-col bg-gray-100 p-2 md:p-4">
       <Outlet />
     </main>
   );

@@ -9,8 +9,14 @@ function TypingBadge({ type, text, small }: TypingBadgeType) {
       className={`rounded-full border border-neutral-900 p-0.5 bg-opacity-70
     bg-${typeString}`}
     >
-      <div className={`rounded-full py-0.5 px-2 bg-${typeString}`}>
-        <div className={`text-shadow text-gray-50 ${small ? 'text-xs' : ''}`}>
+      <div
+        className={`flex rounded-full py-0.5 px-0.5 min-w-[40px] bg-${typeString}`}
+      >
+        <div
+          className={`text-shadow text-gray-50 mx-auto ${
+            small ? 'text-xs' : ''
+          }`}
+        >
           {text || (type !== '-1' ? typeString : '---')}
         </div>
       </div>
