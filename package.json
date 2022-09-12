@@ -95,6 +95,6 @@
     "@capacitor/app": "^4.0.1",
     "@capacitor/core": "^4.1.0",
     "@capacitor/dialog": "^4.0.1",
-    "@capacitor/ios": "^4.1.0"
+    "@capacitor/ios": "^4.2.0"
   }
 }
