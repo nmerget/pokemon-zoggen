@@ -1,9 +1,13 @@
-import { MenuItem } from './types';
+import { NavigationItem } from './types';
 
-export const DefaultMenuItems: MenuItem[] = [
+export const DefaultMenuItems: NavigationItem[] = [
   {
     label: 'Startseite',
     link: '/home',
+  },
+  {
+    label: 'Pokemon-Suche',
+    link: '/search',
   },
 ];
 

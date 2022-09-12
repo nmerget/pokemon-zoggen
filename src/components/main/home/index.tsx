@@ -1,6 +1,8 @@
 import { useCurrentUser, useRuns } from '../../../app/hooks';
 import RunDashboardCard from '../../runs/dashboard/card';
 import PokemonPreview from './preview';
+import TextDivider from '../../base/text-divider';
+import React from 'react';
 
 const Home = () => {
   const runs = useRuns();
@@ -18,11 +20,7 @@ const Home = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex justify-center gap-4 p-1">
-        <div className="h-[1px] bg-gray-400 w-16 my-auto" />
-        <span className="text-sm text-gray-400">Aktueller Run</span>
-        <div className="h-[1px] bg-gray-400 w-16 my-auto" />
-      </div>
+      <TextDivider text="Aktueller Run" />
       <div className="flex flex-col md:grid md:grid-cols-2 gap-2">
         {lastRun && <RunDashboardCard run={lastRun} />}
         {currentUser && lastRun && (
