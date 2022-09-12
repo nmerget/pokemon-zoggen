@@ -30,6 +30,7 @@ export type PokemonMove = {
 export type PokemonType = {
   pokemon_id?: string;
   type_id?: string;
+  local_language_id?: string;
   slot?: string;
   name?: string;
 };
