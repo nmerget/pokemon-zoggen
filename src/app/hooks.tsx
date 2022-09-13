@@ -61,7 +61,7 @@ export const useMenuItems = () => {
         ...DefaultMenuItems,
         {
           label: 'Runs',
-          link: `/runs`,
+          link: '/runs',
           items: runGroups.map((group) => ({
             label: group.name || '',
             link: `/runs/${group.id}`,
@@ -284,7 +284,7 @@ export const useValidUser = () => {
     if (firebaseSelector?.profile?.isEmpty === false) {
       setValidUser(true);
     }
-  }, [firebaseSelector]);
+  }, [firebaseSelector?.profile]);
 
   return window.Cypress || validUser;
 };

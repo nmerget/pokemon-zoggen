@@ -73,11 +73,13 @@ export type Pokemon = {
   name?: string;
   evolves_from_species_id?: string;
   evolution_chain_id?: string;
+  order?: string;
+  isBaby?: boolean;
   types?: PokemonType[];
   stats?: PokemonStat[];
   abilities?: PokemonAbility[];
   possibleMoves?: PokemonPossibleMoveType[];
-  evolution?: PokemonEvolution;
+  evolutionType?: PokemonEvolution;
 };
 export type PokemonKey = keyof Pokemon;
 

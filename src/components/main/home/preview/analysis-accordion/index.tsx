@@ -79,11 +79,7 @@ const getAnalysisAcc = (pokemon: PokemonArray): AccordionType => {
 
   const changeSelectedPkm = (pkm: FbPokemon & Pokemon) => {
     if (selectedPokemon?.includes(pkm)) {
-      setSelectedPokemon(
-        selectedPokemon.filter(
-          (p) => p.pokemon_species_id !== pkm.pokemon_species_id,
-        ),
-      );
+      setSelectedPokemon(selectedPokemon.filter((p) => p.id !== pkm.id));
     } else {
       setSelectedPokemon([...(selectedPokemon || []), pkm]);
     }
@@ -104,12 +100,7 @@ const getAnalysisAcc = (pokemon: PokemonArray): AccordionType => {
                 changeSelectedPkm(pkm);
               }}
             >
-              <PokemonImage
-                size={48}
-                speciesId={pkm.pokemon_species_id}
-                icon
-                alt={pkm.name}
-              />
+              <PokemonImage size={48} speciesId={pkm.id} icon alt={pkm.name} />
               {selectedPokemon?.includes(pkm) ? (
                 <CheckIcon
                   className="absolute bottom-0 -right-1 text-green-500"

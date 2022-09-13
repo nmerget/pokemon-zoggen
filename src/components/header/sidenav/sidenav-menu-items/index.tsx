@@ -12,7 +12,7 @@ const SideNavMenuItems = ({
     {menuItems.map((item, index) => (
       <React.Fragment key={`sidenav-${id}-menu-item-${index}`}>
         <ListItem>
-          {item.link ? (
+          {!item.items ? (
             <ListItemButton style={{ padding: 0 }}>
               <NavLink
                 className={({ isActive }) =>

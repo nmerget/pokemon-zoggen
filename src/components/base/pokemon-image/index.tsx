@@ -6,6 +6,7 @@ function PokemonImage({
   invisible,
   alt,
   icon,
+  className,
 }: PokemonImageType) {
   return (
     <img
@@ -13,7 +14,7 @@ function PokemonImage({
         height: `${size}px`,
         width: `${size}px`,
       }}
-      className="object-contain"
+      className={`object-contain ${className || ''}`}
       loading="lazy"
       width={size}
       height={size}

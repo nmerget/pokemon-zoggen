@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from '@mui/material/Link';
 import { Pokemon } from '../../../pokemon/types';
 import { AccordionType } from '../../base/accordion-group/data';
 import PokemonImage from '../../base/pokemon-image';
@@ -13,18 +14,34 @@ const getSearchAcc = (
   summary: (
     <div className="flex">
       {pokemon && <PokemonImage speciesId={pokemon.id} icon size={40} />}
-      <span className="my-auto">
-        #{pokemon?.id} {pokemon?.name}
-      </span>
+      {pokemon && (
+        <span className="my-auto">
+          #{pokemon?.id} {pokemon?.name}
+        </span>
+      )}
     </div>
   ),
   detail: (
-    <PokemonSelect
-      pokemon={POKEMON}
-      onSelectPokemon={(pkm) => {
-        setPokemon(pkm);
-      }}
-    />
+    <div className="flex gap-8 w-full">
+      <PokemonSelect
+        pokemon={POKEMON}
+        value={pokemon}
+        onSelectPokemon={(pkm) => {
+          setPokemon(pkm);
+        }}
+      />
+      {pokemon && (
+        <div className="my-auto">
+          <Link
+            href={`https://pokewiki.de/${pokemon.name}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            PokeWiki
+          </Link>
+        </div>
+      )}
+    </div>
   ),
 });
 

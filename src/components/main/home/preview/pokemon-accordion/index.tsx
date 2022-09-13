@@ -14,7 +14,7 @@ const getPokemonAcc = (
           <div key={`pokemon-preview-${index}`} className="flex flex-col gap-2">
             <PokemonImage
               size={detail ? 48 : 36}
-              speciesId={pkm.pokemon_species_id}
+              speciesId={pkm.id}
               icon
               alt={pkm.name}
             />

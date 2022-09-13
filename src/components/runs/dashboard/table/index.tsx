@@ -5,11 +5,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
-import { useSelector } from 'react-redux';
 import { getPlayerName } from '../../../../app/utils';
 import { RunsDashboardTableType } from './data';
-import { RootState } from '../../../../app/store';
-import { FbRunsPlayers, FirestoreScheme } from '../../../../firebase/types';
+import { FbRunsPlayers } from '../../../../firebase/types';
 import { useUsers } from '../../../../app/hooks';
 
 function RunDashboardTable({ players }: RunsDashboardTableType) {

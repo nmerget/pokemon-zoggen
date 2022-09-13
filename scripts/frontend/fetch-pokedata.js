@@ -16,7 +16,7 @@ const getNamesFromCSV = async (url, langId = '6') => {
 const addGermanTypings = async (germanTypes) => {
   let typings = 'import { PokemonType } from "../pokemon/types";\n';
   typings += `\nconst TYPINGS: PokemonType[] = ${JSON.stringify(
-    germanTypes,
+    germanTypes.map((type) => ({ type_id: type.type_id, name: type.name })),
   )};\n`;
   typings += 'export default TYPINGS;';
   FS.writeFileSync('./src/data/typings.ts', typings);
@@ -66,6 +66,8 @@ const addPokemon = async () => {
         name: poke.name,
         evolves_from_species_id: pokemonSpecies.evolves_from_species_id,
         evolution_chain_id: pokemonSpecies.evolution_chain_id,
+        order: pokemonSpecies.order,
+        isBaby: pokemonSpecies.is_baby === '1',
         types: allPokemonTypes
           .filter((type) => type.pokemon_id === poke.pokemon_species_id)
           .map((type) => ({
