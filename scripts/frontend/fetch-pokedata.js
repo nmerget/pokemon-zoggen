@@ -13,6 +13,15 @@ const getNamesFromCSV = async (url, langId = '6') => {
   return pokemonNamesJson.filter((data) => data.local_language_id === langId);
 };
 
+const addGermanTypings = async (germanTypes) => {
+  let typings = 'import { PokemonType } from "../pokemon/types";\n';
+  typings += `\nconst TYPINGS: PokemonType[] = ${JSON.stringify(
+    germanTypes,
+  )};\n`;
+  typings += 'export default TYPINGS;';
+  FS.writeFileSync('./src/data/typings.ts', typings);
+};
+
 const addPokemon = async () => {
   console.log('Download allPokemon');
   const allPokemon = await getJSONFromCSV(
@@ -43,6 +52,8 @@ const addPokemon = async () => {
   const germanTypes = await getNamesFromCSV(
     'https://raw.githubusercontent.com/PokeAPI/pokeapi/master/data/v2/csv/type_names.csv',
   );
+
+  await addGermanTypings(germanTypes);
 
   let pokemon = 'import { Pokemon } from "../pokemon/types";\n';
   pokemon += `\nconst POKEMON: Pokemon[] = ${JSON.stringify(
