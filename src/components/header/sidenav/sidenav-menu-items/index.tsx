@@ -10,8 +10,8 @@ const SideNavMenuItems = ({
 }: SideNavMenuItemsType): ReactElement => (
   <List>
     {menuItems.map((item, index) => (
-      <>
-        <ListItem key={`sidenav-${id}-menu-item-${index}`}>
+      <React.Fragment key={`sidenav-${id}-menu-item-${index}`}>
+        <ListItem>
           {item.link ? (
             <ListItemButton style={{ padding: 0 }}>
               <NavLink
@@ -33,7 +33,7 @@ const SideNavMenuItems = ({
             menuItems={item.items}
           />
         )}
-      </>
+      </React.Fragment>
     ))}
   </List>
 );

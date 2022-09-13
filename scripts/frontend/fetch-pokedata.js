@@ -14,6 +14,11 @@ const getNamesFromCSV = async (url, langId = '6') => {
 };
 
 const addPokemon = async () => {
+  console.log('Download allPokemon');
+  const allPokemon = await getJSONFromCSV(
+    'https://raw.githubusercontent.com/PokeAPI/pokeapi/master/data/v2/csv/pokemon_species.csv',
+  );
+
   console.log('Download germanPokenames');
   const germanPokenames = await getNamesFromCSV(
     'https://raw.githubusercontent.com/PokeAPI/pokeapi/master/data/v2/csv/pokemon_species_names.csv',
@@ -24,6 +29,16 @@ const addPokemon = async () => {
     'https://raw.githubusercontent.com/PokeAPI/pokeapi/master/data/v2/csv/pokemon_types.csv',
   );
 
+  console.log('Download allPokemonStats');
+  const allPokemonStats = await getJSONFromCSV(
+    'https://raw.githubusercontent.com/PokeAPI/pokeapi/master/data/v2/csv/pokemon_stats.csv',
+  );
+
+  console.log('Download allPokemonAbilities');
+  const allPokemonAbilities = await getJSONFromCSV(
+    'https://raw.githubusercontent.com/PokeAPI/pokeapi/master/data/v2/csv/pokemon_abilities.csv',
+  );
+
   console.log('Download germanTypes');
   const germanTypes = await getNamesFromCSV(
     'https://raw.githubusercontent.com/PokeAPI/pokeapi/master/data/v2/csv/type_names.csv',
@@ -31,19 +46,58 @@ const addPokemon = async () => {
 
   let pokemon = 'import { Pokemon } from "../pokemon/types";\n';
   pokemon += `\nconst POKEMON: Pokemon[] = ${JSON.stringify(
-    germanPokenames.map((poke) => ({
-      ...poke,
-      types: allPokemonTypes
-        .filter((type) => type.pokemon_id === poke.pokemon_species_id)
-        .map((type) => ({
-          ...type,
-          name: germanTypes.find((gType) => gType.type_id === type.type_id)
-            .name,
-        })),
-    })),
+    germanPokenames.map((poke) => {
+      const pokemonSpecies = allPokemon.find(
+        (pkm) => pkm.id === poke.pokemon_species_id,
+      );
+      return {
+        id: poke.pokemon_species_id,
+        name: poke.name,
+        evolves_from_species_id: pokemonSpecies.evolves_from_species_id,
+        evolution_chain_id: pokemonSpecies.evolution_chain_id,
+        types: allPokemonTypes
+          .filter((type) => type.pokemon_id === poke.pokemon_species_id)
+          .map((type) => ({
+            type_id: type.type_id,
+            name: germanTypes.find((gType) => gType.type_id === type.type_id)
+              .name,
+          })),
+        stats: allPokemonStats
+          .filter((type) => type.pokemon_id === poke.pokemon_species_id)
+          .map((stat) => ({
+            base_stat: stat.base_stat,
+            effort: stat.effort,
+          })),
+        abilities: allPokemonAbilities
+          .filter((type) => type.pokemon_id === poke.pokemon_species_id)
+          .map((stat) => ({
+            ability_id: stat.ability_id,
+            is_hidden: stat.is_hidden,
+          })),
+      };
+    }),
   )};\n`;
   pokemon += 'export default POKEMON;';
   FS.writeFileSync('./src/data/pokemon.ts', pokemon);
+};
+
+const addItems = async () => {
+  let items = 'import { PokemonItem } from "../pokemon/types";\n\n';
+
+  console.log('Download germanItems');
+  const germanItemNames = await getNamesFromCSV(
+    'https://raw.githubusercontent.com/PokeAPI/pokeapi/master/data/v2/csv/item_names.csv',
+  );
+  items += `const ITEMS: PokemonItem[] = ${JSON.stringify(
+    germanItemNames.map((item) => ({
+      id: item.item_id,
+      name: item.name,
+    })),
+  )};\n`;
+
+  items += 'export default ITEMS;';
+
+  FS.writeFileSync('./src/data/items.ts', items);
 };
 
 const addMoves = async () => {
@@ -69,6 +123,22 @@ const addMoves = async () => {
   FS.writeFileSync('./src/data/moves.ts', moves);
 };
 
+const addEvolutions = async () => {
+  let evolutions = 'import { PokemonEvolution } from "../pokemon/types";\n\n';
+
+  console.log('Download pokemonEvolutions');
+  const allEvolutions = await getJSONFromCSV(
+    'https://raw.githubusercontent.com/PokeAPI/pokeapi/master/data/v2/csv/pokemon_evolution.csv',
+  );
+  evolutions += `const EVOLUTIONS: PokemonEvolution[] = ${JSON.stringify(
+    allEvolutions,
+  )};\n`;
+
+  evolutions += 'export default EVOLUTIONS;';
+
+  FS.writeFileSync('./src/data/evolutions.ts', evolutions);
+};
+
 const addPokemonPossibleMovesByGen = async (allVersionGroups) => {
   console.log('Download PokemonPossibleMoveType');
   const allPokemonMoves = await getJSONFromCSV(
@@ -83,12 +153,10 @@ const addPokemonPossibleMovesByGen = async (allVersionGroups) => {
     );
     const pokemon = [];
     filteredMovesByVersion.forEach((move) => {
-      let foundPokemon = pokemon.find(
-        (poke) => poke.pokemon_species_id === move.pokemon_id,
-      );
+      let foundPokemon = pokemon.find((poke) => poke.id === move.pokemon_id);
       if (!foundPokemon) {
         foundPokemon = {
-          pokemon_species_id: move.pokemon_id,
+          id: move.pokemon_id,
           possibleMoves: [],
         };
         pokemon.push(foundPokemon);
@@ -129,6 +197,8 @@ const run = async () => {
   );
   await addPokemon();
   await addMoves();
+  await addEvolutions();
+  await addItems();
 
   versionMovesHeader += `\nconst VERSIONS: PokemonVersionType[] = ${JSON.stringify(
     versions,

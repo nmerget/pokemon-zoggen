@@ -9,7 +9,7 @@ export class FbMoveClass {
 export type FbMove = FbMoveClass;
 
 export class FbPokemonClass {
-  pokemon_species_id?: string;
+  id?: string;
   lvl?: number;
   visible?: boolean;
   moves?: FbMove[];

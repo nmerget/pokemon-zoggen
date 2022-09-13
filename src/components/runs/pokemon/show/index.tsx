@@ -8,7 +8,7 @@ import MOVES from '../../../../data/moves';
 
 function PokemonShow({ poke, index }: PokemonShowType) {
   const foundPoke = {
-    ...POKEMON.find((p) => p.pokemon_species_id === poke.pokemon_species_id),
+    ...POKEMON.find((p) => p.id === poke.id),
     ...poke,
   };
   return (
@@ -17,7 +17,7 @@ function PokemonShow({ poke, index }: PokemonShowType) {
         <div className="flex flex-wrap gap-4">
           <PokemonImage
             size={64}
-            speciesId={foundPoke.pokemon_species_id}
+            speciesId={foundPoke.id}
             alt={foundPoke.name}
             invisible={!foundPoke.visible}
           />

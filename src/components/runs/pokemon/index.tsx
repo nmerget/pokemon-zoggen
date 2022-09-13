@@ -137,7 +137,7 @@ function RunsPokemon() {
 
   const deleteUserPokemon = (poke: FbPokemon) => {
     const changePokemon = pokemon
-      ? pokemon.filter((p) => p.pokemon_species_id !== poke.pokemon_species_id)
+      ? pokemon.filter((p) => p.id !== poke.id)
       : [];
     updatePokemon(changePokemon);
   };
@@ -193,7 +193,7 @@ function RunsPokemon() {
                   {pokemon &&
                     pokemon.map((poke: FbPokemon, index) => (
                       <PokemonEdit
-                        key={`pokemon-${index}-${poke.pokemon_species_id}`}
+                        key={`pokemon-${index}-${poke.id}`}
                         poke={poke}
                         index={index}
                         updateUserPokemon={updateUserPokemon}

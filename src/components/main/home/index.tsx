@@ -1,8 +1,8 @@
+import React from 'react';
 import { useCurrentUser, useRuns } from '../../../app/hooks';
 import RunDashboardCard from '../../runs/dashboard/card';
 import PokemonPreview from './preview';
 import TextDivider from '../../base/text-divider';
-import React from 'react';
 
 const Home = () => {
   const runs = useRuns();

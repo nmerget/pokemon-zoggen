@@ -30,11 +30,7 @@ const EditGeneral = ({
         title="Pokemon löschen?"
         message="Willst du das Pokemon aus diesem Run löschen?"
       />
-      <PokemonImage
-        size={56}
-        speciesId={poke.pokemon_species_id}
-        alt={poke.name}
-      />
+      <PokemonImage size={56} speciesId={poke.id} alt={poke.name} />
 
       <div className="flex flex-col">
         <span className="whitespace-nowrap text-lg font-bold my-auto md:basis-1/5">

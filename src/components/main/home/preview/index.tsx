@@ -19,7 +19,7 @@ const PokemonPreview = ({ currentUser, run }: PokemonPreviewType) => {
     if (userRunPokemon) {
       const changedPokemon = userRunPokemon.map((pkm) => ({
         ...pkm,
-        ...POKEMON.find((p) => p.pokemon_species_id === pkm.pokemon_species_id),
+        ...POKEMON.find((p) => p.id === pkm.id),
       }));
       setPokemon(changedPokemon);
       const tMap: any[] = [];
@@ -50,11 +50,7 @@ const PokemonPreview = ({ currentUser, run }: PokemonPreviewType) => {
               key={`pokemon-preview-${index}`}
               className="flex flex-col gap-2"
             >
-              <PokemonImage
-                size={detail ? 48 : 40}
-                speciesId={pkm.pokemon_species_id}
-                icon
-              />
+              <PokemonImage size={detail ? 48 : 40} speciesId={pkm.id} icon />
               {detail && (
                 <>
                   <span className="rounded-full px-3 py-1.5 bg-green-100 text-green-600 text-xs mx-auto">

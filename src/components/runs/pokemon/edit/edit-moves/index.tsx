@@ -25,7 +25,7 @@ const EditMoves = ({
   useEffect(() => {
     if (possibleMovesByVersion) {
       const foundMoves = possibleMovesByVersion?.find(
-        (pkm) => pkm.pokemon_species_id === poke.pokemon_species_id,
+        (pkm) => pkm.id === poke.id,
       );
 
       if (foundMoves?.possibleMoves) {
