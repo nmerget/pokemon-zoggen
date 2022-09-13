@@ -3,8 +3,14 @@ import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { AccordionGroupType, AccordionType } from './data';
 
-const AccordionGroup = ({ id, accordions }: AccordionGroupType) => {
-  const [panel, setPanel] = useState<string | undefined>();
+const AccordionGroup = ({
+  id,
+  accordions,
+  openStartIndex,
+}: AccordionGroupType) => {
+  const [panel, setPanel] = useState<string | undefined>(
+    openStartIndex ? `${id}-accordion-${openStartIndex}` : undefined,
+  );
 
   if (!accordions || accordions.length === 0) {
     return null;

@@ -1,12 +1,4 @@
-import {
-  Chip,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Paper,
-  Select,
-  SelectChangeEvent,
-} from '@mui/material';
+import { Chip, Paper } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import React, { useState } from 'react';
 import { useFirestore } from 'react-redux-firebase';
@@ -16,18 +8,14 @@ import {
   FIREBASE_COLLECTION_RUN_GROUPS,
 } from '../../app/constants';
 import AlertDialog from '../base/alert-dialog';
-import VERSIONS from '../../data/versions';
-import { PokemonVersionType } from '../../pokemon/types';
 import addNewRunGroup from '../../firebase/methods/add/add-new-run-group';
 import addNewRun from '../../firebase/methods/add/add-new-run';
 import { useCurrent, useRunGroups, useRuns, useUsers } from '../../app/hooks';
+import VersionSelect from '../base/version-select';
 
 const Admin = () => {
   const [open, setOpen] = useState<boolean>(false);
   const [version, setVersion] = useState<string>('');
-  const handleChange = (event: SelectChangeEvent) => {
-    setVersion(event.target.value);
-  };
   const firestore = useFirestore();
 
   const groups = useRunGroups();
@@ -120,26 +108,7 @@ const Admin = () => {
         }}
         title="Version auswählen"
         content={
-          <FormControl fullWidth>
-            <InputLabel id="label-version">Version</InputLabel>
-            <Select
-              labelId="label-version"
-              id="select-version"
-              value={version}
-              label="Age"
-              onChange={handleChange}
-            >
-              {VERSIONS.map((v: PokemonVersionType) => (
-                <MenuItem
-                  id={`menu-item-version-${v.version}`}
-                  key={v.version}
-                  value={v.version}
-                >
-                  {v.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <VersionSelect version={version} onChangeVersion={setVersion} />
         }
       />
       <div className="w-full flex">

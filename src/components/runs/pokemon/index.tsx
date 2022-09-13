@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import ListIcon from '@mui/icons-material/List';
 
 import EditIcon from '@mui/icons-material/Edit';
-import { getPlayerName } from '../../../app/utils';
+import { fetchMovesByVersion, getPlayerName } from '../../../app/utils';
 import PokemonShow from './show';
 import PokemonAdd from './add';
 import PokemonEdit from './edit';
@@ -69,14 +69,9 @@ function RunsPokemon() {
   useEffect(() => {
     if (editMode && currentRun && !possibleMovesByVersion) {
       const fetchData = async () => {
-        const foundVersion = VERSIONS.find(
-          (v) => v.version === currentRun.version,
+        setPossibleMovesByVersion(
+          await fetchMovesByVersion(currentRun.version || ''),
         );
-        if (foundVersion?.possibleMovesFileName) {
-          const res = await fetch(foundVersion.possibleMovesFileName);
-          const data = await res.json();
-          setPossibleMovesByVersion(data);
-        }
       };
 
       // eslint-disable-next-line no-console
@@ -137,7 +132,7 @@ function RunsPokemon() {
 
   const deleteUserPokemon = (poke: FbPokemon) => {
     const changePokemon = pokemon
-      ? pokemon.filter((p) => p.id !== poke.id)
+      ? pokemon.filter((p) => p.pokemon_species_id !== poke.pokemon_species_id)
       : [];
     updatePokemon(changePokemon);
   };
@@ -193,7 +188,7 @@ function RunsPokemon() {
                   {pokemon &&
                     pokemon.map((poke: FbPokemon, index) => (
                       <PokemonEdit
-                        key={`pokemon-${index}-${poke.id}`}
+                        key={`pokemon-${index}-${poke.pokemon_species_id}`}
                         poke={poke}
                         index={index}
                         updateUserPokemon={updateUserPokemon}

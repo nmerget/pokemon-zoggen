@@ -1,4 +1,6 @@
 import { FbRun, FbUser } from '../firebase/types';
+import VERSIONS from '../data/versions';
+import { Pokemon } from '../pokemon/types';
 
 export const getPlayerName = (name?: string): string => {
   if (!name) {
@@ -49,4 +51,21 @@ export const getGlobalStatsString = (
     }
   }
   return 'Keine Stats';
+};
+
+export const fetchMovesByVersion = async (
+  version: string,
+): Promise<Pokemon[]> => {
+  const foundVersion = VERSIONS.find((v) => v.version === version);
+  if (foundVersion?.possibleMovesFileName) {
+    try {
+      const res = await fetch(foundVersion.possibleMovesFileName);
+      return await res.json();
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e);
+    }
+  }
+
+  return [];
 };

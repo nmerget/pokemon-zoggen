@@ -187,7 +187,7 @@ const addPokemonPossibleMovesByGen = async (allVersionGroups) => {
     versions.push({
       version: version.id,
       name: version.identifier,
-      pokemonIds: pokemon?.map((poke) => poke.pokemon_species_id) || [],
+      pokemonIds: pokemon?.map((poke) => poke.id) || [],
       possibleMovesFileName: fileName,
     });
   });

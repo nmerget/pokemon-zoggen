@@ -8,7 +8,7 @@ import MOVES from '../../../../data/moves';
 
 function PokemonShow({ poke, index }: PokemonShowType) {
   const foundPoke = {
-    ...POKEMON.find((p) => p.id === poke.id),
+    ...POKEMON.find((p) => p.id === poke.pokemon_species_id),
     ...poke,
   };
   return (
@@ -30,9 +30,9 @@ function PokemonShow({ poke, index }: PokemonShowType) {
             </span>
             {foundPoke.visible && (
               <div className="flex gap-1">
-                {foundPoke.types?.map((type: PokemonType) => (
+                {foundPoke.types?.map((type: PokemonType, i: number) => (
                   <TypingBadge
-                    key={type.slot}
+                    key={i}
                     type={type.type_id || '-1'}
                     text={type.name}
                     small

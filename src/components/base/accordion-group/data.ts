@@ -9,4 +9,5 @@ export type AccordionType = {
 export type AccordionGroupType = {
   id: string;
   accordions: AccordionType[];
+  openStartIndex?: number;
 };
