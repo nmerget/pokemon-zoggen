@@ -12,7 +12,7 @@ function LoginSection() {
 
   useEffect(() => {
     if (validUser) {
-      navigate(DefaultMenuItems[0].link);
+      navigate(DefaultMenuItems[0].link || '/home');
     }
   }, [navigate, validUser, DefaultMenuItems]);
 

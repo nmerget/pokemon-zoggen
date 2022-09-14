@@ -20,7 +20,7 @@ function Main() {
       if (!validUser) {
         navigate('/login');
       } else if (location.pathname === '/') {
-        navigate(DefaultMenuItems[0].link);
+        navigate(DefaultMenuItems[0].link || '/home');
       }
     }
   }, [navigate, validUser, firebaseSelector, DefaultMenuItems]);

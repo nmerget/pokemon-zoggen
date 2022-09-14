@@ -44,13 +44,13 @@ const getAttacksAcc = (
     ),
     detail: (
       <div className="flex flex-col w-full">
-        <div className="bg-white w-full h-4 sticky -top-2" />
+        <div className="bg-white w-full h-4 md:h-8 sticky -top-2 md:-top-4" />
         <Table stickyHeader size="small">
           <TableHead>
             <TableRow>
               {tableHeaders.map((header, index) => (
                 <TableCell
-                  align={index > 3 ? 'center' : 'inherit'}
+                  align={index !== 1 ? 'center' : 'inherit'}
                   key={header.toLowerCase()}
                   sx={{ padding: '2px' }}
                 >
@@ -65,7 +65,7 @@ const getAttacksAcc = (
                 key={`${row.name}-${index}`}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell sx={{ padding: '2px' }}>
+                <TableCell align="center" sx={{ padding: '2px' }}>
                   <MoveMethodTag possibleMove={row} />
                 </TableCell>
                 <TableCell sx={{ padding: '2px' }}>
@@ -78,13 +78,14 @@ const getAttacksAcc = (
                     {row.name}
                   </Link>
                 </TableCell>
-                <TableCell sx={{ padding: '2px' }}>
-                  <div className="flex">
+                <TableCell align="center" sx={{ padding: '2px' }}>
+                  <div className="flex w-full justify-center">
                     <TypingBadge type={row.type_id} small />
                   </div>
                 </TableCell>
-                <TableCell sx={{ padding: '2px' }}>
+                <TableCell align="center" sx={{ padding: '2px' }}>
                   <img
+                    className="mx-auto"
                     src={`/images/${getStatusImage(row.damage_class_id)}`}
                     alt="damage-class"
                   />

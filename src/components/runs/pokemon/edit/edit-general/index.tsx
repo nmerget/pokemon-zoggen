@@ -38,9 +38,9 @@ const EditGeneral = ({
         </span>
 
         <div className="flex gap-1">
-          {poke.types?.map((type) => (
+          {poke.types?.map((type, i) => (
             <TypingBadge
-              key={type.slot}
+              key={`typing-${i}`}
               type={type.type_id || '-1'}
               text={type.name}
               small

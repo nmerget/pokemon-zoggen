@@ -118,7 +118,6 @@ function RunsPokemon() {
         moves: [{}, {}, {}, {}],
       },
     ];
-    console.log(changePokemon);
     updatePokemon(changePokemon);
   };
 
