@@ -48,8 +48,12 @@ const getAttacksAcc = (
         <Table stickyHeader size="small">
           <TableHead>
             <TableRow>
-              {tableHeaders.map((header) => (
-                <TableCell key={header.toLowerCase()} sx={{ padding: '2px' }}>
+              {tableHeaders.map((header, index) => (
+                <TableCell
+                  align={index > 3 ? 'center' : 'inherit'}
+                  key={header.toLowerCase()}
+                  sx={{ padding: '2px' }}
+                >
                   <span className="font-bold text-sm">{header}</span>
                 </TableCell>
               ))}

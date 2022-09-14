@@ -17,10 +17,11 @@ const AccordionGroup = ({
   }
 
   return (
-    <div>
+    <div id="accordion">
       {accordions.map((accordion: AccordionType, index: number) => (
         <Accordion
           expanded={panel === `${id}-accordion-${index}`}
+          id={`${id}-accordion-${index}`}
           key={`${id}-accordion-${index}`}
           onChange={() => {
             const accordionId = `${id}-accordion-${index}`;
@@ -33,7 +34,10 @@ const AccordionGroup = ({
               {panel !== `${id}-accordion-${index}` && accordion.summary}
             </div>
           </AccordionSummary>
-          <AccordionDetails className="flex">
+          <AccordionDetails
+            id={`${id}-accordion-${index}-detail`}
+            className="flex"
+          >
             {accordion.detail}
           </AccordionDetails>
         </Accordion>

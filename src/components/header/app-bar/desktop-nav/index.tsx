@@ -43,6 +43,7 @@ const AppBarDesktopNav = () => {
           {menuItems &&
             menuItems.map((item, index) => (
               <Button
+                id={`main-menu-item-${index}`}
                 key={`main-menu-item-${index}`}
                 sx={{
                   my: 2,
@@ -77,9 +78,9 @@ const AppBarDesktopNav = () => {
         open={Boolean(anchor)}
         onClose={() => setAnchor(null)}
       >
-        {innerMenuItems.map((innerItem: NavigationItem) => (
+        {innerMenuItems.map((innerItem: NavigationItem, index: number) => (
           <MenuItem
-            id={`nav-item-${innerItem.label.toLowerCase()}`}
+            id={`sub-nav-item-${index}`}
             key={`nav-item-${innerItem.label.toLowerCase()}`}
             onClick={() => {
               setAnchor(null);

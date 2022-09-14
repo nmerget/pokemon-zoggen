@@ -20,7 +20,7 @@ const getPokemonAcc = (
             />
             {detail && (
               <>
-                <span className="rounded-full px-3 py-1.5 bg-green-100 text-green-600 text-xs mx-auto">
+                <span className="pkm-lvl rounded-full px-3 py-1.5 bg-green-100 text-green-600 text-xs mx-auto">
                   {pkm.lvl}
                 </span>
                 {pkm.types?.map((type: PokemonType, tIndex: number) => (

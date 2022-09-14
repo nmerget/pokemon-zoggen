@@ -18,6 +18,7 @@ function PokemonImage({
       loading="lazy"
       width={size}
       height={size}
+      id={`pkm-img-${speciesId}`}
       src={
         invisible || !speciesId
           ? '/images/0.png'

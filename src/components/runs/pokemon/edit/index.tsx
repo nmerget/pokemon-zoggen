@@ -13,7 +13,7 @@ function PokemonEdit({
   possibleMovesByVersion,
 }: PokemonEditType) {
   const foundPoke: Pokemon & FbPokemon = {
-    ...POKEMON.find((p) => p.id === poke.id),
+    ...POKEMON.find((p) => p.id === poke.pokemon_species_id),
     ...poke,
   };
 

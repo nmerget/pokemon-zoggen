@@ -1,0 +1,91 @@
+{
+  "runs": [
+    {
+      "id": "0meutudY4YzKjM8GsCuf",
+      "createdAt": 1661892300392,
+      "players": [
+        { "wins": [], "id": "0LkyfKRyXQlwMJzme0cxYE8Zvni8" },
+        { "wins": [], "id": "bO8xJ8muIS0FrcYRcnN1OSUMysjf" }
+      ],
+      "groupId": "0MexwtfJItDAM0bYxKfz",
+      "name": "New Run",
+      "pokAmount": 3,
+      "lvlCap": 15,
+      "version": "1"
+    }
+  ],
+  "users": [
+    {
+      "id": "0LkyfKRyXQlwMJzme0cxYE8Zvni8",
+      "name": "Admin Adminson",
+      "admin": true,
+      "run-groups": [
+        {
+          "id": "0MexwtfJItDAM0bYxKfz",
+          "runs": [
+            {
+              "id": "0meutudY4YzKjM8GsCuf",
+              "pokemon": [
+                {
+                  "visible": true,
+                  "lvl": 20,
+                  "moves": [
+                    { "visible": true, "move_id": "33" },
+                    { "visible": true, "move_id": "33" },
+                    { "visible": true, "move_id": "33" },
+                    { "visible": true, "move_id": "33" }
+                  ],
+                  "pokemon_species_id": "1"
+                },
+                {
+                  "visible": true,
+                  "lvl": 20,
+                  "moves": [
+                    { "visible": true, "move_id": "10" },
+                    { "visible": true, "move_id": "10" },
+                    { "visible": true, "move_id": "10" },
+                    { "visible": true, "move_id": "10" }
+                  ],
+                  "pokemon_species_id": "4"
+                },
+                {
+                  "visible": true,
+                  "lvl": 20,
+                  "moves": [
+                    { "visible": true, "move_id": "33" },
+                    { "visible": true, "move_id": "33" },
+                    { "visible": true, "move_id": "33" },
+                    { "visible": true, "move_id": "33" }
+                  ],
+                  "pokemon_species_id": "2"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bO8xJ8muIS0FrcYRcnN1OSUMysjf",
+      "name": "User Userson",
+      "admin": false,
+      "run-groups": [
+        {
+          "id": "0MexwtfJItDAM0bYxKfz",
+          "runs": [{ "id": "0meutudY4YzKjM8GsCuf", "pokemon": [] }]
+        }
+      ]
+    }
+  ],
+  "current": [
+    { "id": "GBCHAmZKsBqtpQi5iCFf", "currentGroupId": "0MexwtfJItDAM0bYxKfz" }
+  ],
+  "run-groups": [
+    {
+      "id": "0MexwtfJItDAM0bYxKfz",
+      "createdAt": 1661892533713,
+      "name": "New Group Cypress",
+      "version": "1"
+    }
+  ]
+}

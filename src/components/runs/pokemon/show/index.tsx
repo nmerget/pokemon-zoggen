@@ -42,7 +42,7 @@ function PokemonShow({ poke, index }: PokemonShowType) {
             )}
           </div>
 
-          <span className="rounded-full ml-auto my-auto px-3 py-1.5 bg-green-100 text-green-600">
+          <span className="pkm-show-lvl rounded-full ml-auto my-auto px-3 py-1.5 bg-green-100 text-green-600">
             Lvl: {foundPoke.visible ? foundPoke.lvl : '???'}
           </span>
         </div>

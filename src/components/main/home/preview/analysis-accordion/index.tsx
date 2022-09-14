@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import {
   defensiveMultipliers,
   PokemonType,
@@ -24,43 +25,77 @@ type TypingMedian = {
 
 type PokemonArray = (FbPokemon & Pokemon)[] | undefined;
 
-const calculateTypingMedian = (pokemon: PokemonArray): TypingMedian[] => {
-  let analysis: TypeMultipliers | undefined;
-  const medians: TypingMedian[] = [];
-
+const calculateAnalysis = (pokemon: PokemonArray): TypeMultipliers[] => {
+  const analysis: TypeMultipliers[] = [];
   pokemon?.forEach((pkm) => {
-    const pkmTypes: PokemonType[] =
-      (pkm.types?.map((type) => {
-        const result = getType(type.type_id);
+    const pkmTypes: PokemonType[] = pkm.types?.map((type) => {
+      const result = getType(type.type_id);
 
-        if (result === 'plant') {
-          return 'grass';
-        }
-        if (result === 'psycho') {
-          return 'psychic';
-        }
-        return result;
-      }) as PokemonType[]) || [];
-    const multiplier = defensiveMultipliers(pkmTypes);
-    if (!analysis) {
-      analysis = multiplier;
-    } else {
-      Object.keys(multiplier).forEach((key) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        analysis[key] += multiplier[key];
-      });
+      if (result === 'plant') {
+        return 'grass';
+      }
+      if (result === 'psycho') {
+        return 'psychic';
+      }
+      return result;
+    }) as PokemonType[];
+    if (pkmTypes?.length > 0) {
+      analysis.push(defensiveMultipliers([...pkmTypes]));
     }
   });
+  return analysis;
+};
 
-  if (analysis && pokemon && pokemon.length > 0) {
+const calculateTypingMedian = (
+  selectedPokemon: number[],
+  multipliers: TypeMultipliers[],
+): TypingMedian[] => {
+  const medians: TypingMedian[] = [];
+  const analysis: TypeMultipliers = {
+    normal: 0,
+    dark: 0,
+    fighting: 0,
+    flying: 0,
+    poison: 0,
+    ground: 0,
+    rock: 0,
+    bug: 0,
+    ghost: 0,
+    steel: 0,
+    fire: 0,
+    water: 0,
+    grass: 0,
+    electric: 0,
+    psychic: 0,
+    ice: 0,
+    dragon: 0,
+    fairy: 0,
+  };
+
+  selectedPokemon.forEach((index: number) => {
+    Object.keys(multipliers[index]).forEach((key) => {
+      // @ts-ignore
+      const factor = multipliers[index][key];
+      // @ts-ignore
+      analysis[key] +=
+        factor === 1
+          ? 0
+          : factor === 0
+          ? -4
+          : factor < 1
+          ? -1 / factor
+          : factor;
+    });
+  });
+
+  if (analysis) {
     Object.keys(analysis).forEach((key) => {
       medians.push({
         id: getType(key),
         typing: key,
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        median: Number(Number(analysis[key] - pokemon.length + 1).toFixed(2)),
+        median:
+          // @ts-ignore
+          Number(analysis[key]),
       });
     });
   }
@@ -69,19 +104,21 @@ const calculateTypingMedian = (pokemon: PokemonArray): TypingMedian[] => {
 };
 
 const getAnalysisAcc = (pokemon: PokemonArray): AccordionType => {
-  const [selectedPokemon, setSelectedPokemon] = useState<PokemonArray>(pokemon);
+  const [selectedPokemon, setSelectedPokemon] = useState<number[]>();
+  const [analysis, setAnalysis] = useState<TypeMultipliers[]>();
 
   useEffect(() => {
     if (pokemon) {
-      setSelectedPokemon(pokemon);
+      setSelectedPokemon(Array.from({ length: pokemon.length }, (v, i) => i));
+      setAnalysis(calculateAnalysis(pokemon));
     }
   }, [pokemon]);
 
-  const changeSelectedPkm = (pkm: FbPokemon & Pokemon) => {
-    if (selectedPokemon?.includes(pkm)) {
-      setSelectedPokemon(selectedPokemon.filter((p) => p.id !== pkm.id));
+  const changeSelectedPkm = (index: number) => {
+    if (selectedPokemon?.includes(index)) {
+      setSelectedPokemon(selectedPokemon.filter((i) => i !== index));
     } else {
-      setSelectedPokemon([...(selectedPokemon || []), pkm]);
+      setSelectedPokemon([...(selectedPokemon || []), index]);
     }
   };
 
@@ -97,11 +134,11 @@ const getAnalysisAcc = (pokemon: PokemonArray): AccordionType => {
               key={`pokemon-preview-${index}`}
               className="flex relative"
               onClick={() => {
-                changeSelectedPkm(pkm);
+                changeSelectedPkm(index);
               }}
             >
               <PokemonImage size={48} speciesId={pkm.id} icon alt={pkm.name} />
-              {selectedPokemon?.includes(pkm) ? (
+              {selectedPokemon?.includes(index) ? (
                 <CheckIcon
                   className="absolute bottom-0 -right-1 text-green-500"
                   fontSize="small"
@@ -116,27 +153,28 @@ const getAnalysisAcc = (pokemon: PokemonArray): AccordionType => {
           ))}
         </div>
         <div className="grid grid-cols-3 lg:grid-cols-4">
-          {calculateTypingMedian(selectedPokemon).map(
-            (type: TypingMedian, index: number) => (
-              <div key={`type-median-${index}`} className="flex gap-2 p-2">
-                <span
-                  className={`w-12 ${
-                    type.median > 2
-                      ? 'text-red-500'
-                      : type.median > 1
-                      ? 'text-yellow-500'
-                      : type.median < 1
-                      ? 'text-green-600'
-                      : ''
-                  }`}
-                >
-                  {type.median >= 0 ? '+' : ''}
-                  {type.median.toFixed(2)}
-                </span>
-                <TypingBadge type={type.id} small />
-              </div>
-            ),
-          )}
+          {selectedPokemon &&
+            analysis &&
+            calculateTypingMedian(selectedPokemon, analysis).map(
+              (type: TypingMedian, index: number) => (
+                <div key={`type-median-${index}`} className="flex gap-2 p-2">
+                  <span
+                    className={`w-12 ${
+                      type.median > 2
+                        ? 'text-red-500'
+                        : type.median > 1
+                        ? 'text-yellow-500'
+                        : type.median < 1
+                        ? 'text-green-600'
+                        : ''
+                    } ${type.median >= 0 && 'pl-1.5'}`}
+                  >
+                    {type.median.toFixed(0)}
+                  </span>
+                  <TypingBadge type={type.id} small />
+                </div>
+              ),
+            )}
         </div>
       </div>
     ) : (
