@@ -1,6 +1,8 @@
 context('Search', () => {
   it('Init', () => {
-    cy.visit('/search');
+    cy.visit('/');
+    cy.get('#main-menu-item-1').click();
+    cy.location('pathname', { timeout: 10000 }).should('contain', '/search');
   });
 
   const searchPokemon = (pkm, imgIds) => {
