@@ -63,7 +63,7 @@ function RunsEdit() {
 
       {localRun && (
         <div className="flex flex-col md:flex-row space-y-4">
-          <div className="md:w-1/2">
+          <div id="edit-pokemon-container" className="md:w-1/2">
             <RunsPokemon />
           </div>
           {admin && (

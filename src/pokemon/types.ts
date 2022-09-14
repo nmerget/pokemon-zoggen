@@ -5,6 +5,11 @@ export type PokemonPossibleMoveType = {
   order?: string;
 };
 
+export type PokemonItem = {
+  id?: string;
+  name?: string;
+};
+
 export type PokemonMove = {
   id?: string;
   name?: string;
@@ -27,22 +32,54 @@ export type PokemonMove = {
   possibleMoves?: PokemonPossibleMoveType[];
 };
 
+export type PokemonEvolution = {
+  id?: string;
+  evolved_species_id?: string;
+  evolution_trigger_id?: string;
+  trigger_item_id?: string;
+  minimum_level?: string;
+  gender_id?: string;
+  location_id?: string;
+  held_item_id?: string;
+  time_of_day?: string;
+  known_move_id?: string;
+  known_move_type_id?: string;
+  minimum_happiness?: string;
+  minimum_beauty?: string;
+  minimum_affection?: string;
+  relative_physical_stats?: string;
+  party_species_id?: string;
+  party_type_id?: string;
+  trade_species_id?: string;
+  needs_overworld_rain?: string;
+  turn_upside_down?: string;
+};
+
 export type PokemonType = {
-  pokemon_id?: string;
   type_id?: string;
-  local_language_id?: string;
-  slot?: string;
   name?: string;
+};
+export type PokemonStat = {
+  base_stat?: string;
+  effort?: string;
+};
+export type PokemonAbility = {
+  ability_id?: string;
+  is_hidden?: string;
 };
 
 export type Pokemon = {
-  pokemon_id?: string;
-  pokemon_species_id?: string;
+  id?: string;
   name?: string;
-  local_language_id?: string;
-  genus?: string;
+  evolves_from_species_id?: string;
+  evolution_chain_id?: string;
+  order?: string;
+  isBaby?: boolean;
   types?: PokemonType[];
+  stats?: PokemonStat[];
+  abilities?: PokemonAbility[];
   possibleMoves?: PokemonPossibleMoveType[];
+  evolutionType?: PokemonEvolution;
 };
 export type PokemonKey = keyof Pokemon;
 

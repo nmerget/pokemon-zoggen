@@ -19,7 +19,7 @@ const PokemonPreview = ({ currentUser, run }: PokemonPreviewType) => {
     if (userRunPokemon) {
       const changedPokemon = userRunPokemon.map((pkm) => ({
         ...pkm,
-        ...POKEMON.find((p) => p.pokemon_species_id === pkm.pokemon_species_id),
+        ...POKEMON.find((p) => p.id === pkm.pokemon_species_id),
       }));
       setPokemon(changedPokemon);
       const tMap: any[] = [];

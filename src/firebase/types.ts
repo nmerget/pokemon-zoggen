@@ -8,14 +8,12 @@ export class FbMoveClass {
 
 export type FbMove = FbMoveClass;
 
-export class FbPokemonClass {
+export type FbPokemon = {
   pokemon_species_id?: string;
   lvl?: number;
   visible?: boolean;
   moves?: FbMove[];
-}
-
-export type FbPokemon = FbPokemonClass;
+};
 
 export type FbRunsPlayers = {
   id?: string;

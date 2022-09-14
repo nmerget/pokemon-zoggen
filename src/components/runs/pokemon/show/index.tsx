@@ -8,7 +8,7 @@ import MOVES from '../../../../data/moves';
 
 function PokemonShow({ poke, index }: PokemonShowType) {
   const foundPoke = {
-    ...POKEMON.find((p) => p.pokemon_species_id === poke.pokemon_species_id),
+    ...POKEMON.find((p) => p.id === poke.pokemon_species_id),
     ...poke,
   };
   return (
@@ -17,7 +17,7 @@ function PokemonShow({ poke, index }: PokemonShowType) {
         <div className="flex flex-wrap gap-4">
           <PokemonImage
             size={64}
-            speciesId={foundPoke.pokemon_species_id}
+            speciesId={foundPoke.id}
             alt={foundPoke.name}
             invisible={!foundPoke.visible}
           />
@@ -30,9 +30,9 @@ function PokemonShow({ poke, index }: PokemonShowType) {
             </span>
             {foundPoke.visible && (
               <div className="flex gap-1">
-                {foundPoke.types?.map((type: PokemonType) => (
+                {foundPoke.types?.map((type: PokemonType, i: number) => (
                   <TypingBadge
-                    key={type.slot}
+                    key={i}
                     type={type.type_id || '-1'}
                     text={type.name}
                     small
@@ -42,7 +42,7 @@ function PokemonShow({ poke, index }: PokemonShowType) {
             )}
           </div>
 
-          <span className="rounded-full ml-auto my-auto px-3 py-1.5 bg-green-100 text-green-600">
+          <span className="pkm-show-lvl rounded-full ml-auto my-auto px-3 py-1.5 bg-green-100 text-green-600">
             Lvl: {foundPoke.visible ? foundPoke.lvl : '???'}
           </span>
         </div>

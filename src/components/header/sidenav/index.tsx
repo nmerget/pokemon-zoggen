@@ -1,18 +1,10 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { NavLink } from 'react-router-dom';
-import {
-  Box,
-  Divider,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  SwipeableDrawer,
-} from '@mui/material';
+import { Box, Divider, SwipeableDrawer } from '@mui/material';
 import { toggleMenu } from '../../../features/local/localSlice';
 import AppBarUserMenu from '../app-bar/user-menu';
 import { useMenuItems, useValidUser } from '../../../app/hooks';
+import SideNavMenuItems from './sidenav-menu-items';
 
 const SideNav = () => {
   const dispatch = useDispatch();
@@ -33,24 +25,9 @@ const SideNav = () => {
           <AppBarUserMenu />
         </div>
         <Divider />
-        <List>
-          {validUser &&
-            menuItems &&
-            menuItems.map((item, index) => (
-              <ListItem key={`sidenav-menu-item-${index}`}>
-                <ListItemButton>
-                  <NavLink
-                    className={({ isActive }) =>
-                      `${isActive ? 'border-b-2 border-blue-600' : ''}`
-                    }
-                    to={item.link}
-                  >
-                    <ListItemText>{item.label}</ListItemText>
-                  </NavLink>
-                </ListItemButton>
-              </ListItem>
-            ))}
-        </List>
+        {validUser && menuItems && (
+          <SideNavMenuItems id="" menuItems={menuItems} />
+        )}
       </Box>
     </SwipeableDrawer>
   );

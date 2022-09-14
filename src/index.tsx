@@ -68,6 +68,7 @@ const LoginSection = React.lazy(
   () => import('./components/main/login-section'),
 );
 const Home = React.lazy(() => import('./components/main/home'));
+const PokemonSearch = React.lazy(() => import('./components/pokemon-search'));
 const RunsDashboard = React.lazy(() => import('./components/runs/dashboard'));
 const RunsEdit = React.lazy(() => import('./components/runs/edit'));
 
@@ -98,6 +99,14 @@ ReactDOM.render(
                 element={
                   <Suspense fallback={<Loading />}>
                     <Admin />
+                  </Suspense>
+                }
+              />
+              <Route
+                path="search"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <PokemonSearch />
                   </Suspense>
                 }
               />

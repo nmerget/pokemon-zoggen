@@ -16,7 +16,7 @@ function TypingBadge({ type, text, small }: TypingBadgeType) {
         className={`flex rounded-full py-0.5 px-0.5 min-w-[40px] bg-${typeColor}`}
       >
         <div
-          className={`text-shadow text-gray-50 mx-auto ${
+          className={`typing-badge text-shadow text-gray-50 mx-auto ${
             small ? 'text-xs' : ''
           }`}
         >

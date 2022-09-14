@@ -25,17 +25,22 @@ const EditMoves = ({
   useEffect(() => {
     if (possibleMovesByVersion) {
       const foundMoves = possibleMovesByVersion?.find(
-        (pkm) => pkm.pokemon_species_id === poke.pokemon_species_id,
+        (pkm) => pkm.id === poke.id,
       );
 
       if (foundMoves?.possibleMoves) {
         const allMoves: PokemonMove[] = [];
         orderBy(
-          foundMoves.possibleMoves.filter(
-            (possMove: PokemonPossibleMoveType) =>
-              Number(possMove.level || '101') <= Number(poke.lvl || '-1'),
-          ),
-          ['pokemon_move_method_id', 'level'],
+          foundMoves.possibleMoves
+            .filter(
+              (possMove: PokemonPossibleMoveType) =>
+                Number(possMove.level || '101') <= Number(poke.lvl || '-1'),
+            )
+            .map((possMove) => ({
+              ...possMove,
+              lvl: Number(possMove.level || '101'),
+            })),
+          ['pokemon_move_method_id', 'lvl'],
           ['asc', 'asc'],
         ).forEach((possMove: PokemonPossibleMoveType) => {
           const foundMove = MOVES.find(

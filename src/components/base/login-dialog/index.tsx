@@ -34,6 +34,7 @@ function LoginDialog({ open, handleClose }: LoginDialogType) {
         await auth.signInWithCredential(credential);
       }
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error(e);
     }
   };

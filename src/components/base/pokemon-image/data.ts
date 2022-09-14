@@ -4,4 +4,5 @@ export type PokemonImageType = {
   invisible?: boolean;
   alt?: string;
   icon?: boolean;
+  className?: string;
 };

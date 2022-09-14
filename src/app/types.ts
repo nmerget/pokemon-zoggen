@@ -1,4 +1,5 @@
-export type MenuItem = {
+export type NavigationItem = {
   label: string;
-  link: string;
+  link?: string;
+  items?: NavigationItem[];
 };

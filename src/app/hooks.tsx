@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useFirestoreConnect } from 'react-redux-firebase';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { MenuItem } from './types';
+import { NavigationItem } from './types';
 import {
   DefaultMenuItems,
   FIREBASE_COLLECTION_CURRENT,
@@ -52,16 +52,21 @@ export const useRunGroups = () => {
 
 export const useMenuItems = () => {
   const runGroups = useRunGroups();
-  const [menuItems, setMenuItems] = useState<MenuItem[]>(DefaultMenuItems);
+  const [menuItems, setMenuItems] =
+    useState<NavigationItem[]>(DefaultMenuItems);
 
   useEffect(() => {
     if (runGroups && runGroups.length > 0) {
       setMenuItems([
         ...DefaultMenuItems,
-        ...runGroups.map((group) => ({
-          label: group.name || '',
-          link: `/runs/${group.id}`,
-        })),
+        {
+          label: 'Runs',
+          link: '/runs',
+          items: runGroups.map((group) => ({
+            label: group.name || '',
+            link: `/runs/${group.id}`,
+          })),
+        },
       ]);
     }
   }, [runGroups]);
@@ -279,7 +284,7 @@ export const useValidUser = () => {
     if (firebaseSelector?.profile?.isEmpty === false) {
       setValidUser(true);
     }
-  }, [firebaseSelector]);
+  }, [firebaseSelector?.profile]);
 
   return window.Cypress || validUser;
 };

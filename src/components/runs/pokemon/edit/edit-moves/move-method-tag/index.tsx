@@ -1,7 +1,7 @@
 import { MoveMethodTagType } from './data';
 
 const tempMoveMethods = [
-  { method: '1', name: 'LVL' },
+  { method: '1', name: 'LV:' },
   { method: '2', name: 'EGG' },
   { method: '3', name: 'TUT' },
   { method: '4', name: 'T/VM' },
@@ -13,13 +13,19 @@ const MoveMethodTag = ({ possibleMove }: MoveMethodTagType) => {
   );
   return (
     <span
-      className={`rounded-full text-xs my-auto px-3 py-1.5 ${
+      className={`rounded-full text-xs my-auto px-2 py-1 ${
         foundMove?.method === '1'
           ? 'bg-green-100 text-green-600'
-          : 'bg-yellow-100 text-yellow-600'
+          : foundMove?.method === '2'
+          ? 'bg-yellow-100 text-yellow-600'
+          : foundMove?.method === '3'
+          ? 'bg-red-100 text-red-600'
+          : 'bg-blue-100 text-blue-600'
       }`}
     >
-      {foundMove?.method === '1' ? possibleMove.level : foundMove?.name}
+      {foundMove?.method === '1'
+        ? `${foundMove?.name}${possibleMove.level}`
+        : foundMove?.name}
     </span>
   );
 };

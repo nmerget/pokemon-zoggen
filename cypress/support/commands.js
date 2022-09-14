@@ -23,7 +23,8 @@ Cypress.Commands.add('seedDefault', (customDump) => {
 });
 
 Cypress.Commands.add('gotoRunEdit', () => {
-  cy.contains('a', 'New Group Cypress').should('be.visible').click();
+  cy.get('#main-menu-item-2').click();
+  cy.get('#sub-nav-item-0').click();
   cy.location('pathname', { timeout: 10000 }).should('contain', '/runs');
   cy.get('#card-action-new-run').click();
   cy.get('#back-button-run-edit').should('be.visible');

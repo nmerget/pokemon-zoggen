@@ -8,18 +8,17 @@ import Button from '@mui/material/Button';
 import ListIcon from '@mui/icons-material/List';
 
 import EditIcon from '@mui/icons-material/Edit';
-import { getPlayerName } from '../../../app/utils';
+import { fetchMovesByVersion, getPlayerName } from '../../../app/utils';
 import PokemonShow from './show';
 import PokemonAdd from './add';
 import PokemonEdit from './edit';
-import { FbPokemon, FbPokemonClass, FbUser } from '../../../firebase/types';
+import { FbPokemon, FbUser } from '../../../firebase/types';
 import {
   FIREBASE_COLLECTION_RUN_GROUPS,
   FIREBASE_COLLECTION_RUNS,
   FIREBASE_COLLECTION_USERS,
 } from '../../../app/constants';
-import { Pokemon, PokemonKey } from '../../../pokemon/types';
-import VERSIONS from '../../../data/versions';
+import { Pokemon } from '../../../pokemon/types';
 import {
   useCurrentRun,
   useCurrentUser,
@@ -69,14 +68,9 @@ function RunsPokemon() {
   useEffect(() => {
     if (editMode && currentRun && !possibleMovesByVersion) {
       const fetchData = async () => {
-        const foundVersion = VERSIONS.find(
-          (v) => v.version === currentRun.version,
+        setPossibleMovesByVersion(
+          await fetchMovesByVersion(currentRun.version || ''),
         );
-        if (foundVersion?.possibleMovesFileName) {
-          const res = await fetch(foundVersion.possibleMovesFileName);
-          const data = await res.json();
-          setPossibleMovesByVersion(data);
-        }
       };
 
       // eslint-disable-next-line no-console
@@ -115,19 +109,11 @@ function RunsPokemon() {
   };
 
   const addUserPokemon = (selectedPokemon: Pokemon) => {
-    // Props type as an array, to be exported
-    const validPokemon: any = {};
-    const validKeys = Object.keys(new FbPokemonClass());
-    Object.keys(selectedPokemon).forEach((key) => {
-      if (validKeys.includes(key)) {
-        validPokemon[key] = selectedPokemon[key as PokemonKey];
-      }
-    });
-
     const changePokemon = [
       ...(pokemon || []),
       {
-        ...validPokemon,
+        pokemon_species_id: selectedPokemon.id,
+        visible: false,
         lvl: currentRun?.lvlCap || 100,
         moves: [{}, {}, {}, {}],
       },
@@ -168,7 +154,7 @@ function RunsPokemon() {
                 </div>
               )}
             </div>
-            <div className="flex flex-col gap-4">
+            <div id="pokemon-container" className="flex flex-col gap-4">
               {!pokemon && <CircularProgress variant="indeterminate" />}
               {(selectedUser.id !== currentUser.id || !editMode) &&
                 pokemon?.map((poke, indexPoke) => (
