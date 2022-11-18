@@ -46,7 +46,7 @@
     "@capacitor/cli": "^4.4.0",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
-    "@mui/icons-material": "^5.10.9",
+    "@mui/icons-material": "^5.10.14",
     "@mui/material": "^5.10.14",
     "@reduxjs/toolkit": "^1.9.0",
     "@sentry/react": "^7.12.0",
