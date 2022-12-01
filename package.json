@@ -80,7 +80,7 @@
     "react-dom": "^17.0.2",
     "react-redux": "^8.0.5",
     "react-redux-firebase": "^3.11.0",
-    "react-router-dom": "^6.4.3",
+    "react-router-dom": "^6.4.4",
     "redux-firestore": "^1.0.0",
     "stylelint": "^14.15.0",
     "stylelint-config-standard": "^29.0.0",
