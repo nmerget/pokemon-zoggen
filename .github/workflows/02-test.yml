@@ -48,7 +48,7 @@ jobs:
         run: docker-compose -f "docker-compose.firebase.yml" up -d
 
       - name: 🧪 Cypress run
-        uses: cypress-io/github-action@v4
+        uses: cypress-io/github-action@v5
         with:
           start: npx http-server -p 3000 build
           wait-on: 'http://localhost:3000, http://localhost:8001'
