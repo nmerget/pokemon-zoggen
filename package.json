@@ -75,7 +75,7 @@
     "husky": "^8.0.2",
     "lodash": "^4.17.21",
     "markdownlint-cli": "^0.32.2",
-    "postcss": "^8.4.19",
+    "postcss": "^8.4.20",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^8.0.5",
