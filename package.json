@@ -70,7 +70,7 @@
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-prettier": "8.8.0",
     "firebase": "^9.23.0",
-    "firebase-admin": "^11.9.0",
+    "firebase-admin": "^11.10.1",
     "got": "^13.0.0",
     "husky": "^8.0.3",
     "lodash": "^4.17.21",
