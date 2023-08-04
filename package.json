@@ -68,7 +68,7 @@
     "cypress": "^11.2.0",
     "dotenv": "^16.3.1",
     "eslint-config-airbnb": "19.0.4",
-    "eslint-config-prettier": "8.9.0",
+    "eslint-config-prettier": "8.10.0",
     "firebase": "^9.23.0",
     "firebase-admin": "^11.10.1",
     "got": "^13.0.0",
